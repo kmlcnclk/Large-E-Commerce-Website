@@ -58,7 +58,7 @@ class CartComponent extends Component {
     }
     setTimeout(() => {
       if (!this.props.userCart[0]) {
-        this.props.router.reload();
+        // this.props.router.reload();
       }
     }, 2000);
   };
@@ -212,37 +212,39 @@ class CartComponent extends Component {
                   </div>
                 ))}
               </div>
-              <div className={`${styles.totalProductCart}`}>
-                <div
-                  className="card"
-                  style={{
-                    backgroundColor: '#f2f2f2',
-                    borderRadius: '1rem',
-                    padding: '0.5rem',
-                  }}
-                >
-                  <div className={`${styles.cartCartCount}`}>
-                    <div className={`${styles.cartCartCountText}`}>
-                      Total number of products:{' '}
+              {data ? (
+                <div className={`${styles.totalProductCart}`}>
+                  <div
+                    className="card"
+                    style={{
+                      backgroundColor: '#f2f2f2',
+                      borderRadius: '1rem',
+                      padding: '0.5rem',
+                    }}
+                  >
+                    <div className={`${styles.cartCartCount}`}>
+                      <div className={`${styles.cartCartCountText}`}>
+                        Total number of products:{' '}
+                      </div>
+                      <Badge className={`${styles.cartCartCountNumber}`}>
+                        {user.cartCount}
+                      </Badge>
                     </div>
-                    <Badge className={`${styles.cartCartCountNumber}`}>
-                      {user.cartCount}
-                    </Badge>
-                  </div>
-                  <div className={`${styles.cartCartPrice}`}>
-                    <div className={`${styles.cartCartPriceText}`}>
-                      Total basket price:{' '}
+                    <div className={`${styles.cartCartPrice}`}>
+                      <div className={`${styles.cartCartPriceText}`}>
+                        Total basket price:{' '}
+                      </div>
+                      <Badge className={`${styles.cartCartPriceNumber}`}>
+                        <strong>$</strong>{' '}
+                        {parseFloat(user.cartTotalPrice).toFixed(2)}
+                      </Badge>
                     </div>
-                    <Badge className={`${styles.cartCartPriceNumber}`}>
-                      <strong>$</strong>{' '}
-                      {parseFloat(user.cartTotalPrice).toFixed(2)}
-                    </Badge>
+                    <button className="btn btn-danger block m-1">
+                      Complete shopping
+                    </button>
                   </div>
-                  <button className="btn btn-danger block m-1">
-                    Complete shopping
-                  </button>
                 </div>
-              </div>
+              ) : null}
             </div>
           </div>
         ) : null}

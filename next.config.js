@@ -13,6 +13,7 @@ module.exports = (phase, { defaultConfig }) => {
       SMTP_POST: '587',
       SMTP_USER: 'memethsana24@gmail.com',
       SMTP_PASS: 'mh2424..',
+      // MY_URL: 'http://localhost:3000',
       MY_URL: 'https://large.vercel.app',
 
       NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME: 'nextjs',
