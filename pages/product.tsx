@@ -29,7 +29,7 @@ function Product() {
       <Head>
         <title>Search Product</title>
       </Head>
-      <div style={{ marginLeft: '1rem', marginRight: '1rem' }}>
+      <div className={styles.productMainCard}>
         <div className={`${styles.productCard} mt-1`}>
           {data
             ? data.searchProduct.data.map((product) => (
