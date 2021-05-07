@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { MdEdit } from 'react-icons/md';
 import ImageCropComponent from '../../toolbox/ImageCropComponent';
-import ImageCropComponent2 from '../../toolbox/ImageCropComponent2';
 import Image from 'next/image';
 import styles from 'styles/Profile.module.css';
 import { useMutation } from '@apollo/client';
