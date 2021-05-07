@@ -58,7 +58,7 @@ class CartComponent extends Component {
     }
     setTimeout(() => {
       if (!this.props.userCart[0]) {
-        // this.props.router.reload();
+        this.props.router.reload();
       }
     }, 2000);
   };
@@ -184,6 +184,7 @@ class CartComponent extends Component {
                             <div className="d-inline-block m-1">
                               <BsPlusCircle
                                 onClick={() => this.addToCart(product)}
+                                style={{ cursor: 'pointer' }}
                                 size={23}
                               />
                               <div className="m-1 d-inline-block">
@@ -196,12 +197,14 @@ class CartComponent extends Component {
 
                               <BsDashCircle
                                 onClick={() => this.removeFromCart(product)}
+                                style={{ cursor: 'pointer' }}
                                 size={23}
                               />
                             </div>
                             <div className="d-inline-block m-1 mt-2">
                               <BsTrash
                                 onClick={() => this.fullRemoveFromCart(product)}
+                                style={{ cursor: 'pointer' }}
                                 size={25}
                               />
                             </div>
@@ -212,39 +215,37 @@ class CartComponent extends Component {
                   </div>
                 ))}
               </div>
-              {data ? (
-                <div className={`${styles.totalProductCart}`}>
-                  <div
-                    className="card"
-                    style={{
-                      backgroundColor: '#f2f2f2',
-                      borderRadius: '1rem',
-                      padding: '0.5rem',
-                    }}
-                  >
-                    <div className={`${styles.cartCartCount}`}>
-                      <div className={`${styles.cartCartCountText}`}>
-                        Total number of products:{' '}
-                      </div>
-                      <Badge className={`${styles.cartCartCountNumber}`}>
-                        {user.cartCount}
-                      </Badge>
+              <div className={`${styles.totalProductCart}`}>
+                <div
+                  className="card"
+                  style={{
+                    backgroundColor: '#f2f2f2',
+                    borderRadius: '1rem',
+                    padding: '0.5rem',
+                  }}
+                >
+                  <div className={`${styles.cartCartCount}`}>
+                    <div className={`${styles.cartCartCountText}`}>
+                      Total number of products:{' '}
                     </div>
-                    <div className={`${styles.cartCartPrice}`}>
-                      <div className={`${styles.cartCartPriceText}`}>
-                        Total basket price:{' '}
-                      </div>
-                      <Badge className={`${styles.cartCartPriceNumber}`}>
-                        <strong>$</strong>{' '}
-                        {parseFloat(user.cartTotalPrice).toFixed(2)}
-                      </Badge>
-                    </div>
-                    <button className="btn btn-danger block m-1">
-                      Complete shopping
-                    </button>
+                    <Badge className={`${styles.cartCartCountNumber}`}>
+                      {user.cartCount}
+                    </Badge>
                   </div>
+                  <div className={`${styles.cartCartPrice}`}>
+                    <div className={`${styles.cartCartPriceText}`}>
+                      Total basket price:{' '}
+                    </div>
+                    <Badge className={`${styles.cartCartPriceNumber}`}>
+                      <strong>$</strong>{' '}
+                      {parseFloat(user.cartTotalPrice).toFixed(2)}
+                    </Badge>
+                  </div>
+                  <button className="btn btn-danger block m-1">
+                    Complete shopping
+                  </button>
                 </div>
-              ) : null}
+              </div>
             </div>
           </div>
         ) : null}
