@@ -102,6 +102,15 @@ class NavbarComponent extends React.Component {
       });
     } catch (err) {
       notifyError(this.props.error.message);
+      if (
+        this.props.error.message ==
+        'You are not authorized to access this route'
+      ) {
+        this.props.setLogState(true);
+        setTimeout(() => {
+          this.props.router.push('/');
+        }, 2400);
+      }
     }
 
     if (this.props.data) {
