@@ -1,0 +1,19 @@
+.login {
+  text-align: center;
+  justify-content: center;
+  display: flex;
+}
+
+.loginMainDiv {
+  margin: 4rem;
+  width: 23rem;
+}
+
+#loginEmail {
+  margin-top: 2rem;
+  margin-bottom: 0.8rem;
+}
+#loginPassword {
+  margin-top: 0.8rem;
+  margin-bottom: 0.8rem;
+}

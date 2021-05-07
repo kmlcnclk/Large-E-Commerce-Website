@@ -1,0 +1,10 @@
+.category {
+  padding-top: 0.3rem;
+  margin-top: 0.2rem;
+}
+
+@media only screen and (max-width: 991px) {
+  .category {
+    display: none;
+  }
+}

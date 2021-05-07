@@ -1,0 +1,28 @@
+.productAdd {
+  justify-content: center;
+  display: flex;
+}
+
+.productAddMainDiv {
+  margin: 4rem;
+  width: 23rem;
+}
+
+#productAddName {
+  margin-top: 2rem;
+  margin-bottom: 0.8rem;
+}
+
+#productAddContent {
+  margin-top: 0.8rem;
+  margin-bottom: 0.8rem;
+}
+#productAddPrice {
+  margin-top: 0.8rem;
+  margin-bottom: 0.8rem;
+}
+
+#productAddImageForm {
+  margin-top: 0.8rem;
+  margin-bottom: 1.5rem;
+}

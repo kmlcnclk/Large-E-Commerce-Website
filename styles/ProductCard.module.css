@@ -1,0 +1,647 @@
+.card {
+  margin: 0.3rem;
+  padding: 0.3;
+  width: 16.2rem;
+  border-radius: 5px;
+}
+
+.productCard {
+  width: 100%;
+  justify-content: center;
+  display: block;
+  margin-top: 1rem;
+}
+
+.price {
+  font-size: 1.1rem;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.titleName {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.cardText {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.cardBody {
+  max-width: 100%;
+}
+
+.imgMarginTop {
+  text-align: center;
+  margin-top: 20px;
+  width: 16.1rem;
+  height: 16.1rem;
+}
+
+.img {
+  width: 16.1rem;
+  height: 16.1rem;
+  text-align: center;
+  justify-content: center;
+  display: flex;
+  object-fit: contain;
+}
+.productMainCard {
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
+@media only screen and (min-width: 300px) and (max-width: 329px) {
+  .productCard {
+    padding: 0.1rem;
+  }
+
+  .card {
+    width: 97.7%;
+    margin: 0.2rem;
+    padding: 0.4rem;
+  }
+
+  .price {
+    font-size: 1.1rem;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  .img {
+    width: 100%;
+    object-fit: contain;
+  }
+  .imgMarginTop {
+    text-align: center;
+    width: 100%;
+    height: 100%;
+  }
+  .productMainCard {
+    margin-left: 0.1rem;
+    margin-right: 0rem;
+  }
+}
+
+@media only screen and (width: 329px) {
+  .productCard {
+    padding: 0.1rem;
+  }
+
+  .card {
+    width: 97%;
+    margin: 0.25rem;
+    padding: 0.4rem;
+  }
+
+  .price {
+    font-size: 1.1rem;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  .img {
+    width: 100%;
+    object-fit: contain;
+  }
+  .imgMarginTop {
+    text-align: center;
+    width: 100%;
+    height: 100%;
+  }
+  .productMainCard {
+    margin-left: 0.1rem;
+    margin-right: 0rem;
+  }
+}
+
+@media only screen and (min-width: 330px) and (max-width: 340px) {
+  .productCard {
+    padding: 0.1rem;
+  }
+
+  .card {
+    width: 98%;
+    margin: 0.2rem;
+    padding: 0.4rem;
+  }
+
+  .price {
+    font-size: 1.1rem;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  .img {
+    width: 100%;
+    object-fit: contain;
+  }
+  .imgMarginTop {
+    text-align: center;
+    width: 100%;
+    height: 100%;
+  }
+  .productMainCard {
+    margin-left: 0.1rem;
+    margin-right: 0rem;
+  }
+}
+
+@media only screen and (min-width: 340px) and (max-width: 360px) {
+  .productCard {
+    padding: 0.1rem;
+  }
+
+  .card {
+    width: 98%;
+    margin: 0.2rem;
+    padding: 0.4rem;
+  }
+
+  .price {
+    font-size: 1.1rem;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  .img {
+    width: 100%;
+    object-fit: contain;
+  }
+  .imgMarginTop {
+    text-align: center;
+    width: 100%;
+    height: 100%;
+  }
+  .productMainCard {
+    margin-left: 0.1rem;
+    margin-right: 0rem;
+  }
+}
+
+@media only screen and (min-width: 360px) and (max-width: 380px) {
+  .productCard {
+    padding: 0.1rem;
+  }
+  .card {
+    width: 98%;
+    margin: 0.2rem;
+    padding: 0.4rem;
+  }
+
+  .price {
+    font-size: 1.1rem;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  .img {
+    width: 100%;
+    object-fit: contain;
+  }
+  .imgMarginTop {
+    text-align: center;
+    width: 100%;
+    height: 100%;
+  }
+  .productMainCard {
+    margin-left: 0.3rem;
+    margin-right: 0rem;
+  }
+}
+
+@media only screen and (min-width: 380px) and (max-width: 411px) {
+  .productCard {
+    padding: 0.2rem;
+  }
+
+  .card {
+    width: 97.3%;
+    margin: 0.3rem;
+    padding: 0.4rem;
+  }
+
+  .price {
+    font-size: 1.1rem;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  .img {
+    width: 100%;
+    object-fit: contain;
+  }
+  .imgMarginTop {
+    text-align: center;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+@media only screen and (min-width: 412px) and (max-width: 418px) {
+  .productCard {
+    padding: 0.2rem;
+  }
+
+  .card {
+    width: 97.4%;
+    margin: 0.3rem;
+    padding: 0.4rem;
+  }
+
+  .price {
+    font-size: 1.1rem;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  .img {
+    width: 100%;
+    object-fit: contain;
+  }
+  .imgMarginTop {
+    text-align: center;
+    width: 100%;
+    height: 100%;
+  }
+  .productMainCard {
+    margin-left: 0rem;
+    margin-right: 0rem;
+  }
+}
+
+@media only screen and (min-width: 418px) and (max-width: 425px) {
+  .productCard {
+    padding: 0.2rem;
+  }
+
+  .card {
+    width: 97.4%;
+    margin: 0.3rem;
+    padding: 0.4rem;
+  }
+
+  .price {
+    font-size: 1.1rem;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  .img {
+    width: 100%;
+    object-fit: contain;
+  }
+  .imgMarginTop {
+    text-align: center;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+@media only screen and (min-width: 425px) and (max-width: 455px) {
+  .productCard {
+    padding: 0.2rem;
+  }
+
+  .card {
+    width: 97.5%;
+    margin: 0.3rem;
+    padding: 0.4rem;
+  }
+
+  .price {
+    font-size: 1.1rem;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  .img {
+    width: 100%;
+    object-fit: contain;
+  }
+  .imgMarginTop {
+    text-align: center;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+@media only screen and (min-width: 455px) and (max-width: 500px) {
+  .productCard {
+    padding: 0.2rem;
+  }
+
+  .card {
+    width: 97%;
+    margin: 0.4rem;
+    padding: 0.4rem;
+  }
+
+  .price {
+    font-size: 1.1rem;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  .img {
+    width: 100%;
+    object-fit: contain;
+  }
+  .imgMarginTop {
+    text-align: center;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+@media only screen and (min-width: 500px) and (max-width: 510px) {
+  .productCard {
+    padding: 0.2rem;
+  }
+
+  .card {
+    width: 97%;
+    margin: 0.4rem;
+    padding: 0.4rem;
+  }
+
+  .price {
+    font-size: 1.1rem;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  .img {
+    width: 100%;
+    object-fit: contain;
+  }
+  .imgMarginTop {
+    text-align: center;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+@media only screen and (min-width: 510px) and (max-width: 536px) {
+  .productCard {
+    padding: 0.2rem;
+  }
+
+  .card {
+    width: 97%;
+    margin: 0.4rem;
+    padding: 0.4rem;
+  }
+
+  .price {
+    font-size: 1.1rem;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  .img {
+    width: 100%;
+    object-fit: contain;
+  }
+  .imgMarginTop {
+    text-align: center;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+@media only screen and (min-width: 536px) and (max-width: 560px) {
+  .productCard {
+    padding: 0.2rem;
+  }
+
+  .card {
+    width: 97%;
+    margin: 0.4rem;
+    padding: 0.5rem;
+  }
+
+  .price {
+    font-size: 1.1rem;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  .img {
+    width: 100%;
+    object-fit: contain;
+  }
+  .imgMarginTop {
+    text-align: center;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+@media only screen and (min-width: 560px) and (max-width: 570px) {
+  .productCard {
+    padding: 0.5rem;
+  }
+
+  .card {
+    width: 97%;
+    margin: 0.5rem;
+    padding: 0.5rem;
+  }
+
+  .price {
+    font-size: 1.1rem;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  .img {
+    width: 100%;
+    object-fit: contain;
+  }
+  .imgMarginTop {
+    text-align: center;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+@media only screen and (min-width: 570px) and (max-width: 575px) {
+  .productCard {
+    padding: 0.5rem;
+  }
+
+  .card {
+    width: 97%;
+    margin: 0.5rem;
+    padding: 0.5rem;
+  }
+
+  .price {
+    font-size: 1.1rem;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  .img {
+    width: 100%;
+    object-fit: contain;
+  }
+  .imgMarginTop {
+    text-align: center;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+@media only screen and (width: 576px) {
+  .productCard {
+    padding: 0.5rem;
+  }
+
+  .card {
+    width: 97%;
+    margin: 0.5rem;
+    padding: 0.5rem;
+  }
+
+  .price {
+    font-size: 1.1rem;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  .img {
+    width: 100%;
+    object-fit: contain;
+  }
+  .imgMarginTop {
+    text-align: center;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+@media only screen and (min-width: 577px) and (max-width: 767px) {
+  .productCard {
+    padding: 0.5rem;
+  }
+
+  .card {
+    width: 97.3%;
+    margin: 0.4rem;
+    padding: 0.5rem;
+  }
+
+  .price {
+    font-size: 1.1rem;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  .img {
+    width: 100%;
+    object-fit: contain;
+  }
+  .imgMarginTop {
+    text-align: center;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+@media only screen and (width: 768px) {
+  .productCard {
+    padding: 0.5rem;
+  }
+
+  .card {
+    width: 98%;
+    margin: 0.4rem;
+    padding: 0.5rem;
+  }
+
+  .price {
+    font-size: 1.1rem;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  .img {
+    width: 100%;
+    object-fit: contain;
+  }
+  .imgMarginTop {
+    text-align: center;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+@media only screen and (width: 1200px) {
+  .productCard {
+    width: 100%;
+    padding-left: 2.5rem;
+    padding-right: 2rem;
+    justify-content: center;
+  }
+
+  .card {
+    width: 48%;
+    margin: 0.5rem;
+    padding: 0.5rem;
+    border-radius: 5px;
+  }
+
+  .img {
+    width: 100%;
+    object-fit: contain;
+  }
+  .imgMarginTop {
+    text-align: center;
+    width: 100%;
+    height: 100%;
+  }
+}
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+  .productCard {
+    padding: 0.1rem;
+    padding-left: 0.9rem;
+  }
+
+  .card {
+    width: 47.5%;
+    margin: 0.5rem;
+    padding: 0.5rem;
+  }
+
+  .price {
+    font-size: 1.1rem;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  .img {
+    text-align: center;
+    justify-content: center;
+    display: flex;
+    object-fit: contain;
+  }
+  .imgMarginTop {
+    text-align: center;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+@media only screen and (min-width: 769px) and (max-width: 991px) {
+  .productCard {
+    padding: 0.5rem;
+    padding-left: 0.2rem;
+  }
+
+  .card {
+    width: 98%;
+    margin: 0.4rem;
+    margin-right: 0.6rem;
+    padding: 0.5rem;
+  }
+
+  .price {
+    font-size: 1.1rem;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  .img {
+    width: 100%;
+    object-fit: contain;
+  }
+  .imgMarginTop {
+    text-align: center;
+    margin-top: 20px;
+    width: 100%;
+    height: 100%;
+  }
+}

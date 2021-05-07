@@ -1,0 +1,28 @@
+.updateProfile {
+  justify-content: center;
+  display: flex;
+}
+
+.updateProfileMainDiv {
+  margin: 4rem;
+  width: 23rem;
+}
+
+#updateProfileName {
+  margin-top: 2rem;
+  margin-bottom: 0.8rem;
+}
+
+#updateProfileEmail {
+  margin-top: 0.8rem;
+  margin-bottom: 0.8rem;
+}
+#updateProfilePassword {
+  margin-top: 0.8rem;
+  margin-bottom: 0.8rem;
+}
+
+#updateProfileImageForm {
+  margin-top: 0.8rem;
+  margin-bottom: 1.5rem;
+}
