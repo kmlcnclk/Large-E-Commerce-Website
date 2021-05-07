@@ -29,23 +29,30 @@ export default function Category({}) {
   // }
 
   return (
-    <div
-      className={`border ${styles.category}`}
-      style={{ borderRadius: '0.5rem' }}
-    >
-      <div className="nav-scroller py-1 mb-2">
-        <nav className="nav d-flex justify-content-between">
-          {data.getCategories.map((category) => (
-            <Link href={`/category/${category.slug}`} key={category._id}>
-              <a className="text-decoration-none text-dark">
-                <div style={{ cursor: 'pointer' }} className="p-2 text-muted">
-                  {category.name}
-                </div>
-              </a>
-            </Link>
-          ))}
-        </nav>
-      </div>
+    <div>
+      {data ? (
+        <div
+          className={`border ${styles.category}`}
+          style={{ borderRadius: '0.5rem' }}
+        >
+          <div className="nav-scroller py-1 mb-2">
+            <nav className="nav d-flex justify-content-between">
+              {data.getCategories.map((category) => (
+                <Link href={`/category/${category.slug}`} key={category._id}>
+                  <a className="text-decoration-none text-dark">
+                    <div
+                      style={{ cursor: 'pointer' }}
+                      className="p-2 text-muted"
+                    >
+                      {category.name}
+                    </div>
+                  </a>
+                </Link>
+              ))}
+            </nav>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }
