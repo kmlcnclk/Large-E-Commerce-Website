@@ -17,6 +17,7 @@
 }
 .cardProductDiv {
   width: 100%;
+  height: 250px;
 }
 
 .cartMainDiv {
@@ -86,6 +87,7 @@
   .cardProductDiv {
     width: 100%;
     display: block;
+    height: auto;
   }
   .totalProductCart {
     display: block;
