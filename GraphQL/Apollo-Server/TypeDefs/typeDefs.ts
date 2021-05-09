@@ -13,6 +13,7 @@ export const typeDefs = gql`
     cart(access_token: String!): UserCart!
     profile(access_token: String!): Profile!
     cloudinaryProfileImage: Cloudinary!
+    productsSold(access_token: String!): ProductsSold!
   }
 
   type Mutation {
@@ -61,6 +62,15 @@ export const typeDefs = gql`
       profile_image: String!
     ): ProfileImageEdit
     categoryAdd(name: String!, imageUrl: String!): CategoryAdd!
+    postAddress(access_token: String!, address: String!): AddressData!
+    postCard(
+      access_token: String!
+      cardNumber: String!
+      cardExpiry: String!
+      cardCVC: String!
+    ): CardData!
+    postOrder(access_token: String!, product: ID!, quantity: Int!): OrderData!
+    postProductsSold(access_token: String!, index: Int!): Message!
   }
 
   scalar Date

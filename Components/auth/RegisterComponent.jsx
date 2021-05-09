@@ -24,8 +24,8 @@ export default class RegisterComponent extends Component {
           profile_image: await onDrop(this.props.imageDrop),
         },
       });
-    } catch (error) {
-      notifyError(this.props.error.message);
+    } catch (err) {
+      notifyError(err.message);
     }
 
     if (this.props.data) {
@@ -142,5 +142,3 @@ export default class RegisterComponent extends Component {
     );
   }
 }
-
-

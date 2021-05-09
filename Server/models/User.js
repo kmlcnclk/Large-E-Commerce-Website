@@ -73,6 +73,22 @@ const UserSchema = new Schema({
     type: Number,
     default: 0,
   },
+  address: {
+    type: String,
+    default: '',
+  },
+  creditCard: {
+    cardNumber: { type: String, default: '' },
+    cardExpiry: { type: String, default: '' },
+    cardCVC: { type: String, default: '' },
+  },
+  orders: [
+    {
+      product: { type: mongoose.Schema.ObjectId, ref: 'Product' },
+      quantity: { type: Number },
+      user: { type: mongoose.Schema.ObjectId, ref: 'User' },
+    },
+  ],
 });
 
 // Get Reset Password Token From User

@@ -44,6 +44,12 @@ export const LOGIN_MUTATION = gql`
         name
         email
         profile_image
+        creditCard {
+          cardNumber
+          cardExpiry
+          cardCVC
+        }
+        address
         _id
         cart {
           quantity
@@ -76,6 +82,12 @@ export const ADD_TO_CART = gql`
         _id
         cartTotalPrice
         cartCount
+        creditCard {
+          cardNumber
+          cardExpiry
+          cardCVC
+        }
+        address
         email
         profile_image
         cart {
@@ -101,6 +113,12 @@ export const REMOVE_FROM_CART = gql`
         _id
         name
         cartTotalPrice
+        creditCard {
+          cardNumber
+          cardExpiry
+          cardCVC
+        }
+        address
         cartCount
         email
         profile_image
@@ -128,6 +146,12 @@ export const FULL_REMOVE_FROM_CART = gql`
         name
         cartTotalPrice
         email
+        creditCard {
+          cardNumber
+          cardExpiry
+          cardCVC
+        }
+        address
         profile_image
         cartCount
         cart {
@@ -184,6 +208,12 @@ export const PROFILE_EDIT = gql`
         _id
         name
         cartTotalPrice
+        creditCard {
+          cardNumber
+          cardExpiry
+          cardCVC
+        }
+        address
         cartCount
         email
         profile_image
@@ -214,6 +244,12 @@ export const PROFILE_IMAGE_EDIT = gql`
         _id
         name
         cartTotalPrice
+        creditCard {
+          cardNumber
+          cardExpiry
+          cardCVC
+        }
+        address
         cartCount
         email
         profile_image
@@ -228,6 +264,122 @@ export const PROFILE_IMAGE_EDIT = gql`
           }
         }
       }
+    }
+  }
+`;
+
+export const ADDRESS = gql`
+  mutation postAddress($access_token: String!, $address: String!) {
+    postAddress(access_token: $access_token, address: $address) {
+      success
+      data {
+        _id
+        name
+        cartTotalPrice
+        cartCount
+        email
+        creditCard {
+          cardNumber
+          cardExpiry
+          cardCVC
+        }
+        address
+        profile_image
+        cart {
+          quantity
+          product {
+            name
+            imageUrl
+            _id
+            content
+            price
+          }
+        }
+      }
+    }
+  }
+`;
+export const CREDITCARD = gql`
+  mutation postCard(
+    $access_token: String!
+    $cardNumber: String!
+    $cardCVC: String!
+    $cardExpiry: String!
+  ) {
+    postCard(
+      access_token: $access_token
+      cardNumber: $cardNumber
+      cardCVC: $cardCVC
+      cardExpiry: $cardExpiry
+    ) {
+      success
+      data {
+        _id
+        name
+        cartTotalPrice
+        cartCount
+        email
+        creditCard {
+          cardNumber
+          cardExpiry
+          cardCVC
+        }
+        address
+        profile_image
+        cart {
+          quantity
+          product {
+            name
+            imageUrl
+            _id
+            content
+            price
+          }
+        }
+      }
+    }
+  }
+`;
+export const ORDERS = gql`
+  mutation postOrder($access_token: String!, $product: ID!, $quantity: Int!) {
+    postOrder(
+      access_token: $access_token
+      product: $product
+      quantity: $quantity
+    ) {
+      success
+      data {
+        _id
+        name
+        cartTotalPrice
+        cartCount
+        email
+        creditCard {
+          cardNumber
+          cardExpiry
+          cardCVC
+        }
+        address
+        profile_image
+        cart {
+          quantity
+          product {
+            name
+            imageUrl
+            _id
+            content
+            price
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const POST_PRODUCTS_SOLD = gql`
+  mutation postProductsSold($access_token: String!, $index: Int!) {
+    postProductsSold(access_token: $access_token, index: $index) {
+      message
     }
   }
 `;

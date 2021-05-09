@@ -16,7 +16,7 @@ function Register() {
   const [name, setName] = useState('');
   const [imageDrop, setImageDrop] = useState({});
 
-  const [register, { error, data }] = useMutation(REGISTER_MUTATION);
+  const [register, { data }] = useMutation(REGISTER_MUTATION);
   // const [
   //   cloudinaryProfileImage,
   //   { data: cloudinaryProfileImageData },
@@ -40,7 +40,6 @@ function Register() {
         setImageDrop={setImageDrop}
         register={register}
         data={data}
-        error={error}
         // cloudinaryProfileImage={cloudinaryProfileImage}
         // cloudinaryProfileImageData={cloudinaryProfileImageData}
       />

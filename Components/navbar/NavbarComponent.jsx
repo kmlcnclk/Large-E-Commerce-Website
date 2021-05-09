@@ -161,18 +161,12 @@ class NavbarComponent extends React.Component {
               {this.props.logState ? (
                 <div>
                   <Link href="/register">
-                    <button
-                      type="button"
-                      className="btn btn btn-danger btn-sm m-1"
-                    >
+                    <button type="button" className="btn btn-danger btn-sm m-1">
                       Register
                     </button>
                   </Link>
                   <Link href="/login">
-                    <button
-                      type="button"
-                      className="btn btn btn-danger btn-sm m-1"
-                    >
+                    <button type="button" className="btn btn-danger btn-sm m-1">
                       Login
                     </button>
                   </Link>
@@ -180,7 +174,7 @@ class NavbarComponent extends React.Component {
               ) : (
                 <button
                   type="button"
-                  className="btn btn-danger btn-sm"
+                  className="btn btn-danger btn-sm m-1"
                   onClick={this.signOut}
                 >
                   Logout
@@ -295,6 +289,15 @@ class NavbarComponent extends React.Component {
                             style={{ fontSize: '0.8rem' }}
                           >
                             Product Add
+                          </a>
+                        </Link>
+                        <hr className="bg-dark-gray"></hr>
+                        <Link href="/productsSold">
+                          <a
+                            className="dropdown-item bg-light text-dark mb-3"
+                            style={{ fontSize: '0.8rem' }}
+                          >
+                            Products Sold
                           </a>
                         </Link>
                       </Dropdown.Menu>
@@ -459,6 +462,14 @@ class NavbarComponent extends React.Component {
                     onClick={this.stateMenu2}
                   >
                     Product Add
+                  </div>
+                </Link>
+                <Link href="/productsSold">
+                  <div
+                    className={`border p-3 ${styles.profile}`}
+                    onClick={this.stateMenu2}
+                  >
+                    Products Sold
                   </div>
                 </Link>
               </div>

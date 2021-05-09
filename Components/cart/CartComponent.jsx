@@ -6,6 +6,7 @@ import { getAccessTokenFromLocal } from 'LocalStorage/accessTokenStorage';
 import { notifyError, notifySuccess } from 'Components/toolbox/React-Toastify';
 import { BsPlusCircle, BsDashCircle, BsTrash } from 'react-icons/bs';
 import { RiShoppingCartLine } from 'react-icons/ri';
+import Link from 'next/link';
 
 class CartComponent extends Component {
   // Düzelt
@@ -241,9 +242,11 @@ class CartComponent extends Component {
                       {parseFloat(user.cartTotalPrice).toFixed(2)}
                     </Badge>
                   </div>
-                  <button className="btn btn-danger block m-1">
-                    Complete shopping
-                  </button>
+                  <Link href="/orderInformation">
+                    <button className="btn btn-danger block m-1">
+                      Complete shopping
+                    </button>
+                  </Link>
                 </div>
               </div>
             </div>

@@ -14,6 +14,11 @@ import {
   resetPassword,
   edit,
   uploadImage,
+  getAddress,
+  getCreditCard,
+  postOrders,
+  getProductsSold,
+  postProductsSold,
 } from 'Server/controllers/auth';
 
 export const UserResolvers = {
@@ -42,6 +47,13 @@ export const UserResolvers = {
       );
 
       res.results = { signature, timestamp };
+
+      return res.status(200).results;
+    },
+    async productsSold(_, { access_token }, { res }) {
+      await getAccessToRoute(access_token, res);
+
+      await getProductsSold(res);
 
       return res.status(200).results;
     },
@@ -112,6 +124,38 @@ export const UserResolvers = {
       await getAccessToRoute(access_token, res);
 
       await uploadImage(profile_image, res);
+
+      return res.status(200).results;
+    },
+    async postAddress(_, { access_token, address }, { res }) {
+      await getAccessToRoute(access_token, res);
+
+      await getAddress(address, res);
+
+      return res.status(200).results;
+    },
+    async postCard(
+      _,
+      { access_token, cardNumber, cardExpiry, cardCVC },
+      { res }
+    ) {
+      await getAccessToRoute(access_token, res);
+
+      await getCreditCard(cardNumber, cardExpiry, cardCVC, res);
+
+      return res.status(200).results;
+    },
+    async postOrder(_, { access_token, product, quantity }, { res }) {
+      await getAccessToRoute(access_token, res);
+
+      await postOrders(product, quantity, res);
+
+      return res.status(200).results;
+    },
+    async postProductsSold(_, { access_token, index }, { res }) {
+      await getAccessToRoute(access_token, res);
+
+      await postProductsSold(index, res);
 
       return res.status(200).results;
     },

@@ -465,6 +465,142 @@ const resetPassword = asyncHandler(
   }
 );
 
+const getAddress = asyncHandler(async (address, res) => {
+  const { id } = res.user;
+
+  const user = await User.findByIdAndUpdate(
+    id,
+    {
+      address: address,
+    },
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+
+  const user2 = await User.findById(id)
+    .populate({
+      path: 'products',
+      select: 'name content price imageUrl slug',
+    })
+    .populate({
+      path: 'cart.product',
+      select: 'name content price imageUrl slug',
+    });
+
+  res.results = {
+    success: true,
+    data: user2,
+  };
+});
+
+const getCreditCard = asyncHandler(
+  async (cardNumber, cardExpiry, cardCVC, res) => {
+    const { id } = res.user;
+
+    const user = await User.findById(id);
+
+    user.creditCard.cardNumber = await cardNumber;
+    user.creditCard.cardExpiry = await cardExpiry;
+    user.creditCard.cardCVC = await cardCVC;
+
+    await user.save();
+
+    const user2 = await User.findById(id)
+      .populate({
+        path: 'products',
+        select: 'name content price imageUrl slug',
+      })
+      .populate({
+        path: 'cart.product',
+        select: 'name content price imageUrl slug',
+      });
+
+    res.results = {
+      success: true,
+      data: user2,
+    };
+  }
+);
+
+const postOrders = asyncHandler(async (product, quantity, res) => {
+  const { id } = res.user;
+
+  const product2 = await Product.findById(product);
+
+  const user = await User.findById(product2.user);
+
+  const order = await {
+    product: product,
+    quantity: quantity,
+    user: id,
+  };
+
+  await user.orders.push(order);
+
+  await user.save();
+
+  const user2 = await User.findById(id)
+    .populate({
+      path: 'products',
+      select: 'name content price imageUrl slug',
+    })
+    .populate({
+      path: 'cart.product',
+      select: 'name content price imageUrl slug',
+    });
+
+  res.results = {
+    success: true,
+    data: user2,
+  };
+});
+
+const getProductsSold = asyncHandler(async (res) => {
+  const { id } = res.user;
+
+  const user = await User.findById(id);
+
+  var orders = [];
+
+  for (let i = 0; i < user.orders.length; i++) {
+    const product = await Product.findById(user.orders[i].product);
+
+    const user2 = await User.findById(user.orders[i].user);
+
+    const order = {
+      quantity: user.orders[i].quantity,
+      product: { name: product.name, imageUrl: product.imageUrl[0] },
+      user: { name: user2.name, address: user2.address },
+    };
+
+    orders.push(order);
+  }
+
+  res.results = {
+    success: true,
+    data: orders,
+  };
+});
+
+const postProductsSold = asyncHandler(async (index, res) => {
+  const { id } = res.user;
+
+  const user = await User.findById(id);
+
+  for (let i = 0; i < user.orders.length; i++) {
+    if (i === index) {
+      user.orders[i].remove();
+    }
+  }
+  await user.save();
+
+  res.results = {
+    message: 'The product has been sent',
+  };
+});
+
 module.exports = {
   register,
   login,
@@ -478,4 +614,9 @@ module.exports = {
   fullRemoveFromCart,
   uploadImage,
   userCart,
+  getAddress,
+  getCreditCard,
+  postOrders,
+  getProductsSold,
+  postProductsSold,
 };

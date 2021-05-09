@@ -1,10 +1,10 @@
 import React from 'react';
-// import { Provider } from 'react-redux';
+import { Provider } from 'react-redux';
 import { ApolloProvider } from '@apollo/client';
 import { AppProps } from 'next/app';
 import { useApollo } from 'src/apollo';
-// import { createWrapper } from 'next-redux-wrapper';
-// import configureStore from '../Store/Reducers/configure.Store';
+import { createWrapper } from 'next-redux-wrapper';
+import configureStore from '../Store/Reducers/configure.Store';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Router } from 'next/dist/client/router';
 import NProgress from 'nprogress';
@@ -26,22 +26,20 @@ Router.events.on('routeChangeError', () => {
   NProgress.done();
 });
 
-// const store = configureStore();
+const store = configureStore();
 
 function MyApp({ Component, pageProps }: AppProps) {
   const client = useApollo(pageProps.initialApolloState);
   return (
-    // <Provider store={store}>
-    <ApolloProvider client={client}>
-      <Component {...pageProps} />
-    </ApolloProvider>
-    // </Provider>
+    <Provider store={store}>
+      <ApolloProvider client={client}>
+        <Component {...pageProps} />
+      </ApolloProvider>
+    </Provider>
   );
 }
 
-// const makeStore = () => store;
-// const wrapper = createWrapper(makeStore);
+const makeStore = () => store;
+const wrapper = createWrapper(makeStore);
 
-// export default wrapper.withRedux(MyApp);
-
-export default MyApp;
+export default wrapper.withRedux(MyApp);

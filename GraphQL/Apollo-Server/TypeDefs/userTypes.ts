@@ -17,6 +17,9 @@ export const UserTypes = gql`
     cartCount: Int
     cartTotalPrice: Float
     createAt: Date
+    address: String
+    creditCard: CreditCard!
+    orders: [Order]
   }
 
   type Cart {
@@ -94,6 +97,57 @@ export const UserTypes = gql`
   type ProfileImageEdit {
     success: Boolean!
     data: User!
+    message: String!
+  }
+
+  type AddressData {
+    success: Boolean!
+    data: User!
+  }
+
+  type CardData {
+    success: Boolean!
+    data: User!
+  }
+
+  type CreditCard {
+    cardExpiry: String
+    cardNumber: String
+    cardCVC: String
+  }
+
+  type Order {
+    quantity: Int
+    product: ID
+    user: ID
+  }
+
+  type OrderData {
+    success: Boolean!
+    data: User!
+  }
+
+  type ProductsSold {
+    success: Boolean!
+    data: [ProductSold]!
+  }
+  type ProductSold {
+    quantity: Int!
+    product: ProductsSoldProduct!
+    user: ProductsSoldUser!
+  }
+
+  type ProductsSoldProduct {
+    name: String!
+    imageUrl: String!
+  }
+
+  type ProductsSoldUser {
+    name: String!
+    address: String!
+  }
+
+  type Message {
     message: String!
   }
 `;

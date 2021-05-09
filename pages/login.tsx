@@ -12,7 +12,7 @@ function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const [login, { error, data }] = useMutation(LOGIN_MUTATION);
+  const [login, { data }] = useMutation(LOGIN_MUTATION);
 
   return (
     <React.Fragment>
@@ -28,7 +28,6 @@ function Login() {
         setPassword={setPassword}
         login={login}
         data={data}
-        error={error}
       />
     </React.Fragment>
   );

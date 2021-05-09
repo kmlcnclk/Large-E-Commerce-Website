@@ -22,7 +22,7 @@ class LoginComponent extends Component {
         },
       });
     } catch (err) {
-      notifyError(this.props.error.message);
+      notifyError(err.message);
     }
 
     if (this.props.data) {

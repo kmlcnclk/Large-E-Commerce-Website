@@ -13,6 +13,9 @@ export const LIKE_PRODUCT = gql`
         slug
         likes
         likeCount
+        user {
+          _id
+        }
       }
     }
   }
@@ -31,6 +34,9 @@ export const UNDO_LIKE_PRODUCT = gql`
         slug
         likes
         likeCount
+        user {
+          _id
+        }
       }
     }
   }

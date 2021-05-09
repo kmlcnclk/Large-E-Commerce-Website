@@ -1,0 +1,5 @@
+export const ERROR_STATE = 'ERROR_STATE';
+export const SUCCESS_STATE = 'SUCCESS_STATE';
+
+export const ERROR_MESSAGE = 'ERROR_MESSAGE';
+export const SUCCESS_MESSAGE = 'SUCCESS_MESSAGE';
