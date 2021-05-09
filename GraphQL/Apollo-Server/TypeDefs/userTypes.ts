@@ -20,6 +20,7 @@ export const UserTypes = gql`
     address: String
     creditCard: CreditCard!
     orders: [Order]
+    myOrders: [MyOrders]
   }
 
   type Cart {
@@ -149,5 +150,25 @@ export const UserTypes = gql`
 
   type Message {
     message: String!
+  }
+
+  type MyOrders {
+    quantity: Int
+    product: ID
+  }
+  type MyOrdersData {
+    quantity: Int
+    product: MyOrdersProduct
+  }
+
+  type MyOrdersProduct {
+    name: String
+    imageUrl: String
+    price: Float
+  }
+
+  type GetMyOrders {
+    success: Boolean
+    data: [MyOrdersData]!
   }
 `;

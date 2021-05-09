@@ -300,6 +300,15 @@ class NavbarComponent extends React.Component {
                             Products Sold
                           </a>
                         </Link>
+                        <hr className="bg-dark-gray"></hr>
+                        <Link href="/myOrders">
+                          <a
+                            className="dropdown-item bg-light text-dark mb-3"
+                            style={{ fontSize: '0.8rem' }}
+                          >
+                            My Orders
+                          </a>
+                        </Link>
                       </Dropdown.Menu>
                     </Dropdown>
                   </div>
@@ -470,6 +479,14 @@ class NavbarComponent extends React.Component {
                     onClick={this.stateMenu2}
                   >
                     Products Sold
+                  </div>
+                </Link>
+                <Link href="/myOrders">
+                  <div
+                    className={`border p-3 ${styles.profile}`}
+                    onClick={this.stateMenu2}
+                  >
+                    My Orders
                   </div>
                 </Link>
               </div>

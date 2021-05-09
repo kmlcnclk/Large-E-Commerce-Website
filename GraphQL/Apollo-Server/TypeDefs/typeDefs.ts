@@ -14,6 +14,7 @@ export const typeDefs = gql`
     profile(access_token: String!): Profile!
     cloudinaryProfileImage: Cloudinary!
     productsSold(access_token: String!): ProductsSold!
+    getMyOrders(access_token: String!): GetMyOrders!
   }
 
   type Mutation {

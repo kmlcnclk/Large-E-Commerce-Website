@@ -19,6 +19,7 @@ import {
   postOrders,
   getProductsSold,
   postProductsSold,
+  getMyOrders,
 } from 'Server/controllers/auth';
 
 export const UserResolvers = {
@@ -54,6 +55,13 @@ export const UserResolvers = {
       await getAccessToRoute(access_token, res);
 
       await getProductsSold(res);
+
+      return res.status(200).results;
+    },
+    async getMyOrders(_, { access_token }, { res }) {
+      await getAccessToRoute(access_token, res);
+
+      await getMyOrders(res);
 
       return res.status(200).results;
     },

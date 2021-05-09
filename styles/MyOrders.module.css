@@ -1,0 +1,13 @@
+.myOrdersCard {
+  width: auto;
+  margin-left: 7rem;
+  margin-right: 7rem;
+  height: auto;
+}
+
+@media screen and (max-width: 991px) {
+  .myOrdersCard {
+    margin-left: 0rem;
+    margin-right: 0rem;
+  }
+}

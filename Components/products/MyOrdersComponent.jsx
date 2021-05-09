@@ -1,47 +1,46 @@
+import { notifyError } from 'Components/toolbox/React-Toastify';
+import { getAccessTokenFromLocal } from 'LocalStorage/accessTokenStorage';
 import React, { Component } from 'react';
-import { getAccessTokenFromLocal } from '../../LocalStorage/accessTokenStorage';
-import styles from '../../styles/Cart.module.css';
-import styles1 from '../../styles/ProductsSold.module.css';
-import { notifyError, notifySuccess } from '../toolbox/React-Toastify';
+import styles1 from 'styles/ProductsSold.module.css';
+import styles from 'styles/Cart.module.css';
+import styles2 from 'styles/MyOrders.module.css';
 
-export default class ProductsSoldComponent extends Component {
-  shipTheProduct = async (index) => {
+export default class MyOrdersComponent extends Component {
+  componentDidMount = async () => {
     try {
-      await this.props.postProductsSold({
+      await this.props.getMyOrders({
         variables: {
           access_token: await getAccessTokenFromLocal()[0],
-          index: index,
         },
       });
     } catch (err) {
       notifyError(err.message);
     }
-
-    if (this.props.postProductsSoldData) {
-      notifySuccess(this.props.postProductsSoldData.postProductsSold.message);
-
-      setTimeout(() => {
-        this.props.router.reload();
-      }, 2400);
-    }
   };
-
   render() {
     return (
       <div>
         {this.props.data ? (
           <div>
-            {this.props.data.productsSold.data[0] ? (
-              <div style={{ borderRadius: '1rem', marginTop: '1rem' }}>
-                {this.props.data.productsSold.data.map((products, index) => (
+            {this.props.data.getMyOrders.data[0] ? (
+              <div
+                style={{
+                  borderRadius: '1rem',
+                  marginTop: '1rem',
+                }}
+              >
+                {this.props.data.getMyOrders.data.map((products, index) => (
                   <div
-                    className={`card mb-2 ${styles.cartCard}`}
+                    className={`card mb-2 ${styles2.myOrdersCard}`}
                     key={index}
-                    style={{ backgroundColor: '#f2f2f2', borderRadius: '1rem' }}
+                    style={{
+                      backgroundColor: '#f2f2f2',
+                      borderRadius: '1rem',
+                    }}
                   >
                     <div className="row no-gutters">
                       <div
-                        className="col-md-4"
+                        className="col-md-6"
                         style={{
                           justifyContent: 'center',
                           display: 'flex',
@@ -54,7 +53,7 @@ export default class ProductsSoldComponent extends Component {
                         />
                       </div>
 
-                      <div className="col-md-4" style={{ padding: '1rem' }}>
+                      <div className="col-md-6" style={{ padding: '1rem' }}>
                         <div className="card-body">
                           <h4 className="card-title">
                             <strong>{products.product.name}</strong>
@@ -75,23 +74,10 @@ export default class ProductsSoldComponent extends Component {
                             }}
                           >
                             <div>
-                              <strong> Orderer's name: </strong>
-                              {products.user.name}
-                            </div>
-                            <div>
-                              <strong>Orderer's address: </strong>
-                              {products.user.address}
+                              <strong>Price: </strong>${products.product.price}
                             </div>
                           </div>
                         </div>
-                      </div>
-                      <div className="col-md-4 text-center">
-                        <button
-                          className={`btn btn-danger ${styles1.btn}`}
-                          onClick={() => this.shipTheProduct(index)}
-                        >
-                          Ship the product
-                        </button>
                       </div>
                     </div>
                   </div>
@@ -99,7 +85,7 @@ export default class ProductsSoldComponent extends Component {
               </div>
             ) : (
               <div className={styles1.notProduct}>
-                You don't have any products sold yet
+                You don't have any orders yet
               </div>
             )}
           </div>

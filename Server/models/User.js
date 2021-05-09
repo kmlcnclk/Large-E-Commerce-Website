@@ -89,6 +89,12 @@ const UserSchema = new Schema({
       user: { type: mongoose.Schema.ObjectId, ref: 'User' },
     },
   ],
+  myOrders: [
+    {
+      product: { type: mongoose.Schema.ObjectId, ref: 'Product' },
+      quantity: { type: Number },
+    },
+  ],
 });
 
 // Get Reset Password Token From User

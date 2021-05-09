@@ -99,3 +99,18 @@ export const PRODUCTS_SOLD = gql`
     }
   }
 `;
+export const GET_MY_ORDERS = gql`
+  query getMyOrders($access_token: String!) {
+    getMyOrders(access_token: $access_token) {
+      success
+      data {
+        quantity
+        product {
+          name
+          price
+          imageUrl
+        }
+      }
+    }
+  }
+`;

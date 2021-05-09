@@ -541,6 +541,17 @@ const postOrders = asyncHandler(async (product, quantity, res) => {
 
   await user.save();
 
+  const myOrder = await {
+    product: product,
+    quantity: quantity,
+  };
+
+  const user3 = await User.findById(id);
+
+  await user3.myOrders.push(myOrder);
+
+  await user3.save();
+
   const user2 = await User.findById(id)
     .populate({
       path: 'products',
@@ -580,7 +591,7 @@ const getProductsSold = asyncHandler(async (res) => {
 
   res.results = {
     success: true,
-    data: orders,
+    data: orders.reverse(),
   };
 });
 
@@ -598,6 +609,33 @@ const postProductsSold = asyncHandler(async (index, res) => {
 
   res.results = {
     message: 'The product has been sent',
+  };
+});
+
+const getMyOrders = asyncHandler(async (res) => {
+  const { id } = res.user;
+
+  const user = await User.findById(id);
+
+  var myOrders = [];
+
+  for (let i = 0; i < user.myOrders.length; i++) {
+    const product = await Product.findById(user.myOrders[i].product);
+
+    const myOrder = {
+      quantity: user.myOrders[i].quantity,
+      product: {
+        name: product.name,
+        imageUrl: product.imageUrl[0],
+        price: product.price,
+      },
+    };
+    myOrders.push(myOrder);
+  }
+
+  res.results = {
+    success: true,
+    data: myOrders.reverse(),
   };
 });
 
@@ -619,4 +657,5 @@ module.exports = {
   postOrders,
   getProductsSold,
   postProductsSold,
+  getMyOrders,
 };
