@@ -27,7 +27,7 @@ const productSortHelper = (query, req) => {
 // Pagination Helper
 const paginationHelper = asyncHandler(async (totalDocuments, query, req) => {
   const page = parseInt(req.query.page) || 1;
-  const limit = parseInt(req.query.limit) || 5;
+  const limit = parseInt(req.query.limit) || 20;
 
   if (page === 0) {
     page = 1;
