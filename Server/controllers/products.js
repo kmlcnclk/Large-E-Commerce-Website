@@ -52,6 +52,17 @@ const likeProduct = asyncHandler(async (_id, res) => {
 
   await product.save();
 
+  const user = await User.findById(id);
+
+  if (user.likes.includes(_id)) {
+    throw new ApolloError('You already like this product', 400);
+  }
+
+  user.likes.push(_id);
+  user.likeCount = user.likes.length;
+
+  await user.save();
+
   res.results = {
     code: 200,
     message: 'You like the product',
@@ -75,6 +86,18 @@ const undoLikeProduct = asyncHandler(async (_id, res) => {
   product.likeCount = product.likes.length;
 
   await product.save();
+
+  const user = await User.findById(id);
+
+  if (!user.likes.includes(_id)) {
+    throw new ApolloError("You don't like this product yet", 400);
+  }
+
+  const indexUser = await user.likes.indexOf(_id);
+  await user.likes.splice(indexUser, 1);
+  user.likeCount = user.likes.length;
+
+  await user.save();
 
   res.results = {
     code: 200,

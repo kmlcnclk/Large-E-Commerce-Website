@@ -1,42 +1,43 @@
 import { useLazyQuery } from '@apollo/client';
 import Layout from 'Components/Layout';
+import { GET_MY_LIKES_PRODUCT } from 'GraphQL/Apollo-Client/Queries/userQuerys';
 import { getAccessTokenFromLocal } from 'LocalStorage/accessTokenStorage';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
-import { GET_MY_ORDERS } from '../GraphQL/Apollo-Client/Queries/userQuerys';
-import MyOrdersComponent from 'Components/products/MyOrdersComponent';
 import { initializeApollo } from 'src/apollo';
+import MyLikesComponent from 'Components/products/MyLikesComponent';
 
-function MyOrders() {
+function MyLikes() {
   const router = useRouter();
 
-  const [orderState, setOrderState] = useState(false);
+  const [getMyLikesProduct, { data }] = useLazyQuery(GET_MY_LIKES_PRODUCT);
 
-  const [getMyOrders, { data }] = useLazyQuery(GET_MY_ORDERS);
+  const [likeProduct, setLikeProduct] = useState(false);
 
   useEffect(() => {
     router.prefetch('/');
 
     if (getAccessTokenFromLocal()[0]) {
-      setOrderState(true);
+      setLikeProduct(true);
     } else {
       router.push('/');
     }
-  }, [setOrderState]);
+  }, [router, setLikeProduct]);
+
   return (
     <Layout>
       <Head>
-        <title>My Orders</title>
+        <title>My Likes</title>
       </Head>
-      {orderState ? (
-        <MyOrdersComponent getMyOrders={getMyOrders} data={data} />
+      {likeProduct ? (
+        <MyLikesComponent getMyLikesProduct={getMyLikesProduct} data={data} />
       ) : null}
     </Layout>
   );
 }
 
-export default MyOrders;
+export default MyLikes;
 
 export const getStaticProps = async ({ params }) => {
   const apolloClient = initializeApollo();
@@ -45,7 +46,7 @@ export const getStaticProps = async ({ params }) => {
 
   await connectDatabase();
   await apolloClient.readQuery({
-    query: GET_MY_ORDERS,
+    query: GET_MY_LIKES_PRODUCT,
   });
 
   return {

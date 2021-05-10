@@ -95,6 +95,16 @@ const UserSchema = new Schema({
       quantity: { type: Number },
     },
   ],
+  likes: [
+    {
+      type: mongoose.Schema.ObjectId,
+      ref: 'Product',
+    },
+  ],
+  likeCount: {
+    type: Number,
+    default: 0,
+  },
 });
 
 // Get Reset Password Token From User

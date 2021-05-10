@@ -21,6 +21,8 @@ export const UserTypes = gql`
     creditCard: CreditCard!
     orders: [Order]
     myOrders: [MyOrders]
+    likes: [ID]
+    likeCount: Int
   }
 
   type Cart {
@@ -170,5 +172,20 @@ export const UserTypes = gql`
   type GetMyOrders {
     success: Boolean
     data: [MyOrdersData]!
+  }
+
+  type MyLikesProductData {
+    product: MyLikesProduct
+  }
+
+  type MyLikesProduct {
+    name: String
+    imageUrl: String
+    price: Float
+  }
+
+  type GetMyLikesProduct {
+    success: Boolean
+    data: [MyLikesProductData]!
   }
 `;

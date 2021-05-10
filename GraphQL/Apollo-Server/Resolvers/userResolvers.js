@@ -20,6 +20,7 @@ import {
   getProductsSold,
   postProductsSold,
   getMyOrders,
+  getMyLikesProduct,
 } from 'Server/controllers/auth';
 
 export const UserResolvers = {
@@ -62,6 +63,13 @@ export const UserResolvers = {
       await getAccessToRoute(access_token, res);
 
       await getMyOrders(res);
+
+      return res.status(200).results;
+    },
+    async getMyLikesProduct(_, { access_token }, { res }) {
+      await getAccessToRoute(access_token, res);
+
+      await getMyLikesProduct(res);
 
       return res.status(200).results;
     },

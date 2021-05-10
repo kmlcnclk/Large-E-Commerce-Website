@@ -639,6 +639,33 @@ const getMyOrders = asyncHandler(async (res) => {
   };
 });
 
+const getMyLikesProduct = asyncHandler(async (res) => {
+  const { id } = res.user;
+
+  const user = await User.findById(id);
+
+  var myLikes = [];
+
+  for (let i = 0; i < user.likes.length; i++) {
+    const product = await Product.findById(user.likes[i]);
+
+    const myLike = {
+      product: {
+        name: product.name,
+        price: product.price,
+        imageUrl: product.imageUrl[0],
+      },
+    };
+
+    myLikes.push(myLike);
+  }
+
+  res.results = {
+    success: true,
+    data: myLikes.reverse(),
+  };
+});
+
 module.exports = {
   register,
   login,
@@ -658,4 +685,5 @@ module.exports = {
   getProductsSold,
   postProductsSold,
   getMyOrders,
+  getMyLikesProduct,
 };

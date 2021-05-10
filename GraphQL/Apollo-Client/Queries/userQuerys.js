@@ -114,3 +114,17 @@ export const GET_MY_ORDERS = gql`
     }
   }
 `;
+export const GET_MY_LIKES_PRODUCT = gql`
+  query getMyLikesProduct($access_token: String!) {
+    getMyLikesProduct(access_token: $access_token) {
+      success
+      data {
+        product {
+          name
+          imageUrl
+          price
+        }
+      }
+    }
+  }
+`;
