@@ -25,42 +25,44 @@ const productSortHelper = (query, req) => {
 };
 
 // Pagination Helper
-const paginationHelper = asyncHandler(async (totalDocuments, query, req) => {
-  const page = parseInt(req.query.page) || 1;
-  const limit = parseInt(req.query.limit) || 20;
+const paginationHelper = asyncHandler(
+  async (pageIndex, totalDocuments, query, req) => {
+    const page = pageIndex || 1;
+    const limit = parseInt(req.query.limit) || 1;
 
-  if (page === 0) {
-    page = 1;
-  }
+    if (page === 0) {
+      page = 1;
+    }
 
-  const startIndex = (page - 1) * limit;
-  const endIndex = page * limit;
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
 
-  const pagination = {};
-  const total = totalDocuments;
+    const pagination = {};
+    const total = totalDocuments;
 
-  if (startIndex > 0) {
-    pagination.previous = {
-      page: page - 1,
+    if (startIndex > 0) {
+      pagination.previous = {
+        page: page - 1,
+        limit: limit,
+      };
+    }
+
+    if (endIndex < total) {
+      pagination.next = {
+        page: page + 1,
+        limit: limit,
+      };
+    }
+
+    return {
+      query:
+        query === undefined ? undefined : query.skip(startIndex).limit(limit),
+      pagination: pagination,
+      startIndex: startIndex,
       limit: limit,
     };
   }
-
-  if (endIndex < total) {
-    pagination.next = {
-      page: page + 1,
-      limit: limit,
-    };
-  }
-
-  return {
-    query:
-      query === undefined ? undefined : query.skip(startIndex).limit(limit),
-    pagination: pagination,
-    startIndex: startIndex,
-    limit: limit,
-  };
-});
+);
 
 module.exports = {
   searchHelper,

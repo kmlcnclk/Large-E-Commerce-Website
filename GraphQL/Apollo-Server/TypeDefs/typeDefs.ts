@@ -6,8 +6,8 @@ const { UserTypes } = require('./userTypes');
 export const typeDefs = gql`
   type Query {
     getCategories: [Category]
-    currentCategory(slug: String!): CurrentCategoryPagination
-    searchProduct(slug: String!): SearchProductPagination
+    currentCategory(slug: String!, pageIndex: Int!): CurrentCategoryPagination
+    searchProduct(slug: String!, pageIndex: Int!): SearchProductPagination
     getSingleProduct(slug: String!): ProductDetail
     getAllProduct: [Product]
     cart(access_token: String!): UserCart!

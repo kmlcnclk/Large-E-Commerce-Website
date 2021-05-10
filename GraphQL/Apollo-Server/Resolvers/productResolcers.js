@@ -20,8 +20,8 @@ import {
 
 export const ProductResolvers = {
   Query: {
-    async searchProduct(_, { slug }, { req, res }) {
-      await searchProductQueryMiddleware(slug, req, res, Product, {
+    async searchProduct(_, { slug, pageIndex }, { req, res }) {
+      await searchProductQueryMiddleware(pageIndex, slug, req, res, Product, {
         population: [
           {
             path: 'category',

@@ -9,6 +9,7 @@ const Category = require('Server/models/Category');
 
 // Product Query Middleware
 const searchProductQueryMiddleware = asyncHandler(async function (
+  pageIndex,
   slug,
   req,
   res,
@@ -27,8 +28,18 @@ const searchProductQueryMiddleware = asyncHandler(async function (
 
   query = productSortHelper(query, req);
 
-  const total = await model.countDocuments();
-  const paginationResult = await paginationHelper(total, query, req);
+  const a = await model.find();
+
+  var b = [];
+
+  for (let i = 0; i < a.length; i++) {
+    if (a[i].name.toLowerCase().includes(slug.toLowerCase())) {
+      b.push(a[i]);
+    }
+  }
+
+  const total = b.length;
+  const paginationResult = await paginationHelper(pageIndex, total, query, req);
 
   query = paginationResult.query;
   const pagination = paginationResult.pagination;

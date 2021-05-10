@@ -1,4 +1,4 @@
-import { useQuery } from '@apollo/client';
+import { useLazyQuery, useQuery } from '@apollo/client';
 import React, { useEffect, useState } from 'react';
 import { GET_ALL_CATEGORIES } from 'GraphQL/Apollo-Client/Queries/categoryQuerys';
 import { CURRENT_CATEGORY } from 'GraphQL/Apollo-Client/Queries/categoryQuerys';
@@ -10,12 +10,20 @@ import Image from 'next/image';
 import Layout from 'Components/Layout';
 
 function ProductCard({ category }) {
+  const [pageIndex, setPageIndex] = useState(1);
+
   const { data } = useQuery(CURRENT_CATEGORY, {
-    variables: { slug: category },
+    variables: { slug: category, pageIndex: pageIndex },
   });
 
   const [currentCategory, setCurrentCategory] = useState([]);
+
   useEffect(() => {
+    const currentCategories = async () => {
+      // await currentCategoryQuery({});
+    };
+    // currentCategories();
+    
     if (data) {
       setCurrentCategory(data.currentCategory.data);
     }
@@ -72,6 +80,48 @@ function ProductCard({ category }) {
             </div>
           ))}
         </div>
+        {data ? (
+          <div>
+            {data.currentCategory.data[0] ? (
+              <div className={styles.paginationMainDiv}>
+                <ul
+                  className="pagination"
+                  style={{ justifyContent: 'space-around' }}
+                >
+                  <li
+                    className={`page-item ${
+                      data.currentCategory.pagination.previous ? '' : 'disabled'
+                    }`}
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => {
+                      data.currentCategory.pagination.previous
+                        ? setPageIndex(pageIndex - 1)
+                        : null;
+                    }}
+                  >
+                    <div className={`page-link ${styles.previousBtn}`}>
+                      Previous
+                    </div>
+                  </li>
+
+                  <li
+                    className={`page-item ${
+                      data.currentCategory.pagination.next ? '' : 'disabled'
+                    }`}
+                    style={{ cursor: 'pointer', color: 'black' }}
+                    onClick={() => {
+                      data.currentCategory.pagination.next
+                        ? setPageIndex(pageIndex + 1)
+                        : null;
+                    }}
+                  >
+                    <div className={`page-link ${styles.nextBtn}`}>Next</div>
+                  </li>
+                </ul>
+              </div>
+            ) : null}
+          </div>
+        ) : null}
       </div>
     </Layout>
   );

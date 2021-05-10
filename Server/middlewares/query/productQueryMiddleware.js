@@ -13,7 +13,8 @@ const productQueryMiddleware = asyncHandler(async function (
   req,
   model,
   options,
-  slug
+  slug,
+  pageIndex
 ) {
   let query;
   if (slug) {
@@ -32,7 +33,7 @@ const productQueryMiddleware = asyncHandler(async function (
   query = productSortHelper(query, req);
 
   const total = await model.countDocuments();
-  const paginationResult = await paginationHelper(total, query, req);
+  const paginationResult = await paginationHelper(pageIndex, total, query, req);
 
   query = paginationResult.query;
   const pagination = paginationResult.pagination;

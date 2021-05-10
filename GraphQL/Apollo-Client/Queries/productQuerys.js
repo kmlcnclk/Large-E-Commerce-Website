@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const SEARCH_PRODUCT = gql`
-  query searchProduct($slug: String!) {
-    searchProduct(slug: $slug) {
+  query searchProduct($slug: String!, $pageIndex: Int!) {
+    searchProduct(slug: $slug, pageIndex: $pageIndex) {
       success
       count
       pagination {

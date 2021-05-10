@@ -9,7 +9,7 @@ export const CategoryResolvers = {
     async getCategories() {
       return await Category.find();
     },
-    async currentCategory(_, { slug }, { req, res }) {
+    async currentCategory(_, { slug, pageIndex }, { req, res }) {
       await checkCategoryExist(slug, req, res);
 
       await productQueryMiddleware(
@@ -28,7 +28,8 @@ export const CategoryResolvers = {
             },
           ],
         },
-        slug
+        slug,
+        pageIndex
       );
       return res.queryResults;
     },

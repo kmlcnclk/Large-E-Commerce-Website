@@ -12,8 +12,8 @@ export const GET_ALL_CATEGORIES = gql`
 `;
 
 export const CURRENT_CATEGORY = gql`
-  query CurrentCategory($slug: String!) {
-    currentCategory(slug: $slug) {
+  query CurrentCategory($slug: String!, $pageIndex: Int!) {
+    currentCategory(slug: $slug, pageIndex: $pageIndex) {
       success
       count
       pagination {
