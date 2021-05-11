@@ -55,6 +55,10 @@ export const LOGIN_MUTATION = gql`
           quantity
           product {
             name
+            imageUrl
+            _id
+            content
+            price
           }
         }
       }
