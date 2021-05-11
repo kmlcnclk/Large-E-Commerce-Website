@@ -26,7 +26,7 @@ const searchProductQueryMiddleware = asyncHandler(async function (
     query = populateHelper(query, options.population);
   }
 
-  query = productSortHelper(query, req);
+  query = productSortHelper(query, '');
 
   const a = await model.find();
 
@@ -39,7 +39,7 @@ const searchProductQueryMiddleware = asyncHandler(async function (
   }
 
   const total = b.length;
-  const paginationResult = await paginationHelper(pageIndex, total, query, req);
+  const paginationResult = await paginationHelper(pageIndex, total, query);
 
   query = paginationResult.query;
   const pagination = paginationResult.pagination;

@@ -10,7 +10,7 @@ const Category = require('Server/models/Category');
 // Product Query Middleware
 const productQueryMiddleware = asyncHandler(async function (
   res,
-  req,
+  sortBy,
   model,
   options,
   slug,
@@ -30,10 +30,10 @@ const productQueryMiddleware = asyncHandler(async function (
     query = populateHelper(query, options.population);
   }
 
-  query = productSortHelper(query, req);
+  query = productSortHelper(query, sortBy);
 
   const total = await model.countDocuments();
-  const paginationResult = await paginationHelper(pageIndex, total, query, req);
+  const paginationResult = await paginationHelper(pageIndex, total, query);
 
   query = paginationResult.query;
   const pagination = paginationResult.pagination;

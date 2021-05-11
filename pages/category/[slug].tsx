@@ -5,29 +5,41 @@ import { CURRENT_CATEGORY } from 'GraphQL/Apollo-Client/Queries/categoryQuerys';
 import { initializeApollo } from 'src/apollo';
 import Head from 'next/head';
 import styles from '../../styles/ProductCard.module.css';
+import styles1 from '../../styles/Filter.module.css';
 import Link from 'next/link';
 import Image from 'next/image';
 import Layout from 'Components/Layout';
+import { Form } from 'react-bootstrap';
 
 function ProductCard({ category }) {
   const [pageIndex, setPageIndex] = useState(1);
+  const [sortBy, setSortBy] = useState('');
 
   const { data } = useQuery(CURRENT_CATEGORY, {
-    variables: { slug: category, pageIndex: pageIndex },
+    variables: { slug: category, pageIndex: pageIndex, sortBy: sortBy },
   });
 
   const [currentCategory, setCurrentCategory] = useState([]);
+  const [selectedFilter, setSelectedFilter] = useState([]);
+  const [filterState, setFilterState] = useState(false);
 
   useEffect(() => {
-    const currentCategories = async () => {
-      // await currentCategoryQuery({});
-    };
-    // currentCategories();
-    
     if (data) {
       setCurrentCategory(data.currentCategory.data);
     }
   }, [data]);
+
+  const addSelectedFilter = (filter) => {
+    if (filter === 'reset') {
+      setSelectedFilter([]);
+    } else {
+      let totalFilter = [];
+
+      totalFilter.push(filter);
+
+      setSelectedFilter(totalFilter);
+    }
+  };
 
   return (
     <Layout>
@@ -36,6 +48,102 @@ function ProductCard({ category }) {
       </Head>
       <div className={styles.productMainCard}>
         <div className={`${styles.productCard}`}>
+          {currentCategory[0] ? (
+            <div style={{ textAlign: 'center' }}>
+              <div
+                className={`border ${styles1.filterChild1Div}`}
+                style={{
+                  backgroundColor: filterState ? '#fc433d' : '#f2f2f2',
+                  color: filterState ? 'white' : 'black',
+                }}
+                onClick={() => setFilterState(!filterState)}
+              >
+                Filter
+              </div>
+              <div className="text-center">
+                {filterState ? (
+                  <div
+                    className={`row border ${styles1.filterChild2Div}`}
+                    style={{
+                      backgroundColor: filterState ? '#fc433d' : '#f2f2f2',
+                      color: filterState ? 'white' : 'black',
+                    }}
+                  >
+                    <div
+                      className="col-md-6"
+                      style={{ marginBottom: '0.5rem' }}
+                    >
+                      <div
+                        className={styles1.filterChild2DivChild}
+                        onClick={() => {
+                          addSelectedFilter('reset');
+                          setSortBy('');
+                        }}
+                      >
+                        Reset
+                      </div>
+                      <div
+                        className={styles1.filterChild2DivChild}
+                        onClick={() => {
+                          addSelectedFilter('Increased Liking');
+                          setSortBy('increased-liking');
+                        }}
+                      >
+                        Increased Liking
+                      </div>
+                      <div
+                        className={styles1.filterChild2DivChild}
+                        onClick={() => {
+                          addSelectedFilter('Descending Liking');
+                          setSortBy('descending-liking');
+                        }}
+                      >
+                        Descending Liking
+                      </div>
+                      <div
+                        className={styles1.filterChild2DivChild}
+                        onClick={() => {
+                          addSelectedFilter('Increasing Price');
+                          setSortBy('increasing-price');
+                        }}
+                      >
+                        Increasing Price
+                      </div>
+                      <div
+                        className={styles1.filterChild2DivChild}
+                        onClick={() => {
+                          addSelectedFilter('Descending Price');
+                          setSortBy('descending-price');
+                        }}
+                      >
+                        Descending Price
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      {selectedFilter[0] ? (
+                        <div>
+                          {selectedFilter.map((selectFilter, index) => (
+                            <div
+                              key={index}
+                              style={{
+                                padding: '0.5rem',
+                                backgroundColor: 'white',
+                                borderRadius: '1rem',
+                                color: 'black',
+                              }}
+                            >
+                              <div>{selectFilter}</div>
+                            </div>
+                          ))}
+                        </div>
+                      ) : null}
+                    </div>
+                  </div>
+                ) : null}
+              </div>
+            </div>
+          ) : null}
+
           {currentCategory.map((product) => (
             <div
               className={'card ' + styles.card}

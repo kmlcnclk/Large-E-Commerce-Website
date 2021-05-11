@@ -15,20 +15,25 @@ const populateHelper = (query, population) => {
 };
 
 // Product Sort Helper
-const productSortHelper = (query, req) => {
-  const sortKey = req.query.sortBy;
-
-  if (sortKey === 'most-liked') {
+const productSortHelper = (query, sortBy) => {
+  if (sortBy === 'increased-liking') {
+    return query.sort('likeCount -createAt');
+  } else if (sortBy === 'descending-liking') {
     return query.sort('-likeCount -createAt');
+  } else if (sortBy === 'increasing-price') {
+    return query.sort('price -createAt');
+  } else if (sortBy === 'descending-price') {
+    return query.sort('-price -createAt');
+  } else {
+    return query.sort('-createAt');
   }
-  return query.sort('-createAt');
 };
 
 // Pagination Helper
 const paginationHelper = asyncHandler(
-  async (pageIndex, totalDocuments, query, req) => {
+  async (pageIndex, totalDocuments, query) => {
     const page = pageIndex || 1;
-    const limit = parseInt(req.query.limit) || 20;
+    const limit = 20;
 
     if (page === 0) {
       page = 1;
