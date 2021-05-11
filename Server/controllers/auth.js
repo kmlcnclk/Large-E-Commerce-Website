@@ -602,7 +602,7 @@ const postProductsSold = asyncHandler(async (index, res) => {
 
   for (let i = 0; i < user.orders.length; i++) {
     if (i === index) {
-      user.orders[i].remove();
+      user.orders.reverse()[i].remove();
     }
   }
   await user.save();

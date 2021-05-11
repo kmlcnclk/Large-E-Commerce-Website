@@ -7,13 +7,6 @@ export const CART = gql`
       data {
         name
         cartCount
-        creditCard {
-          cardNumber
-          cardExpiry
-          cardCVC
-        }
-        address
-        email
         cartTotalPrice
         cart {
           quantity
@@ -47,12 +40,6 @@ export const PROFILE = gql`
         productCount
         name
         email
-        creditCard {
-          cardNumber
-          cardExpiry
-          cardCVC
-        }
-        address
         cartCount
         profile_image
         cartTotalPrice

@@ -44,12 +44,6 @@ export const LOGIN_MUTATION = gql`
         name
         email
         profile_image
-        creditCard {
-          cardNumber
-          cardExpiry
-          cardCVC
-        }
-        address
         _id
         cart {
           quantity
@@ -86,12 +80,6 @@ export const ADD_TO_CART = gql`
         _id
         cartTotalPrice
         cartCount
-        creditCard {
-          cardNumber
-          cardExpiry
-          cardCVC
-        }
-        address
         email
         profile_image
         cart {
@@ -117,12 +105,6 @@ export const REMOVE_FROM_CART = gql`
         _id
         name
         cartTotalPrice
-        creditCard {
-          cardNumber
-          cardExpiry
-          cardCVC
-        }
-        address
         cartCount
         email
         profile_image
@@ -150,12 +132,6 @@ export const FULL_REMOVE_FROM_CART = gql`
         name
         cartTotalPrice
         email
-        creditCard {
-          cardNumber
-          cardExpiry
-          cardCVC
-        }
-        address
         profile_image
         cartCount
         cart {
@@ -212,12 +188,6 @@ export const PROFILE_EDIT = gql`
         _id
         name
         cartTotalPrice
-        creditCard {
-          cardNumber
-          cardExpiry
-          cardCVC
-        }
-        address
         cartCount
         email
         profile_image
@@ -248,12 +218,6 @@ export const PROFILE_IMAGE_EDIT = gql`
         _id
         name
         cartTotalPrice
-        creditCard {
-          cardNumber
-          cardExpiry
-          cardCVC
-        }
-        address
         cartCount
         email
         profile_image
@@ -282,12 +246,6 @@ export const ADDRESS = gql`
         cartTotalPrice
         cartCount
         email
-        creditCard {
-          cardNumber
-          cardExpiry
-          cardCVC
-        }
-        address
         profile_image
         cart {
           quantity
@@ -323,12 +281,6 @@ export const CREDITCARD = gql`
         cartTotalPrice
         cartCount
         email
-        creditCard {
-          cardNumber
-          cardExpiry
-          cardCVC
-        }
-        address
         profile_image
         cart {
           quantity
@@ -358,12 +310,6 @@ export const ORDERS = gql`
         cartTotalPrice
         cartCount
         email
-        creditCard {
-          cardNumber
-          cardExpiry
-          cardCVC
-        }
-        address
         profile_image
         cart {
           quantity
