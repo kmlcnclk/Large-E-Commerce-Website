@@ -2,14 +2,22 @@ import { useMutation, useQuery } from '@apollo/client';
 import { PRODUCT_ADD } from 'GraphQL/Apollo-Client/Mutations/productMutations';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import ProductAddComponent from 'Components/shop/ProductAddComponent';
 import { initializeApollo } from 'src/apollo';
 import { GET_ALL_CATEGORIES } from 'GraphQL/Apollo-Client/Queries/categoryQuerys';
-import { getUserFromLocal } from 'LocalStorage/userStorage';
+import { useToast } from '@chakra-ui/toast';
+import { useColorModeValue } from '@chakra-ui/color-mode';
+import { getAccessTokenFromLocal } from 'LocalStorage/accessTokenStorage';
 
 function ProductAdd() {
   const router = useRouter();
+
+  const toast = useToast();
+
+  const fileImages = useRef(null);
+
+  const formBgMode = useColorModeValue('gray.100', 'gray.700');
 
   const [productAdd, { data }] = useMutation(PRODUCT_ADD);
   const { data: categoryData } = useQuery(GET_ALL_CATEGORIES);
@@ -19,7 +27,7 @@ function ProductAdd() {
   useEffect(() => {
     router.prefetch('/');
 
-    if (getUserFromLocal()[0]) {
+    if (getAccessTokenFromLocal()[0]) {
       setUserState(true);
     } else {
       router.push('/');
@@ -29,7 +37,7 @@ function ProductAdd() {
   return (
     <div>
       <Head>
-        <title>Product Add</title>
+        <title>Large &bull; Product Add</title>
       </Head>
       {userState && categoryData ? (
         <ProductAddComponent
@@ -37,6 +45,9 @@ function ProductAdd() {
           categoryData={categoryData}
           productAdd={productAdd}
           data={data}
+          toast={toast}
+          fileImages={fileImages}
+          formBgMode={formBgMode}
         />
       ) : null}
     </div>

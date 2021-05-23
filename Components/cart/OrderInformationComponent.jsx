@@ -1,20 +1,26 @@
-import { notifyError, notifySuccess } from 'Components/toolbox/React-Toastify';
+import { Button } from '@chakra-ui/button';
+import { Heading } from '@chakra-ui/layout';
+import { Flex } from '@chakra-ui/layout';
+import { Textarea } from '@chakra-ui/textarea';
 import { getAccessTokenFromLocal } from 'LocalStorage/accessTokenStorage';
-import {
-  addUserToLocal,
-  deleteUserFromLocal,
-  getUserFromLocal,
-} from 'LocalStorage/userStorage';
 import React, { Component } from 'react';
-import { Form } from 'react-bootstrap';
 import CreditCardInput from 'react-credit-card-input';
 import styles from 'styles/OrderInformation.module.css';
+import Cards from 'react-credit-cards';
+import { Input } from '@chakra-ui/input';
 
 export default class OrderInformationComponent extends Component {
+  state = {
+    cvc: '',
+    expiry: '',
+    focus: '',
+    name: '',
+    number: '',
+  };
   formSubmit = async (e) => {
     e.preventDefault();
 
-    const cart = getUserFromLocal()[0].cart;
+    const cart = this.props.getSingleUserData.getSingleUser.data.cart;
 
     try {
       await this.props.userAddress({
@@ -24,7 +30,12 @@ export default class OrderInformationComponent extends Component {
         },
       });
     } catch (err) {
-      notifyError(err.message);
+      this.props.toast({
+        title: err.message,
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
     }
     try {
       await this.props.creditCard({
@@ -36,7 +47,12 @@ export default class OrderInformationComponent extends Component {
         },
       });
     } catch (err) {
-      notifyError(err.message);
+      this.props.toast({
+        title: err.message,
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
     }
 
     for (let i = 0; i < cart.length; i++) {
@@ -49,7 +65,12 @@ export default class OrderInformationComponent extends Component {
           },
         });
       } catch (err) {
-        notifyError(err.message);
+        this.props.toast({
+          title: err.message,
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+        });
         break;
       }
     }
@@ -59,40 +80,72 @@ export default class OrderInformationComponent extends Component {
       this.props.userAddressData &&
       this.props.creditCardData
     ) {
-      await deleteUserFromLocal();
-      notifySuccess('Your information has been successfully saved');
-      await addUserToLocal(this.props.ordersData.postOrder.data);
+      this.props.toast({
+        title:
+          'Your information has been successfully saved and your order has been received',
+        status: 'success',
+        duration: 2000,
+        isClosable: true,
+      });
     }
   };
 
+  handleInputFocus = (e) => {
+    this.setState({ focus: e.target.name });
+  };
   render() {
+    const { formBgMode, cardExpiry, cardNumber, cardCVC, nameOnTheCard } =
+      this.props;
     return (
-      <div
-        className="container"
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          marginTop: '1rem',
-        }}
-      >
-        <div className={`border ${styles.mainDiv}`}>
-          <Form onSubmit={this.formSubmit}>
-            <Form.Group>
-              <Form.Label>
-                <strong>Address</strong>
-              </Form.Label>
-              <Form.Control
-                as="textarea"
-                rows={5}
-                required
-                onChange={(e) => this.props.setAddress(e.target.value)}
-                style={{ backgroundColor: '#f2f2f2' }}
+      <Flex className={styles.flexDiv} align="center" justify="center">
+        <Flex
+          rounded={6}
+          as="form"
+          bg={formBgMode}
+          className={styles.mainFlex}
+          onSubmit={this.formSubmit}
+        >
+          <Flex m={3} direction="column">
+            <Heading mb={6} textAlign="center">
+              Order Info
+            </Heading>
+            <Textarea
+              mb={3}
+              placeholder="Your address"
+              resize="both"
+              variant="filled"
+              size="md"
+              isRequired
+              onChange={(e) => this.props.setAddress(e.target.value)}
+              name="content"
+            />
+            <Flex justify="center" align="center" direction="column" mb={6}>
+              <Heading
+                mb={6}
+                text
+                textAlign="center"
+                fontWeight="semibold"
+                size="sm"
+              >
+                Card Information
+              </Heading>
+
+              <Heading mb={3} size="sm">
+                Name on the card
+              </Heading>
+              <Input
+                type="text"
+                variant="filled"
+                placeholder="Iphone 10"
+                mb={3}
+                isRequired
+                onChange={(e) => {
+                  this.props.setNameOnTheCard(e.target.value);
+                }}
+                onFocus={this.handleInputFocus}
+                name="name"
               />
-            </Form.Group>
-            <div className="m-3">
-              <div className="mb-2">
-                <strong>Card Information</strong>
-              </div>
+
               <CreditCardInput
                 cardNumberInputRenderer={({
                   handleCardNumberChange,
@@ -104,6 +157,8 @@ export default class OrderInformationComponent extends Component {
                     onChange={handleCardNumberChange((e) => {
                       this.props.setCardNumber(e.target.value);
                     })}
+                    onFocus={this.handleInputFocus}
+                    name="number"
                   />
                 )}
                 cardExpiryInputRenderer={({
@@ -116,6 +171,8 @@ export default class OrderInformationComponent extends Component {
                     onChange={handleCardExpiryChange((e) => {
                       this.props.setCardExpiry(e.target.value);
                     })}
+                    onFocus={this.handleInputFocus}
+                    name="expiry"
                   />
                 )}
                 cardCVCInputRenderer={({ handleCardCVCChange, props }) => (
@@ -125,17 +182,31 @@ export default class OrderInformationComponent extends Component {
                     onChange={handleCardCVCChange((e) => {
                       this.props.setCardCVC(e.target.value);
                     })}
+                    onFocus={this.handleInputFocus}
+                    name="cvc"
                   />
                 )}
                 fieldClassName="input"
               />
-            </div>
-            <button type="submit" className="btn btn-danger btn-block">
+
+              <Flex justify="center" align="center" mt={3}></Flex>
+            </Flex>
+          </Flex>
+          <Flex m={3} direction="column">
+            <Cards
+              cvc={cardCVC}
+              expiry={cardExpiry}
+              focused={this.state.focus}
+              name={nameOnTheCard}
+              number={cardNumber}
+            />
+
+            <Button mt={7} type="submit" colorScheme="teal">
               Complete Order
-            </button>
-          </Form>
-        </div>
-      </div>
+            </Button>
+          </Flex>
+        </Flex>
+      </Flex>
     );
   }
 }

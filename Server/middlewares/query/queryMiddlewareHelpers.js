@@ -33,7 +33,7 @@ const productSortHelper = (query, sortBy) => {
 const paginationHelper = asyncHandler(
   async (pageIndex, totalDocuments, query) => {
     const page = pageIndex || 1;
-    const limit = 20;
+    const limit = 21;
 
     if (page === 0) {
       page = 1;

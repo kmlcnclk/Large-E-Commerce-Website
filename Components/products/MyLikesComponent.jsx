@@ -1,91 +1,36 @@
-import { notifyError } from 'Components/toolbox/React-Toastify';
-import { getAccessTokenFromLocal } from 'LocalStorage/accessTokenStorage';
 import React, { Component } from 'react';
-import styles1 from 'styles/ProductsSold.module.css';
-import styles from 'styles/Cart.module.css';
-import styles2 from 'styles/MyOrders.module.css';
+import { Flex, Heading, SimpleGrid } from '@chakra-ui/layout';
+import CustomCard from '../toolbox/CustomCard';
 
 export default class MyLikesComponent extends Component {
-  componentDidMount = async () => {
-    try {
-      await this.props.getMyLikesProduct({
-        variables: {
-          access_token: await getAccessTokenFromLocal()[0],
-        },
-      });
-    } catch (err) {
-      notifyError(err.message);
-    }
-  };
-
   render() {
+    const { priceColor } = this.props;
     return (
-      <div>
+      <Flex justify="center" mt={3} mb={3} align="center">
         {this.props.data ? (
-          <div>
+          <Flex justify="center" align="center">
             {this.props.data.getMyLikesProduct.data[0] ? (
-              <div
-                style={{
-                  borderRadius: '1rem',
-                  marginTop: '1rem',
-                }}
-              >
+              <SimpleGrid columns={{ sm: 1, md: 2, lg: 3 }}>
                 {this.props.data.getMyLikesProduct.data.map(
-                  (products, index) => (
-                    <div
-                      className={`card mb-2 ${styles2.myOrdersCard}`}
+                  (product, index) => (
+                    <CustomCard
+                      product={product}
+                      priceColor={priceColor}
                       key={index}
-                      style={{
-                        backgroundColor: '#f2f2f2',
-                        borderRadius: '1rem',
-                      }}
-                    >
-                      <div className="row no-gutters">
-                        <div
-                          className="col-md-6"
-                          style={{
-                            justifyContent: 'center',
-                            display: 'flex',
-                            textAlign: 'center',
-                          }}
-                        >
-                          <img
-                            src={products.product.imageUrl}
-                            className={`${styles.cartImage}`}
-                          />
-                        </div>
-
-                        <div className="col-md-6" style={{ padding: '1rem' }}>
-                          <div className="card-body">
-                            <h4 className="card-title">
-                              <strong>{products.product.name}</strong>
-                            </h4>
-                            <div
-                              className="card-text"
-                              style={{
-                                marginTop: '1rem',
-                              }}
-                            >
-                              <div>
-                                <strong>Price: </strong>$
-                                {products.product.price}
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                    />
                   )
                 )}
-              </div>
+              </SimpleGrid>
             ) : (
-              <div className={styles1.notProduct}>
-                You don't like any product yet
-              </div>
+              <Flex justify="center" align="center">
+                <Heading size="md" color="gray.500">
+                  You don't like any product yet
+                </Heading>
+              </Flex>
             )}
-          </div>
+          </Flex>
         ) : null}
-      </div>
+      </Flex>
     );
   }
 }

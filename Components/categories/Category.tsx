@@ -1,59 +1,34 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import { GET_ALL_CATEGORIES } from 'GraphQL/Apollo-Client/Queries/categoryQuerys';
-import { initializeApollo } from 'src/apollo';
+// import { initializeApollo } from 'src/apollo';
 import { useQuery } from '@apollo/client';
 import styles from '../../styles/Category.module.css';
+import { Box, Flex } from '@chakra-ui/layout';
 
 export default function Category({}) {
-  const { data, loading } = useQuery(GET_ALL_CATEGORIES);
-
-  // if (loading) {
-  //   return (
-  //     <div
-  //       className={`border ${styles.category}`}
-  //       style={{ borderRadius: '0.5rem' }}
-  //     >
-  //       <div className="nav-scroller py-1 mb-2">
-  //         <nav className="nav d-flex justify-content-between">
-  //           <div className="text-decoration-none text-dark">
-  //             <div
-  //               style={{ cursor: 'pointer' }}
-  //               className="p-2 text-muted"
-  //             ></div>
-  //           </div>
-  //         </nav>
-  //       </div>
-  //     </div>
-  //   );
-  // }
+  const { data } = useQuery(GET_ALL_CATEGORIES);
 
   return (
-    <div>
+    <Box className={styles.category} mt={3}>
       {data ? (
-        <div
-          className={`border ${styles.category}`}
-          style={{ borderRadius: '0.5rem' }}
-        >
-          <div className="nav-scroller py-1 mb-2">
-            <nav className="nav d-flex justify-content-between">
-              {data.getCategories.map((category) => (
-                <Link href={`/category/${category.slug}`} key={category._id}>
-                  <a className="text-decoration-none text-dark">
-                    <div
-                      style={{ cursor: 'pointer' }}
-                      className="p-2 text-muted"
-                    >
-                      {category.name}
-                    </div>
-                  </a>
-                </Link>
-              ))}
-            </nav>
-          </div>
-        </div>
+        <Flex justify="center" align="center" width="100%">
+          {data.getCategories.map((category) => (
+            <Link href={`/category/${category.slug}`} key={category._id}>
+              <Box
+                d="inline-block"
+                className={styles.categoryItem}
+                justifyContent="space-between"
+                alignItems="center"
+                cursor="pointer"
+              >
+                {category.name}
+              </Box>
+            </Link>
+          ))}
+        </Flex>
       ) : null}
-    </div>
+    </Box>
   );
 }
 

@@ -649,20 +649,31 @@ const getMyLikesProduct = asyncHandler(async (res) => {
   for (let i = 0; i < user.likes.length; i++) {
     const product = await Product.findById(user.likes[i]);
 
-    const myLike = {
-      product: {
-        name: product.name,
-        price: product.price,
-        imageUrl: product.imageUrl[0],
-      },
-    };
-
-    myLikes.push(myLike);
+    myLikes.push(product);
   }
 
   res.results = {
     success: true,
     data: myLikes.reverse(),
+  };
+});
+
+const getSingleUser = asyncHandler(async (res) => {
+  const { id } = res.user;
+
+  const user = await User.findById(id)
+    .populate({
+      path: 'products',
+      select: 'name content price imageUrl slug',
+    })
+    .populate({
+      path: 'cart.product',
+      select: 'name content price imageUrl slug',
+    });
+
+  res.results = {
+    success: true,
+    data: user,
   };
 });
 
@@ -686,4 +697,5 @@ module.exports = {
   postProductsSold,
   getMyOrders,
   getMyLikesProduct,
+  getSingleUser,
 };

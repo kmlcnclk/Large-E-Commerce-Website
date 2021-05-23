@@ -1,15 +1,9 @@
 import React, { Component } from 'react';
-import styles from 'styles/ProfileEdit.module.css';
-import { Form } from 'react-bootstrap';
-import {
-  addUserToLocal,
-  deleteUserFromLocal,
-  getUserFromLocal,
-} from 'LocalStorage/userStorage';
 import { getAccessTokenFromLocal } from 'LocalStorage/accessTokenStorage';
-import { notifyError, notifySuccess } from 'Components/toolbox/React-Toastify';
 import { onDrop } from '../../toolbox/UserOnDrop';
-import { ToastContainer } from 'react-toastify';
+import { Center, Flex, Heading } from '@chakra-ui/layout';
+import { Input } from '@chakra-ui/input';
+import { Button } from '@chakra-ui/button';
 
 class ProfileEditComponent extends Component {
   state = {
@@ -21,11 +15,14 @@ class ProfileEditComponent extends Component {
   };
 
   async componentDidMount() {
-    const user = await getUserFromLocal()[0];
-
-    this.setState({ password: user.password });
-    this.setState({ email: user.email });
-    this.setState({ name: user.name });
+    if (this.props.getSingleUserData) {
+      this.setState({
+        email: this.props.getSingleUserData.getSingleUser.data.email,
+      });
+      this.setState({
+        name: this.props.getSingleUserData.getSingleUser.data.name,
+      });
+    }
   }
 
   changeInput = (e) => {
@@ -42,7 +39,8 @@ class ProfileEditComponent extends Component {
 
   updateProfileFormSubmit = async (e) => {
     e.preventDefault();
-    const user = await getUserFromLocal()[0];
+
+    const user = await this.props.getSingleUserData.getSingleUser.data;
 
     try {
       await this.props.profileEdit({
@@ -58,116 +56,104 @@ class ProfileEditComponent extends Component {
       });
     } catch (err) {
       if (err.message.startsWith('E11000')) {
-        notifyError('Duplicate Key Found : Check Your Input');
+        this.props.toast({
+          title: 'Duplicate Key Found : Check Your Input',
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+        });
       } else {
-        notifyError(err.message);
+        this.props.toast({
+          title: err.message,
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+        });
       }
     }
 
     if (this.props.data) {
-      await deleteUserFromLocal();
+      this.props.toast({
+        title: `${this.props.data.profileEdit.data.name} Updated Profile`,
+        status: 'success',
+        duration: 2000,
+        isClosable: true,
+      });
 
-      notifySuccess(this.props.data.profileEdit.data.name + ' Update Profile');
-      await addUserToLocal(this.props.data.profileEdit.data);
-
-      setTimeout(() => {
-        this.props.router.push('/');
-      }, 2200);
+      this.props.router.push('/');
     }
   };
 
   render() {
+    const { formBgMode } = this.props;
+
     return (
-      <div className={styles.updateProfile}>
-        <div className={styles.updateProfileMainDiv}>
-          <Form
-            className="form-updateProfile"
-            onSubmit={this.updateProfileFormSubmit}
-          >
-            <h1 className="h3 mb-3 text-center font-weight-normal">
-              Please update profile
-            </h1>
-            <Form.Group>
-              <Form.Label htmlFor="inputName" className="sr-only">
-                Name
-              </Form.Label>
-              <Form.Control
-                type="text"
-                id={styles.updateProfileName}
-                className="form-control"
-                placeholder="Name"
-                required
-                value={this.state.name}
-                autoFocus
-                onChange={this.changeInput}
-                name="name"
-              />
-            </Form.Group>
-            <Form.Group>
-              <Form.Label htmlFor="inputEmail" className="sr-only">
-                Email address
-              </Form.Label>
-              <Form.Control
-                type="email"
-                id={styles.updateProfileEmail}
-                className="form-control"
-                placeholder="Email address"
-                required
-                value={this.state.email}
-                onChange={this.changeInput}
-                name="email"
-              />
-            </Form.Group>
+      <Flex h="100vh" justify="center" align="center">
+        <Flex
+          as="form"
+          direction="column"
+          bg={formBgMode}
+          onSubmit={this.updateProfileFormSubmit}
+          rounded={6}
+          p="12"
+        >
+          <Heading textAlign="center" mb={6}>
+            Update Profile
+          </Heading>
+          <Input
+            type="text"
+            variant="filled"
+            placeholder="John Doe"
+            mb={3}
+            isRequired
+            value={this.state.name}
+            onChange={this.changeInput}
+            name="name"
+          />
+          <Input
+            type="email"
+            variant="filled"
+            placeholder="large@gmail.com"
+            mb={3}
+            isRequired
+            value={this.state.email}
+            onChange={this.changeInput}
+            name="email"
+          />
+          <Input
+            type="password"
+            variant="filled"
+            placeholder="******"
+            mb={6}
+            isRequired
+            onChange={this.changeInput}
+            name="password"
+          />
 
-            <Form.Group>
-              <Form.Label htmlFor="inputPassword" className="sr-only">
-                Password
-              </Form.Label>
-              <Form.Control
-                type="password"
-                id={styles.updateProfilePassword}
-                className="form-control"
-                placeholder="Password"
-                name="password"
-                required
-                onChange={this.changeInput}
-              />
-            </Form.Group>
+          <Center mb={6}>
+            <Input
+              type="file"
+              onChange={this.fileChangeInput}
+              d="none"
+              ref={this.props.fileImage}
+              accept="image/*"
+              name="profileImage"
+            />
+            <Button
+              onClick={() => this.props.fileImage.current.click()}
+              colorScheme="red"
+              w="min"
+              textAlign="center"
+            >
+              Choose Profile Image
+            </Button>
+          </Center>
 
-            <Form.Group id={styles.updateProfileImageForm}>
-              <Form.Label
-                htmlFor="inputPassword"
-                className="ml-1"
-                style={{ fontSize: '0.95rem' }}
-              >
-                <strong> Profile Image :</strong>
-              </Form.Label>
-              <Form.File
-                onChange={this.fileChangeInput}
-                type="file"
-                label="Choose profile picture"
-                data-browse="Choose"
-                custom
-                name="profile_image"
-              />
-            </Form.Group>
-            <button className="btn btn-lg btn-primary btn-block" type="submit">
-              Update profile
-            </button>
-          </Form>
-        </div>
-        <ToastContainer
-          position="bottom-right"
-          autoClose={3000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable={false}
-          pauseOnHover={false}
-        />
-      </div>
+          <Button type="submit" colorScheme="teal">
+            Update Profile
+          </Button>
+        </Flex>
+      </Flex>
     );
   }
 }

@@ -7,19 +7,17 @@ import { useRouter } from 'next/dist/client/router';
 import Layout from 'Components/Layout';
 import Head from 'next/head';
 import ProductsSoldComponent from 'Components/shop/ProductsSoldComponent';
-import {
-  notifyError,
-  notifySuccess,
-} from '../Components/toolbox/React-Toastify';
 import { POST_PRODUCTS_SOLD } from '../GraphQL/Apollo-Client/Mutations/userMutations';
+import { useToast } from '@chakra-ui/toast';
 
 function ProductsSold() {
   const router = useRouter();
 
+  const toast = useToast();
+
   const [productsSold, { data }] = useLazyQuery(PRODUCTS_SOLD);
-  const [postProductsSold, { data: postProductsSoldData }] = useMutation(
-    POST_PRODUCTS_SOLD
-  );
+  const [postProductsSold, { data: postProductsSoldData }] =
+    useMutation(POST_PRODUCTS_SOLD);
 
   const [auth, setAuth] = useState(false);
 
@@ -34,7 +32,12 @@ function ProductsSold() {
           },
         });
       } catch (err) {
-        notifyError(err.message);
+        toast({
+          title: err.message,
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+        });
       }
     };
 
@@ -49,7 +52,7 @@ function ProductsSold() {
   return (
     <Layout>
       <Head>
-        <title>Products Sold</title>
+        <title>Large &bull; Products Sold</title>
       </Head>
       {auth ? (
         <ProductsSoldComponent
@@ -57,6 +60,7 @@ function ProductsSold() {
           data={data}
           postProductsSold={postProductsSold}
           postProductsSoldData={postProductsSoldData}
+          toast={toast}
         />
       ) : null}
     </Layout>

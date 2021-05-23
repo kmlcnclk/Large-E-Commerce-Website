@@ -12,7 +12,10 @@ import 'nprogress/nprogress.css';
 import 'react-toastify/dist/ReactToastify.css';
 import 'react-medium-image-zoom/dist/styles.css';
 import 'react-image-crop/dist/ReactCrop.css';
+import 'react-credit-cards/es/styles-compiled.css';
 import '../styles/globals.css';
+import { ChakraProvider } from '@chakra-ui/react';
+import { theme } from 'src/theme';
 
 NProgress.configure({ showSpinner: false });
 
@@ -33,7 +36,9 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <Provider store={store}>
       <ApolloProvider client={client}>
-        <Component {...pageProps} />
+        <ChakraProvider theme={theme}>
+          <Component {...pageProps} />
+        </ChakraProvider>
       </ApolloProvider>
     </Provider>
   );

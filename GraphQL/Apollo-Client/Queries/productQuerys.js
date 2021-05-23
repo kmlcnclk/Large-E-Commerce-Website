@@ -24,6 +24,7 @@ export const SEARCH_PRODUCT = gql`
         slug
         likes
         likeCount
+        createAt
       }
     }
   }

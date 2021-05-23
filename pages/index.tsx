@@ -10,6 +10,7 @@ import { GET_ALL_CATEGORIES } from 'GraphQL/Apollo-Client/Queries/categoryQuerys
 import { initializeApollo } from 'src/apollo';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
+import { Box, Flex, Heading, SimpleGrid } from '@chakra-ui/layout';
 
 export default function Home({}) {
   const router = useRouter();
@@ -23,10 +24,10 @@ export default function Home({}) {
   return (
     <Layout>
       <Head>
-        <title>Create Next App</title>
+        <title>Large &bull; Home Page</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div>
+      <Flex direction="column" justify="center" align="center">
         <div className={styles.homePageFirstDiv}>
           <div style={{ textAlign: 'center' }}>
             <Carousel
@@ -74,31 +75,48 @@ export default function Home({}) {
             </Carousel>
           </div>
         </div>
+
         {data ? (
-          <div className={styles.homePageSecondDiv}>
-            {data.getCategories.map((category) => (
-              <div className={`card mb-3 ${styles.card}`} key={category._id}>
-                <div className={styles.homePageCategoryCardMainImage}>
-                  <Image
-                    width={400}
-                    height={500}
-                    src={`/${category.imageUrl}`}
-                    className={`${styles.homePageCategoryCardImage}`}
-                    alt={`${category.name} Image`}
-                  />
-                </div>
-                <div className={styles.homePageLinkName}>
-                  <Link href={`/category/${category.slug}`}>
-                    <a className={styles.homePageA}>
-                      <strong>{category.name}</strong>
-                    </a>
-                  </Link>
-                </div>
-              </div>
-            ))}
-          </div>
+          <Flex justify="center" align="center">
+            <SimpleGrid columns={{ md: 2, lg: 3 }}>
+              {data.getCategories.map((category) => (
+                <Box
+                  key={category._id}
+                  textAlign="center"
+                  rounded={8}
+                  bg="pink.100"
+                  m={3}
+                >
+                  <Box p={4} pt={7} pb={1}>
+                    <Image
+                      width={400}
+                      height={500}
+                      src={`/${category.imageUrl}`}
+                      className={`${styles.homePageCategoryCardImage}`}
+                      alt={`${category.name} Image`}
+                      objectFit="contain"
+                    />
+                  </Box>
+                  <Flex justify="center" align="center" textAlign="center">
+                    <Link href={`/category/${category.slug}`}>
+                      <Heading
+                        cursor="pointer"
+                        color="black"
+                        size="md"
+                        p={2}
+                        pt={0}
+                        _hover={{ textDecoration: 'underline' }}
+                      >
+                        {category.name}
+                      </Heading>
+                    </Link>
+                  </Flex>
+                </Box>
+              ))}
+            </SimpleGrid>
+          </Flex>
         ) : null}
-      </div>
+      </Flex>
     </Layout>
   );
 }

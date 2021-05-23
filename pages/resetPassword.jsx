@@ -4,12 +4,18 @@ import React, { useEffect, useState } from 'react';
 import ResetPasswordComponent from 'Components/auth/ResetPasswordComponent';
 import { useMutation } from '@apollo/client';
 import { RESET_PASSWORD } from 'GraphQL/Apollo-Client/Mutations/userMutations';
+import { useToast } from '@chakra-ui/toast';
+import { useColorModeValue } from '@chakra-ui/color-mode';
 
 function ResetPassword() {
   const router = useRouter();
 
   const [resetPasswordToken, setResetPasswordToken] = useState('');
   const [resetPassword, { data }] = useMutation(RESET_PASSWORD);
+
+  const toast = useToast();
+
+  const formBgMode = useColorModeValue('gray.100', 'gray.700');
 
   useEffect(() => {
     router.prefetch('/login');
@@ -23,7 +29,7 @@ function ResetPassword() {
   return (
     <div>
       <Head>
-        <title>Reset Password</title>
+        <title>Large &bull; Reset Password</title>
       </Head>
       {resetPasswordToken ? (
         <ResetPasswordComponent
@@ -31,6 +37,8 @@ function ResetPassword() {
           resetPassword={resetPassword}
           data={data}
           resetPasswordToken={resetPasswordToken}
+          toast={toast}
+          formBgMode={formBgMode}
         />
       ) : null}
     </div>

@@ -6,13 +6,20 @@ import React, { useEffect, useState } from 'react';
 import { initializeApollo } from 'src/apollo';
 import ProfileComponent from 'Components/auth/profile/ProfileComponent';
 import { getAccessTokenFromLocal } from 'LocalStorage/accessTokenStorage';
-import { notifyError } from 'Components/toolbox/React-Toastify';
 import { useRouter } from 'next/router';
-import { ToastContainer } from 'react-toastify';
 import { PRODUCT_DELETE } from 'GraphQL/Apollo-Client/Mutations/productMutations';
+import { useToast } from '@chakra-ui/toast';
+import { useDisclosure } from '@chakra-ui/hooks';
+import { useColorModeValue } from '@chakra-ui/color-mode';
 
 function Profile() {
   const router = useRouter();
+
+  const toast = useToast();
+
+  const { isOpen: isOpenCart, onToggle: onToggleCart } = useDisclosure();
+  const { isOpen: isOpenProduct, onToggle: onToggleProduct } = useDisclosure();
+  const priceColor = useColorModeValue('gray.600', 'gray.200');
 
   const [userCartState1, setUserCartState1] = useState(false);
   const [userCartState2, setUserCartState2] = useState(true);
@@ -20,9 +27,8 @@ function Profile() {
   const [userProductState2, setUserProductState2] = useState(true);
 
   const [profile, { data, error }] = useLazyQuery(PROFILE);
-  const [productDelete, { data: productDeleteData }] = useMutation(
-    PRODUCT_DELETE
-  );
+  const [productDelete, { data: productDeleteData }] =
+    useMutation(PRODUCT_DELETE);
 
   useEffect(() => {
     router.prefetch('/');
@@ -35,7 +41,12 @@ function Profile() {
         },
       });
       if (error) {
-        notifyError(error.message);
+        toast({
+          title: error.message,
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+        });
       }
     };
 
@@ -44,12 +55,12 @@ function Profile() {
     } else {
       router.push('/');
     }
-  }, [profile, notifyError, setUserCartState2, setUserProductState2]);
+  }, [profile, setUserCartState2, setUserProductState2, toast]);
 
   return (
     <Layout>
       <Head>
-        <title>Profile</title>
+        <title>Large &bull; Profile</title>
       </Head>
       {data ? (
         <ProfileComponent
@@ -65,20 +76,14 @@ function Profile() {
           setUserProductState2={setUserProductState2}
           productDelete={productDelete}
           productDeleteData={productDeleteData}
+          toast={toast}
+          isOpenCart={isOpenCart}
+          isOpenProduct={isOpenProduct}
+          onToggleCart={onToggleCart}
+          onToggleProduct={onToggleProduct}
+          priceColor={priceColor}
         />
       ) : null}
-
-      <ToastContainer
-        position="bottom-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable={false}
-        pauseOnHover={false}
-      />
     </Layout>
   );
 }

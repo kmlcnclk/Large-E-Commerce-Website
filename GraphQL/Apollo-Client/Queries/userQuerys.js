@@ -106,11 +106,61 @@ export const GET_MY_LIKES_PRODUCT = gql`
     getMyLikesProduct(access_token: $access_token) {
       success
       data {
-        product {
+        _id
+        content
+        price
+        imageUrl
+        name
+        slug
+      }
+    }
+  }
+`;
+
+export const GET_SINGLE_USER = gql`
+  query getSingleUser($access_token: String!) {
+    getSingleUser(access_token: $access_token) {
+      success
+      data {
+        name
+        email
+        _id
+        products {
           name
-          imageUrl
-          price
         }
+        productCount
+        role
+        slug
+        profile_image
+        cart {
+          quantity
+          product {
+            _id
+            name
+          }
+        }
+        cartCount
+        resetPasswordToken
+        resetPasswordExpire
+        cartTotalPrice
+        createAt
+        address
+        creditCard {
+          cardExpiry
+          cardNumber
+          cardCVC
+        }
+        orders {
+          quantity
+          product
+          user
+        }
+        myOrders {
+          quantity
+          product
+        }
+        likes
+        likeCount
       }
     }
   }

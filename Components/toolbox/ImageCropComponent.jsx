@@ -1,12 +1,19 @@
+import { Button } from '@chakra-ui/button';
+import { Image } from '@chakra-ui/image';
+import { Input } from '@chakra-ui/input';
+import { Box, Center, Flex } from '@chakra-ui/layout';
+import {
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+} from '@chakra-ui/modal';
 import { getAccessTokenFromLocal } from 'LocalStorage/accessTokenStorage';
-import { addUserToLocal, deleteUserFromLocal } from 'LocalStorage/userStorage';
 import React, { PureComponent } from 'react';
-import { Form } from 'react-bootstrap';
-import { RiCloseLine } from 'react-icons/ri';
 import ReactCrop from 'react-image-crop';
-import { ToastContainer } from 'react-toastify';
-import styles from 'styles/ImageCrop.module.css';
-import { notifyError, notifySuccess } from './React-Toastify';
 import { onDrop } from './UserOnDrop';
 
 class ImageCropComponent extends PureComponent {
@@ -44,24 +51,31 @@ class ImageCropComponent extends PureComponent {
           },
         });
       } catch (err) {
-        notifyError(err.message);
+        this.props.toast({
+          title: err.message,
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+        });
       }
 
       if (this.props.data) {
-        notifySuccess(this.props.data.profileImageEdit.message);
-        await deleteUserFromLocal();
-        await addUserToLocal(this.props.data.profileImageEdit.data);
+        this.props.toast({
+          title: this.props.data.profileImageEdit.message,
+          status: 'success',
+          duration: 2000,
+          isClosable: true,
+        });
         await this.props.setImageState(this.state.imageFileUrl);
-
-        this.props.setImageState2(false);
       }
     } else {
-      notifyError('You did not choose a picture');
+      this.props.toast({
+        title: 'You did not choose a picture',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
     }
-  };
-
-  profileImageClosePopupMenu = () => {
-    this.props.setImageState2(false);
   };
 
   onImageLoaded = (image) => {
@@ -125,87 +139,75 @@ class ImageCropComponent extends PureComponent {
   }
   render() {
     const { crop, croppedImageUrl, src } = this.state;
+    const { onClose, isOpen, fileProfileImage } = this.props;
 
     return this.props.trigger ? (
-      <div className={styles.profileImageCropPopup}>
-        <div className={styles.profileImageCropPopupInner}>
-          <div className="d-flex justify-content-between row mb-3">
-            <div className="col-2"></div>
-            <div className={`col-8 ${styles.profileImageCropPopupName}`}>
-              <strong>Edit Profile Image</strong>
-            </div>
-            <RiCloseLine
-              className={`col-2 ${styles.imageCropClose}`}
-              size={35}
-              onClick={this.profileImageClosePopupMenu}
-            />
-          </div>
-
-          <div
-            className="d-inline-block"
-            style={{
-              textAlign: 'center',
-              marginLeft: 'auto',
-              marginRight: 'auto',
-              width: '100%',
-            }}
-          >
-            <Form.File
-              type="file"
-              label=""
-              className="d-inline-block"
-              style={{ width: '100%' }}
-              data-browse="Choose"
-              accept="image/*"
-              custom
-              onChange={this.onSelectFile}
-            />
-          </div>
-
-          {this.state.src ? (
-            <div className={`d-flex justify-content-around ${styles.srcDiv}`}>
-              {src && (
-                <div className={styles.mainCrop}>
-                  <ReactCrop
-                    src={src}
-                    crop={crop}
-                    ruleOfThirds
-                    onChange={this.onCropChange}
-                    onImageLoaded={this.onImageLoaded}
-                    onComplete={this.onCropComplete}
-                  />
-                </div>
-              )}
-              <div className={styles.mainImage}>
-                {croppedImageUrl && (
-                  <img
-                    alt="Crop"
-                    className={styles.img}
-                    src={croppedImageUrl}
-                  />
+      <Modal onClose={onClose} size="xl" isOpen={isOpen}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Edit Profile Image</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Center mb={6}>
+              <Input
+                type="file"
+                ref={fileProfileImage}
+                onChange={this.onSelectFile}
+                d="none"
+                accept="image/*"
+              />
+              <Button
+                colorScheme="red"
+                onClick={() => fileProfileImage.current.click()}
+                w="100%"
+                textAlign="center"
+              >
+                Choose Profile Image
+              </Button>
+            </Center>
+            {this.state.src ? (
+              <Flex direction="column" justify="center" align="center">
+                {src && (
+                  <Box mb={4}>
+                    <ReactCrop
+                      src={src}
+                      crop={crop}
+                      ruleOfThirds
+                      onChange={this.onCropChange}
+                      onImageLoaded={this.onImageLoaded}
+                      onComplete={this.onCropComplete}
+                    />
+                  </Box>
                 )}
-              </div>
-            </div>
-          ) : null}
-          <button
-            className={`btn btn-danger d-inline-block btn-block ${styles.srcDivBtn}`}
-            onClick={this.clikBtn}
-          >
-            Change Profile Image
-          </button>
-        </div>
-        <ToastContainer
-          position="bottom-right"
-          autoClose={3000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable={false}
-          pauseOnHover={false}
-        />
-      </div>
+                <Box>
+                  {croppedImageUrl && (
+                    <Image
+                      rounded="full"
+                      alt="Crop"
+                      w="auto"
+                      h="auto"
+                      objectFit="contain"
+                      src={croppedImageUrl}
+                    />
+                  )}
+                </Box>
+              </Flex>
+            ) : null}
+          </ModalBody>
+          <ModalFooter>
+            <Button
+              colorScheme="red"
+              onClick={() => {
+                this.clikBtn();
+                onClose();
+              }}
+              w="100%"
+            >
+              Change Profile Image
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     ) : null;
   }
 }

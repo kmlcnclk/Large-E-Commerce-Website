@@ -1,19 +1,27 @@
 import React, { Component } from 'react';
-import styles from 'styles/ProductAdd.module.css';
-import { Form } from 'react-bootstrap';
 import { getAccessTokenFromLocal } from 'LocalStorage/accessTokenStorage';
-import { notifyError, notifySuccess } from 'Components/toolbox/React-Toastify';
-import { addUserToLocal, deleteUserFromLocal } from 'LocalStorage/userStorage';
-import { ToastContainer } from 'react-toastify';
 import { onDrop } from '../toolbox/ProductOnDrop';
+import { Center, Flex, Heading } from '@chakra-ui/layout';
+import { Input } from '@chakra-ui/input';
+import { Textarea } from '@chakra-ui/textarea';
+import {
+  NumberDecrementStepper,
+  NumberIncrementStepper,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+} from '@chakra-ui/number-input';
+import { Select } from '@chakra-ui/select';
+import { Button } from '@chakra-ui/button';
 
 class ProductAddComponent extends Component {
   state = {
     name: '',
     content: '',
-    price: '',
+    price: 0,
     product_image: [],
     category: '',
+    productImageState: false,
   };
 
   changeInput = async (e) => {
@@ -21,169 +29,165 @@ class ProductAddComponent extends Component {
       [e.target.name]: e.target.value,
     });
   };
+  changeNumberInput = async (valueAsString, valueAsNumber) => {
+    await this.setState({
+      price: valueAsNumber,
+    });
+  };
 
   fileChangeInput = async (e) => {
     const files = e.target.files;
     await this.setState({ product_image: files });
+    this.setState({ productImageState: true });
   };
 
   addProductFormSubmit = async (e) => {
     e.preventDefault();
 
-    var category;
+    if (this.state.productImageState) {
+      var category;
 
-    await this.props.categoryData.getCategories.forEach((c) => {
-      if (c.name === this.state.category) {
-        category = c._id;
-      }
-    });
-
-    try {
-      await this.props.productAdd({
-        variables: {
-          name: this.state.name,
-          access_token: getAccessTokenFromLocal()[0],
-          category: category,
-          content: this.state.content,
-          price: parseFloat(this.state.price),
-          imageUrl: await onDrop(this.state.product_image),
-        },
+      await this.props.categoryData.getCategories.forEach((c) => {
+        if (c.name === this.state.category) {
+          category = c._id;
+        }
       });
-    } catch (err) {
-      notifyError(err.message);
-    }
-    if (this.props.data) {
-      await deleteUserFromLocal();
 
-      notifySuccess(this.props.data.productAdd.data.name + ' Added');
+      try {
+        await this.props.productAdd({
+          variables: {
+            name: this.state.name,
+            access_token: getAccessTokenFromLocal()[0],
+            category: category,
+            content: this.state.content,
+            price: parseFloat(this.state.price),
+            imageUrl: await onDrop(this.state.product_image),
+          },
+        });
+      } catch (err) {
+        this.props.toast({
+          title: err.message,
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+        });
+      }
+      if (this.props.data) {
+        this.props.toast({
+          title: `${this.props.data.productAdd.data.name} Added`,
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+        });
 
-      await addUserToLocal(this.props.data.productAdd.user);
-
-      setTimeout(() => {
         this.props.router.push('/');
-      }, 2200);
+      }
+    } else {
+      this.props.toast({
+        title: 'Please select a product images',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
     }
   };
 
   render() {
-    const { categoryData } = this.props;
-
+    const { categoryData, fileImages, formBgMode } = this.props;
     return (
-      <div className={styles.productAdd}>
-        <div className={styles.productAddMainDiv}>
-          <Form
-            className="form-productAdd"
-            onSubmit={this.addProductFormSubmit}
+      <Flex h="100vh" justify="center" align="center">
+        <Flex
+          bg={formBgMode}
+          as="form"
+          onSubmit={this.addProductFormSubmit}
+          p="12"
+          rounded={6}
+          direction="column"
+        >
+          <Heading textAlign="center" mb={6}>
+            Product Add
+          </Heading>
+          <Input
+            type="text"
+            variant="filled"
+            placeholder="Iphone 10"
+            mb={3}
+            isRequired
+            value={this.state.name}
+            onChange={this.changeInput}
+            name="name"
+          />
+          <Textarea
+            mb={3}
+            placeholder="Product description"
+            resize="both"
+            variant="filled"
+            size="md"
+            isRequired
+            value={this.state.content}
+            onChange={this.changeInput}
+            name="content"
+          />
+
+          <NumberInput
+            defaultValue={0}
+            min={0}
+            precision={2}
+            step={0.1}
+            mb={3}
+            isRequired
+            variant="filled"
+            rounded={10}
+            name="price"
+            onChange={(valueAsString, valueAsNumber) =>
+              this.changeNumberInput(valueAsString, valueAsNumber)
+            }
           >
-            <h1 className="h3 mb-3 text-center font-weight-normal">
-              Product Add
-            </h1>
-            <Form.Group>
-              <Form.Label htmlFor="inputName" className="sr-only">
-                Product name
-              </Form.Label>
-              <Form.Control
-                type="text"
-                id={styles.productAddName}
-                className="form-control"
-                placeholder="Product name"
-                required
-                value={this.state.name}
-                autoFocus
-                onChange={this.changeInput}
-                name="name"
-              />
-            </Form.Group>
+            <NumberInputField />
+            <NumberInputStepper>
+              <NumberIncrementStepper />
+              <NumberDecrementStepper />
+            </NumberInputStepper>
+          </NumberInput>
 
-            <Form.Group>
-              <Form.Label htmlFor="inputEmail" className="sr-only">
-                Product content
-              </Form.Label>
-              <Form.Control
-                type="text"
-                id={styles.productAddContent}
-                className="form-control"
-                placeholder="Product content"
-                required
-                value={this.state.content}
-                onChange={this.changeInput}
-                name="content"
-              />
-            </Form.Group>
-            <Form.Group>
-              <Form.Label htmlFor="inputPassword" className="sr-only">
-                Product price
-              </Form.Label>
-              <Form.Control
-                type="number"
-                id={styles.productAddPrice}
-                className="form-control"
-                placeholder="Price"
-                name="price"
-                value={this.state.price}
-                required
-                onChange={this.changeInput}
-              />
-            </Form.Group>
-            <Form.Group>
-              <Form.Label htmlFor="inputPassword" className="sr-only">
-                Product category
-              </Form.Label>
-              <Form.Control
-                as="select"
-                className="form-control"
-                placeholder="Category"
-                required
-                name="category"
-                onChange={this.changeInput}
-                defaultValue="Select Category"
-                custom
-              >
-                <option disabled>Select Category</option>
-                {categoryData.getCategories.map((category) => (
-                  <option name={category.name} key={category._id}>
-                    {category.name}
-                  </option>
-                ))}
-              </Form.Control>
-            </Form.Group>
+          <Select
+            variant="filled"
+            mb={6}
+            placeholder="Select Category"
+            isRequired
+            name="category"
+            onChange={this.changeInput}
+          >
+            {categoryData.getCategories.map((category) => (
+              <option name={category.name} key={category._id}>
+                {category.name}
+              </option>
+            ))}
+          </Select>
 
-            <Form.Group id={styles.productAddImageForm}>
-              <Form.Label
-                htmlFor="inputPassword"
-                className="ml-1"
-                style={{ fontSize: '0.95rem' }}
-              >
-                <strong> Product Image :</strong>
-              </Form.Label>
-              <Form.File
-                onChange={this.fileChangeInput}
-                type="file"
-                label="Choose product picture"
-                name="product_image"
-                multiple
-                data-browse="Choose"
-                custom
-                required
-              />
-            </Form.Group>
-            <button className="btn btn-lg btn-primary btn-block" type="submit">
-              Product Add
-            </button>
-          </Form>
-        </div>
-        <ToastContainer
-          position="bottom-right"
-          autoClose={3000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable={false}
-          pauseOnHover={false}
-        />
-      </div>
+          <Center mb={6}>
+            <Input
+              type="file"
+              accept="image/*"
+              multiple
+              d="none"
+              ref={fileImages}
+              onChange={this.fileChangeInput}
+            />
+            <Button
+              colorScheme="red"
+              onClick={() => fileImages.current.click()}
+              w="min"
+              textAlign="center"
+            >
+              Choose Product Images
+            </Button>
+          </Center>
+          <Button colorScheme="teal" type="submit">
+            Product Add
+          </Button>
+        </Flex>
+      </Flex>
     );
   }
 }

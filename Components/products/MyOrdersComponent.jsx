@@ -1,9 +1,7 @@
-import { notifyError } from 'Components/toolbox/React-Toastify';
 import { getAccessTokenFromLocal } from 'LocalStorage/accessTokenStorage';
 import React, { Component } from 'react';
-import styles1 from 'styles/ProductsSold.module.css';
-import styles from 'styles/Cart.module.css';
-import styles2 from 'styles/MyOrders.module.css';
+import { Badge, Box, Flex, Heading, SimpleGrid } from '@chakra-ui/layout';
+import Image from 'next/image';
 
 export default class MyOrdersComponent extends Component {
   componentDidMount = async () => {
@@ -14,83 +12,98 @@ export default class MyOrdersComponent extends Component {
         },
       });
     } catch (err) {
-      notifyError(err.message);
+      this.props.toast({
+        title: err.message,
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
     }
   };
   render() {
     return (
-      <div>
+      <Flex justify="center" mt={3} mb={3} align="center">
         {this.props.data ? (
-          <div>
+          <Flex justify="center" align="center">
             {this.props.data.getMyOrders.data[0] ? (
-              <div
-                style={{
-                  borderRadius: '1rem',
-                  marginTop: '1rem',
-                }}
-              >
+              <SimpleGrid columns={{ sm: 1, md: 2, lg: 3 }}>
                 {this.props.data.getMyOrders.data.map((products, index) => (
-                  <div
-                    className={`card mb-2 ${styles2.myOrdersCard}`}
+                  <Box
+                    m={3}
                     key={index}
-                    style={{
-                      backgroundColor: '#f2f2f2',
-                      borderRadius: '1rem',
-                    }}
+                    mt={5}
+                    maxW="sm"
+                    borderWidth="1px"
+                    borderRadius="xl"
+                    overflow="hidden"
+                    d="inline-block"
                   >
-                    <div className="row no-gutters">
-                      <div
-                        className="col-md-6"
-                        style={{
-                          justifyContent: 'center',
-                          display: 'flex',
-                          textAlign: 'center',
-                        }}
+                    <div
+                      style={{
+                        margin: '2rem',
+                        width: 'auto',
+                        textAlign: 'center',
+                      }}
+                    >
+                      <Image
+                        objectFit="contain"
+                        width={'auto'}
+                        height={'auto'}
+                        src={products.product.imageUrl}
+                      />
+                    </div>
+                    <Box p={4}>
+                      <Box
+                        d="flex"
+                        justifyContent="space-between"
+                        alignItems="center"
                       >
-                        <img
-                          src={products.product.imageUrl}
-                          className={`${styles.cartImage}`}
-                        />
-                      </div>
+                        <Box
+                          fontWeight="bold"
+                          color={this.props.priceColor}
+                          m={2}
+                          mr={2}
+                        >
+                          $ {parseFloat(products.product.price).toFixed(2)}
+                        </Box>
+                      </Box>
 
-                      <div className="col-md-6" style={{ padding: '1rem' }}>
-                        <div className="card-body">
-                          <h4 className="card-title">
-                            <strong>{products.product.name}</strong>
-                          </h4>
-                          <h5
-                            className="card-title"
-                            style={{
-                              fontFamily: 'Arial, Helvetica, sans-serif',
-                              marginTop: '1rem',
-                            }}
+                      <Heading
+                        m={2}
+                        fontWeight="semibold"
+                        size="md"
+                        lineHeight="taller"
+                        isTruncated
+                      >
+                        Name: {products.product.name}
+                      </Heading>
+                      <Flex m={2} align="center">
+                        <strong>Quantity:</strong>
+                        <Badge colorScheme="red" ml={2} rounded="full" d="flex">
+                          <Heading
+                            fontWeight="bold"
+                            isTruncated
+                            m={1}
+                            size="sm"
                           >
                             {products.quantity}
-                          </h5>
-                          <div
-                            className="card-text"
-                            style={{
-                              marginTop: '1rem',
-                            }}
-                          >
-                            <div>
-                              <strong>Price: </strong>${products.product.price}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                          </Heading>
+                        </Badge>
+                      </Flex>
+                    </Box>
+                  </Box>
                 ))}
-              </div>
+              </SimpleGrid>
             ) : (
-              <div className={styles1.notProduct}>
-                You don't have any orders yet
-              </div>
+              <Flex justify="center" align="center">
+                <Heading size="md" color="gray.500">
+                  You don't have any orders yet
+                </Heading>
+              </Flex>
             )}
-          </div>
+          </Flex>
         ) : null}
-      </div>
+      </Flex>
     );
   }
 }

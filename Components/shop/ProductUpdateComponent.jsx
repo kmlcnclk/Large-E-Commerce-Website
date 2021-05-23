@@ -1,36 +1,44 @@
-import { onDrop } from 'Components/toolbox/ProductOnDrop';
-import { notifyError, notifySuccess } from 'Components/toolbox/React-Toastify';
-import { getAccessTokenFromLocal } from 'LocalStorage/accessTokenStorage';
-import {
-  addUserToLocal,
-  deleteUserFromLocal,
-  getUserFromLocal,
-} from 'LocalStorage/userStorage';
 import React, { Component } from 'react';
-import { Form } from 'react-bootstrap';
-import { ToastContainer } from 'react-toastify';
-import styles from '../../styles/ProductUpdate.module.css';
+import { onDrop } from 'Components/toolbox/ProductOnDrop';
+import { getAccessTokenFromLocal } from 'LocalStorage/accessTokenStorage';
+import { Center, Flex, Heading } from '@chakra-ui/layout';
+import { Input } from '@chakra-ui/input';
+import { Textarea } from '@chakra-ui/textarea';
+import {
+  NumberDecrementStepper,
+  NumberIncrementStepper,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+} from '@chakra-ui/number-input';
+import { Select } from '@chakra-ui/select';
+import { Button } from '@chakra-ui/button';
 
 class ProductUpdateComponent extends Component {
   state = {
     name: '',
     content: '',
-    price: '',
+    price: 0,
     product_image: [],
     category: '',
     productImageState: false,
+    priceState: false,
   };
 
   async componentDidMount() {
     const { data } = this.props.productDetailData.getSingleProduct;
-    console.log(data);
-    if (data.user._id == getUserFromLocal()[0]._id) {
-      this.setState({ name: data.name });
-      this.setState({ content: data.content });
-      this.setState({ price: data.price });
-      this.setState({ product_image: data.imageUrl });
-    } else {
-      this.props.router.push('/');
+
+    if (this.props.getSingleUserData) {
+      const user = await this.props.getSingleUserData.getSingleUser.data;
+      if (data.user._id == user._id) {
+        this.setState({ name: data.name });
+        this.setState({ content: data.content });
+        this.setState({ price: data.price });
+        this.setState({ product_image: data.imageUrl });
+        this.setState({ priceState: true });
+      } else {
+        this.props.router.push('/');
+      }
     }
   }
 
@@ -40,13 +48,19 @@ class ProductUpdateComponent extends Component {
     });
   };
 
+  changeNumberInput = async (valueAsString, valueAsNumber) => {
+    await this.setState({
+      price: valueAsNumber,
+    });
+  };
+
   fileChangeInput = (e) => {
     const files = e.target.files;
     this.setState({ product_image: files });
     this.setState({ productImageState: true });
   };
 
-  addProductFormSubmit = async (e) => {
+  updateProductFormSubmit = async (e) => {
     e.preventDefault();
 
     var category;
@@ -64,7 +78,7 @@ class ProductUpdateComponent extends Component {
           access_token: getAccessTokenFromLocal()[0],
           category: category,
           content: this.state.content,
-          price: parseFloat(this.state.price),
+          price: this.state.price,
           imageUrl: this.state.productImageState
             ? await onDrop(this.state.product_image)
             : data.imageUrl,
@@ -72,137 +86,124 @@ class ProductUpdateComponent extends Component {
         },
       });
     } catch (err) {
-      notifyError(err.message);
+      this.props.toast({
+        title: err.message,
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
     }
 
     if (this.props.data) {
-      await deleteUserFromLocal();
+      this.props.toast({
+        title: `${this.props.data.productUpdate.data.name} Updated Product`,
+        status: 'success',
+        duration: 2000,
+        isClosable: true,
+      });
 
-      notifySuccess(this.props.data.productUpdate.data.name + ' Added');
-
-      await addUserToLocal(this.props.data.productUpdate.user);
-
-      setTimeout(() => {
-        this.props.router.push('/');
-      }, 2200);
+      this.props.router.push('/');
     }
   };
 
   render() {
-    return (
-      <div className={styles.productUpdate}>
-        <div className={styles.productUpdateMainDiv}>
-          <Form
-            className="form-productUpdate"
-            onSubmit={this.addProductFormSubmit}
-          >
-            <h1 className="h3 mb-3 text-center font-weight-normal">
-              Product Update
-            </h1>
-            <Form.Group>
-              <Form.Label htmlFor="inputName" className="sr-only">
-                Product name
-              </Form.Label>
-              <Form.Control
-                type="text"
-                id={styles.productUpdateName}
-                className="form-control"
-                placeholder="Product name"
-                required
-                value={this.state.name}
-                autoFocus
-                onChange={this.changeInput}
-                name="name"
-              />
-            </Form.Group>
-            <Form.Group>
-              <Form.Label htmlFor="inputEmail" className="sr-only">
-                Product content
-              </Form.Label>
-              <Form.Control
-                type="text"
-                id={styles.productUpdateContent}
-                className="form-control"
-                placeholder="Product content"
-                required
-                value={this.state.content}
-                onChange={this.changeInput}
-                name="content"
-              />
-            </Form.Group>
-            <Form.Group>
-              <Form.Label htmlFor="inputPassword" className="sr-only">
-                Product price
-              </Form.Label>
-              <Form.Control
-                type="number"
-                id={styles.productUpdatePrice}
-                className="form-control"
-                placeholder="Price"
-                name="price"
-                value={this.state.price}
-                required
-                onChange={this.changeInput}
-              />
-            </Form.Group>
-            <Form.Group>
-              <Form.Label htmlFor="inputPassword" className="sr-only">
-                Product category
-              </Form.Label>
-              <Form.Control
-                as="select"
-                className="form-control"
-                placeholder="Category"
-                required
-                name="category"
-                onChange={this.changeInput}
-                defaultValue="Select Category"
-                custom
-              >
-                <option disabled>Select Category</option>
-                {this.props.categoryData.getCategories.map((category) => (
-                  <option name={category.name} key={category._id}>
-                    {category.name}
-                  </option>
-                ))}
-              </Form.Control>
-            </Form.Group>
+    const { categoryData, fileImages, formBgMode } = this.props;
 
-            <Form.Group id={styles.productUpdateImageForm}>
-              <Form.Label
-                htmlFor="inputPassword"
-                className="ml-1"
-                style={{ fontSize: '0.95rem' }}
-              >
-                <strong> Product Image :</strong>
-              </Form.Label>
-              <Form.File
-                onChange={this.fileChangeInput}
-                type="file"
-                name="product_image"
-                label="Choose product picture"
-                data-browse="Choose"
-                multiple
-                custom
-              />
-            </Form.Group>
-            <button className="btn btn-lg btn-primary btn-block" type="submit">
-              Product Update
-            </button>
-          </Form>
-        </div>
-        <ToastContainer
-          position="bottom-right"
-          autoClose={3000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable={false}
-          pauseOnHover={false}
-        />
-      </div>
+    return (
+      <Flex h="100vh" justify="center" align="center">
+        <Flex
+          bg={formBgMode}
+          as="form"
+          onSubmit={this.updateProductFormSubmit}
+          p="12"
+          rounded={6}
+          direction="column"
+        >
+          <Heading textAlign="center" mb={6}>
+            Product Update
+          </Heading>
+          <Input
+            type="text"
+            variant="filled"
+            placeholder="Iphone 10"
+            mb={3}
+            isRequired
+            value={this.state.name}
+            onChange={this.changeInput}
+            name="name"
+          />
+          <Textarea
+            mb={3}
+            placeholder="Product description"
+            resize="both"
+            variant="filled"
+            size="md"
+            isRequired
+            value={this.state.content}
+            onChange={this.changeInput}
+            name="content"
+          />
+          {this.state.priceState ? (
+            <NumberInput
+              defaultValue={this.state.price}
+              min={0}
+              precision={2}
+              step={0.1}
+              mb={3}
+              isRequired
+              variant="filled"
+              rounded={10}
+              name="price"
+              onChange={(valueAsString, valueAsNumber) =>
+                this.changeNumberInput(valueAsString, valueAsNumber)
+              }
+            >
+              <NumberInputField />
+              <NumberInputStepper>
+                <NumberIncrementStepper />
+                <NumberDecrementStepper />
+              </NumberInputStepper>
+            </NumberInput>
+          ) : null}
+          <Select
+            variant="filled"
+            mb={6}
+            placeholder="Select Category"
+            isRequired
+            name="category"
+            onChange={this.changeInput}
+          >
+            {categoryData.getCategories.map((category) => (
+              <option name={category.name} key={category._id}>
+                {category.name}
+              </option>
+            ))}
+          </Select>
+
+          <Center mb={6}>
+            <Input
+              type="file"
+              accept="image/*"
+              multiple
+              d="none"
+              ref={fileImages}
+              onChange={this.fileChangeInput}
+              name="productImage"
+            />
+            <Button
+              colorScheme="red"
+              onClick={() => fileImages.current.click()}
+              w="min"
+              textAlign="center"
+            >
+              Choose Product Images
+            </Button>
+          </Center>
+          <Button colorScheme="teal" type="submit">
+            Product Update
+          </Button>
+        </Flex>
+      </Flex>
     );
   }
 }

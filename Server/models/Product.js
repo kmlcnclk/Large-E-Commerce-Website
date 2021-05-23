@@ -1,45 +1,45 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const slugify = require("slugify");
-const Category = require("./Category");
-const User = require("./User");
+const slugify = require('slugify');
+const Category = require('./Category');
+const User = require('./User');
 mongoose.Promise = global.Promise;
 
 const ProductSchema = new Schema({
   name: {
     type: String,
-    required: [true, "Please enter a product name"],
+    required: [true, 'Please enter a product name'],
     unique: true,
   },
   content: {
     type: String,
-    required: [true, "Please enter a content"],
-    minlength: [20, "Please provide a content at least 20 characters"],
+    required: [true, 'Please enter a content'],
+    minlength: [20, 'Please provide a content at least 20 characters'],
   },
   price: {
     type: Number,
-    required: [true, "Please enter a price"],
+    required: [true, 'Please enter a price'],
   },
   imageUrl: [
     {
       type: String,
-      required: [true, "Please enter a image url"],
+      required: [true, 'Please enter a image url'],
     },
   ],
   category: {
     type: mongoose.Schema.ObjectId,
-    ref: "Category",
+    ref: 'Category',
     required: true,
   },
   user: {
     type: mongoose.Schema.ObjectId,
-    ref: "User",
+    ref: 'User',
     required: true,
   },
   likes: [
     {
       type: mongoose.Schema.ObjectId,
-      ref: "User",
+      ref: 'User',
     },
   ],
   likeCount: {
@@ -53,11 +53,15 @@ const ProductSchema = new Schema({
   slug: {
     type: String,
   },
+  stockState: {
+    type: Boolean,
+    default: true,
+  },
 });
 
 // Name Slug .For example kamilcan-celik
-ProductSchema.pre("save", function (next) {
-  if (!this.isModified("name")) {
+ProductSchema.pre('save', function (next) {
+  if (!this.isModified('name')) {
     next();
   }
   this.slug = this.makeSlug();
@@ -66,15 +70,15 @@ ProductSchema.pre("save", function (next) {
 // Name Slug .For example kamilcan-celik
 ProductSchema.methods.makeSlug = function () {
   return slugify(this.name, {
-    replacement: "-",
+    replacement: '-',
     remove: /[*+~.()'"!:@]/g,
     lower: true,
   });
 };
 
 // Add product to category
-ProductSchema.pre("save", async function (next) {
-  if (!this.isModified("category")) {
+ProductSchema.pre('save', async function (next) {
+  if (!this.isModified('category')) {
     return next();
   }
 
@@ -93,8 +97,8 @@ ProductSchema.pre("save", async function (next) {
 });
 
 // Add product to user
-ProductSchema.pre("save", async function (next) {
-  if (!this.isModified("user")) {
+ProductSchema.pre('save', async function (next) {
+  if (!this.isModified('user')) {
     return next();
   }
 
@@ -119,4 +123,4 @@ ProductSchema.pre("save", async function (next) {
 // module.exports = Product;
 
 module.exports =
-  mongoose.models.Product || mongoose.model("Product", ProductSchema);
+  mongoose.models.Product || mongoose.model('Product', ProductSchema);

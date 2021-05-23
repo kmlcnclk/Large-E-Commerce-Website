@@ -1,5 +1,4 @@
-import { useMutation } from '@apollo/client';
-import Layout from 'Components/Layout';
+import { useLazyQuery, useMutation } from '@apollo/client';
 import Head from 'next/head';
 import React, { useEffect, useState } from 'react';
 import {
@@ -7,47 +6,68 @@ import {
   CREDITCARD,
   ORDERS,
 } from 'GraphQL/Apollo-Client/Mutations/userMutations';
-import { Form } from 'react-bootstrap';
-import CreditCardInput from 'react-credit-card-input';
 import { useRouter } from 'next/router';
-import {
-  addUserToLocal,
-  deleteUserFromLocal,
-  getUserFromLocal,
-} from 'LocalStorage/userStorage';
 import { getAccessTokenFromLocal } from 'LocalStorage/accessTokenStorage';
-import { notifyError, notifySuccess } from 'Components/toolbox/React-Toastify';
 import OrderInformationComponent from 'Components/cart/OrderInformationComponent';
+import { GET_SINGLE_USER } from '../GraphQL/Apollo-Client/Queries/userQuerys';
+import { useToast } from '@chakra-ui/toast';
+import { useColorModeValue } from '@chakra-ui/color-mode';
+import { useColorMode } from '@chakra-ui/color-mode';
 
 function OrderInformation() {
   const router = useRouter();
 
+  const toast = useToast();
+  const formBgMode = useColorModeValue('gray.100', 'gray.700');
+  const { setColorMode } = useColorMode();
+
   const [userAddress, { data: userAddressData }] = useMutation(ADDRESS);
   const [creditCard, { data: creditCardData }] = useMutation(CREDITCARD);
   const [orders, { data: ordersData }] = useMutation(ORDERS);
+  const [getSingleUser, { data: getSingleUserData }] =
+    useLazyQuery(GET_SINGLE_USER);
 
   const [address, setAddress] = useState('');
   const [cardNumber, setCardNumber] = useState('');
   const [cardExpiry, setCardExpiry] = useState('');
   const [cardCVC, setCardCVC] = useState('');
+  const [nameOnTheCard, setNameOnTheCard] = useState('');
   const [infoState, setInfoState] = useState(false);
 
   useEffect(() => {
     router.prefetch('/');
-
-    if (getUserFromLocal()[0]) {
+    setColorMode('light');
+    if (getAccessTokenFromLocal()[0]) {
+      const user = async () => {
+        const token = await getAccessTokenFromLocal()[0];
+        try {
+          await getSingleUser({
+            variables: {
+              access_token: token ? token : '',
+            },
+          });
+        } catch (err) {
+          toast({
+            title: err.message,
+            status: 'error',
+            duration: 3000,
+            isClosable: true,
+          });
+        }
+      };
+      user();
       setInfoState(true);
     } else {
       router.push('/');
     }
-  }, [router, setInfoState]);
+  }, [router, setInfoState, toast, setColorMode]);
 
   return (
-    <Layout>
+    <React.Fragment>
       <Head>
-        <title>Order Info</title>
+        <title>Large &bull; Order Info</title>
       </Head>
-      {infoState ? (
+      {infoState && getSingleUserData ? (
         <OrderInformationComponent
           userAddress={userAddress}
           userAddressData={userAddressData}
@@ -63,9 +83,14 @@ function OrderInformation() {
           setCardExpiry={setCardExpiry}
           cardCVC={cardCVC}
           setCardCVC={setCardCVC}
+          getSingleUserData={getSingleUserData}
+          toast={toast}
+          formBgMode={formBgMode}
+          nameOnTheCard={nameOnTheCard}
+          setNameOnTheCard={setNameOnTheCard}
         />
       ) : null}
-    </Layout>
+    </React.Fragment>
   );
 }
 

@@ -1,7 +1,8 @@
+import { Button } from '@chakra-ui/button';
+import { Input } from '@chakra-ui/input';
+import { Heading } from '@chakra-ui/layout';
+import { Flex } from '@chakra-ui/layout';
 import React, { Component } from 'react';
-import { ToastContainer } from 'react-toastify';
-import styles from 'styles/ResetPassword.module.css';
-import { notifyError, notifySuccess } from '../toolbox/React-Toastify';
 
 class ResetPasswordComponent extends Component {
   state = {
@@ -21,18 +22,31 @@ class ResetPasswordComponent extends Component {
           },
         });
       } catch (err) {
-        notifyError(err.message);
+        this.props.toast({
+          title: err.message,
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+        });
       }
 
       if (this.props.data) {
-        notifySuccess(this.props.data.resetPassword.message);
+        this.props.toast({
+          title: this.props.data.resetPassword.message,
+          status: 'success',
+          duration: 2000,
+          isClosable: true,
+        });
 
-        setTimeout(() => {
-          this.props.router.push('/login');
-        }, 2200);
+        this.props.router.push('/login');
       }
     } else {
-      notifyError('The passwords you entered do not match');
+      this.props.toast({
+        title: 'The passwords you entered do not match',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
     }
 
     this.setState({ password: '' });
@@ -46,56 +60,46 @@ class ResetPasswordComponent extends Component {
   };
 
   render() {
+    const { formBgMode } = this.props;
+
     return (
-      <div className={styles.resetPassword}>
-        <div className={styles.resetPasswordMainDiv}>
-          <form
-            className={styles.formResetPassword}
-            onSubmit={this.resetPassword}
-          >
-            <h1 className="h3 mb-3 font-font-weight-normal">Reset password</h1>
-            <label htmlFor="resetPasswordPassword" className="sr-only">
-              New Password
-            </label>
-            <input
-              type="password"
-              id={styles.resetPasswordPassword}
-              className="form-control"
-              placeholder="Your new password"
-              required
-              autoFocus
-              value={this.state.password}
-              onChange={this.changeInput}
-              name="password"
-            />
-            <input
-              type="password"
-              id={styles.resetPasswordRepeatPassword}
-              className="form-control"
-              placeholder="Repeat your new password"
-              required
-              autoFocus
-              value={this.state.passwordRepeat}
-              onChange={this.changeInput}
-              name="passwordRepeat"
-            />
-            <button className="btn btn-lg btn-primary btn-block" type="submit">
-              Reset your password
-            </button>
-          </form>
-        </div>
-        <ToastContainer
-          position="bottom-right"
-          autoClose={3000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable={false}
-          pauseOnHover={false}
-        />
-      </div>
+      <Flex h="100vh" justify="center" align="center">
+        <Flex
+          bg={formBgMode}
+          direction="column"
+          as="form"
+          rounded={6}
+          p="12"
+          onSubmit={this.resetPassword}
+        >
+          <Heading textAlign="center" mb={6}>
+            Reset Password
+          </Heading>
+          <Input
+            type="password"
+            variant="filled"
+            placeholder="******"
+            mb={6}
+            isRequired
+            value={this.state.password}
+            onChange={this.changeInput}
+            name="password"
+          />
+          <Input
+            type="password"
+            variant="filled"
+            placeholder="******"
+            mb={6}
+            isRequired
+            value={this.state.passwordRepeat}
+            onChange={this.changeInput}
+            name="passwordRepeat"
+          />
+          <Button colorScheme="teal" type="submit">
+            Reset Password
+          </Button>
+        </Flex>
+      </Flex>
     );
   }
 }

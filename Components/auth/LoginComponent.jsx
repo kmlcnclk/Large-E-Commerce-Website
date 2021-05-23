@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
-import styles from '../../styles/Login.module.css';
 import Link from 'next/link';
-import { ToastContainer, toast } from 'react-toastify';
-import { addUserToLocal } from '../../LocalStorage/userStorage';
 import { addAccessTokenToLocal } from '../../LocalStorage/accessTokenStorage';
-import { notifyError, notifySuccess } from 'Components/toolbox/React-Toastify';
+import { Flex, Heading, Input, Button, Text } from '@chakra-ui/react';
 
 class LoginComponent extends Component {
   componentDidMount = () => {
@@ -22,80 +19,86 @@ class LoginComponent extends Component {
         },
       });
     } catch (err) {
-      notifyError(err.message);
+      this.props.toast({
+        title: err.message,
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
     }
 
     if (this.props.data) {
-      await addUserToLocal(this.props.data.login.data);
       await addAccessTokenToLocal(
         `Bearer: ${this.props.data.login.access_token}`
       );
 
-      notifySuccess('Your login is successful');
+      this.props.toast({
+        title: 'Your login is successful',
+        status: 'success',
+        duration: 2000,
+        isClosable: true,
+      });
 
-      setTimeout(() => {
-        this.props.router.push('/');
-      }, 2400);
+      this.props.router.push('/');
     }
   };
 
   render() {
+    const { formBgMode } = this.props;
+
     return (
-      <div className={styles.login}>
-        <div className={styles.loginMainDiv}>
-          <form className="form-signin" onSubmit={this.loginFormSubmit}>
-            <h1 className="h3 mb-3 font-weight-normal">Please login</h1>
-            <label htmlFor="inputEmail" className="sr-only">
-              Email address
-            </label>
-            <input
-              type="email"
-              id={styles.loginEmail}
-              className="form-control"
-              placeholder="Email address"
-              required
-              autoFocus
-              value={this.props.email}
-              onChange={(e) => this.props.setEmail(e.target.value)}
-              name="email"
-            />
-            <label htmlFor="inputPassword" className="sr-only">
-              Password
-            </label>
-            <input
-              type="password"
-              id={styles.loginPassword}
-              className="form-control"
-              placeholder="Password"
-              name="password"
-              required
-              value={this.props.password}
-              onChange={(e) => this.props.setPassword(e.target.value)}
-            />
-            <div className="checkbox mb-3">
-              <Link href="/forgotPassword">
-                <a style={{ textDecoration: 'none', cursor: 'pointer' }}>
-                  Forgot password ?
-                </a>
-              </Link>
-            </div>
-            <button className="btn btn-lg btn-primary btn-block" type="submit">
-              Login
-            </button>
-          </form>
-        </div>
-        <ToastContainer
-          position="bottom-right"
-          autoClose={3000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable={false}
-          pauseOnHover={false}
-        />
-      </div>
+      <Flex h="100vh" align="center" justify="center">
+        <Flex
+          bg={formBgMode}
+          p="12"
+          as="form"
+          onSubmit={this.loginFormSubmit}
+          direction="column"
+          rounded={6}
+        >
+          <Heading mb={6} textAlign="center">
+            Log in
+          </Heading>
+          <Input
+            type="email"
+            placeholder="large@gmail.com"
+            mb={3}
+            variant="filled"
+            isRequired
+            value={this.props.email}
+            onChange={(e) => this.props.setEmail(e.target.value)}
+            name="email"
+          />
+          <Input
+            type="password"
+            placeholder="******"
+            mb={3}
+            variant="filled"
+            isRequired
+            name="password"
+            value={this.props.password}
+            onChange={(e) => this.props.setPassword(e.target.value)}
+          />
+
+          <Link href="/forgotPassword">
+            <Text
+              as="span"
+              cursor="pointer"
+              fontSize="sm"
+              textAlign="center"
+              mb={6}
+              bg={formBgMode}
+              _hover={{ textDecoration: 'underline' }}
+            >
+              Forgot password ?
+            </Text>
+          </Link>
+
+          <Button type="submit" colorScheme="teal">
+            Log in
+          </Button>
+        </Flex>
+      </Flex>
     );
   }
 }

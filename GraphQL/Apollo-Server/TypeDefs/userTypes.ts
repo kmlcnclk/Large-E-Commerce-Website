@@ -6,7 +6,7 @@ export const UserTypes = gql`
     email: String!
     _id: String!
     products: [Product]
-    password: String!
+    password: String
     productCount: Int
     role: String
     slug: String
@@ -174,18 +174,13 @@ export const UserTypes = gql`
     data: [MyOrdersData]!
   }
 
-  type MyLikesProductData {
-    product: MyLikesProduct
-  }
-
-  type MyLikesProduct {
-    name: String
-    imageUrl: String
-    price: Float
-  }
-
   type GetMyLikesProduct {
     success: Boolean
-    data: [MyLikesProductData]!
+    data: [Product]!
+  }
+
+  type GetSingleUser {
+    success: Boolean
+    data: User
   }
 `;

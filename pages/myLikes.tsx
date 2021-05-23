@@ -7,9 +7,13 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { initializeApollo } from 'src/apollo';
 import MyLikesComponent from 'Components/products/MyLikesComponent';
+import { useToast } from '@chakra-ui/toast';
+import { useColorModeValue } from '@chakra-ui/color-mode';
 
 function MyLikes() {
   const router = useRouter();
+  const toast = useToast();
+  const priceColor = useColorModeValue('gray.600', 'gray.200');
 
   const [getMyLikesProduct, { data }] = useLazyQuery(GET_MY_LIKES_PRODUCT);
 
@@ -18,20 +22,38 @@ function MyLikes() {
   useEffect(() => {
     router.prefetch('/');
 
+    const user = async () => {
+      try {
+        await getMyLikesProduct({
+          variables: {
+            access_token: await getAccessTokenFromLocal()[0],
+          },
+        });
+      } catch (err) {
+        toast({
+          title: err.message,
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+        });
+      }
+    };
+
     if (getAccessTokenFromLocal()[0]) {
+      user();
       setLikeProduct(true);
     } else {
       router.push('/');
     }
-  }, [router, setLikeProduct]);
+  }, [router, setLikeProduct, toast, getMyLikesProduct]);
 
   return (
     <Layout>
       <Head>
-        <title>My Likes</title>
+        <title>Large &bull; My Likes</title>
       </Head>
-      {likeProduct ? (
-        <MyLikesComponent getMyLikesProduct={getMyLikesProduct} data={data} />
+      {likeProduct && data ? (
+        <MyLikesComponent data={data} priceColor={priceColor} />
       ) : null}
     </Layout>
   );

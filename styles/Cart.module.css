@@ -1,120 +1,37 @@
-.cartCard {
+.parent {
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.child1 {
+  width: 70%;
+}
+
+.child2 {
   width: auto;
-  height: auto;
 }
 
-.totalProductCart {
-  margin-left: 1rem;
+.childImg {
+  width: 80%;
+  height: 80%;
 }
 
-.cartImage {
-  width: 14rem;
-  height: auto;
-  display: block;
-  margin: 1rem;
-  object-fit: contain;
-  border-radius: 5px;
-}
-.cardProductDiv {
-  width: 100%;
-  /* height: 15.5rem; */
-}
-
-.cartMainDiv {
-  justify-content: space-between;
-  display: flex;
-  padding-left: 2rem;
-  padding-right: 2rem;
-}
-
-.totalCartDiv {
-  height: auto;
-}
-
-.cartCartCount {
-  margin: 1rem;
-}
-
-.cartAddOrRemoveQuantity {
-  text-align: right;
-  font-size: 1.3rem;
-  justify-content: space-between;
-  margin-top: 1rem;
-  display: flex;
-}
-
-.cartCartQuantityBadge {
-  background-color: #ffdd00;
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-.cartCartCountText {
-  font-weight: bold;
-  display: inline;
-}
-
-.cartCartCountNumber {
-  display: inline;
-  text-align: center;
-  background-color: #ffdd00;
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-.cartCartPrice {
-  margin: 1rem;
-}
-
-.cartCartPriceText {
-  font-weight: bold;
-  display: inline;
-}
-
-.cartCartPriceNumber {
-  display: inline;
-  text-align: center;
-  background-color: #ffdd00;
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-@media only screen and (max-width: 1199px) {
-  .cartImage {
-    width: 86%;
-    height: auto;
+@media screen and (max-width: 991px) {
+  .parent {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
-}
-
-@media only screen and (max-width: 991px) {
-  .cardProductDiv {
-    width: 100%;
-    display: block;
-    height: auto;
+  .child1,
+  .child2 {
+    width: 90%;
   }
-  .totalProductCart {
-    display: block;
-    margin-left: 0rem;
+  .child2 {
+    text-align: center;
   }
-  .cartMainDiv {
-    padding-left: 0rem;
-    padding-right: 0rem;
-    display: block;
-  }
-  .cartAddOrRemoveQuantity {
-    text-align: right;
-    font-size: 1.3rem;
-    justify-content: space-between;
-    margin-top: 1rem;
-    display: flex;
-  }
-  .cartImage {
-    width: 86%;
-    height: auto;
-  }
-}
-
-@media only screen and (max-width: 767px) {
-  .cartImage {
-    width: 85%;
-    height: 85%;
-    margin-top: 2rem;
+  .childImg {
+    width: 90%;
+    height: 90%;
   }
 }

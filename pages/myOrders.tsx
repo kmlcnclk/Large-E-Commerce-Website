@@ -7,9 +7,15 @@ import React, { useEffect, useState } from 'react';
 import { GET_MY_ORDERS } from '../GraphQL/Apollo-Client/Queries/userQuerys';
 import MyOrdersComponent from 'Components/products/MyOrdersComponent';
 import { initializeApollo } from 'src/apollo';
+import { useToast } from '@chakra-ui/toast';
+import { useColorModeValue } from '@chakra-ui/color-mode';
 
 function MyOrders() {
   const router = useRouter();
+
+  const toast = useToast();
+
+  const priceColor = useColorModeValue('gray.600', 'gray.200');
 
   const [orderState, setOrderState] = useState(false);
 
@@ -27,10 +33,15 @@ function MyOrders() {
   return (
     <Layout>
       <Head>
-        <title>My Orders</title>
+        <title>Large &bull; My Orders</title>
       </Head>
       {orderState ? (
-        <MyOrdersComponent getMyOrders={getMyOrders} data={data} />
+        <MyOrdersComponent
+          getMyOrders={getMyOrders}
+          data={data}
+          toast={toast}
+          priceColor={priceColor}
+        />
       ) : null}
     </Layout>
   );

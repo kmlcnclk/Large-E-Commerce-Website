@@ -1,149 +1,44 @@
-.profileMainDiv {
-  width: 90%;
-}
-.profileMainDiv,
-.profileMainProductDiv3,
-.profileMainCartDiv3 {
-  margin-right: auto;
-  margin-left: auto;
-  border-radius: 0.5rem;
-}
-.profileMainCartDiv1,
-.profileMainCartDiv2,
-.profileMainProductDiv1,
-.profileMainProductDiv2 {
-  width: 80%;
-  margin-right: auto;
-  margin-left: auto;
-  border-radius: 0.5rem;
-  font-size: 1.5rem;
-  text-align: center;
-  cursor: pointer;
-  padding: 1rem;
-  margin-bottom: 8px;
+.parent {
+  flex-direction: row;
+  justify-content: center;
+  align-items: start;
 }
 
-.profileMainCartDiv2,
-.profileMainProductDiv2 {
-  color: #575757;
-  background-color: #bcac9a;
-}
-
-.profileMainCartDiv3,
-.profileMainProductDiv3 {
-  width: 80%;
-  background-color: #bcac9a;
-}
-.profileMainProductDiv3 {
-  margin-bottom: 1rem;
-}
-
-.productDiv,
-.cartDiv {
-  margin: 2rem;
-  margin-left: 2.4rem;
-  margin-right: 2.4rem;
-  width: 100%;
-}
-
-.profileChildDiv1 {
-  display: flex;
-}
-
-.profileChildDiv2 {
-  margin-top: 4rem;
-}
-.profileNameDiv {
-  text-align: center;
-  margin-left: 6rem;
-  display: inline-block;
-}
-.profileNameH {
-  margin-top: 1rem;
-}
-
-.profileNameAndBtn {
-  height: 3rem;
-}
-.profileEditProfileBtn {
-  margin-left: 3rem;
-  margin-bottom: 1rem;
-  display: inline-block;
-}
-.profileImgDiv {
-  margin: 2rem;
-  margin-left: 6rem;
-}
 .profileImg {
   width: 200px;
   height: 200px;
-  border-radius: 100px;
-  object-fit: cover;
+  border-radius: 100%;
+  object-fit: contain;
 }
 
-.profileCartCount {
-  margin-top: 3rem;
-  margin-left: 5rem;
+.child1 {
+  width: 30%;
 }
-.profileCartMainDiv {
-  margin-left: 1rem;
-}
-
-.pencil {
-  cursor: pointer;
-  /* display: inline-block; */
-  text-align: center;
+.child2 {
+  width: 60%;
+  margin-left: 2rem;
 }
 
-@media only screen and (max-width: 991px) {
-  .profileChildDiv1 {
-    display: block;
-  }
-  .profileMainDiv {
-    text-align: center;
-  }
-  .profileNameDiv {
-    text-align: center;
-    margin-left: 0rem;
-    display: inline-block;
-  }
+.childBox1,
+.childBox2 {
+  padding: 1.5rem;
+}
 
-  .profileImgDiv {
-    margin: 2rem;
+@media screen and (max-width: 991px) {
+  .parent {
+    flex-direction: column;
+    align-items: center;
   }
-  .profileCartCount {
-    margin-top: 3rem;
-    margin-left: 0rem;
-  }
-  .profileCartMainDiv {
-    display: inline-block;
-    margin-left: 0rem;
-  }
-  .profileCartCount {
-    display: inline-block;
-  }
-  .profileMainCartDiv1,
-  .profileMainCartDiv2,
-  .profileMainProductDiv1,
-  .profileMainProductDiv2,
-  .profileMainCartDiv3,
-  .profileMainProductDiv3 {
+  .child1,
+  .child2 {
     width: 90%;
   }
-  .productDiv,
-  .cartDiv {
-    margin: 0.1rem;
+  .child2 {
+    margin-top: 1rem;
+    margin-left: 0rem;
   }
-}
-
-@media screen and (max-width: 450px) {
-  .profileMainCartDiv1,
-  .profileMainCartDiv2,
-  .profileMainProductDiv1,
-  .profileMainProductDiv2,
-  .profileMainCartDiv3,
-  .profileMainProductDiv3,
-  .profileMainDiv {
-    width: 100%;
+  .childBox1,
+  .childBox2 {
+    padding: 0.5rem;
   }
 }

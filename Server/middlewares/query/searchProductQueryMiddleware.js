@@ -18,7 +18,7 @@ const searchProductQueryMiddleware = asyncHandler(async function (
 ) {
   let query;
 
-  query = model.find();
+  query = model.find({ stockState: true });
 
   query = searchHelper('name', query, slug);
 
@@ -28,7 +28,7 @@ const searchProductQueryMiddleware = asyncHandler(async function (
 
   query = productSortHelper(query, '');
 
-  const a = await model.find();
+  const a = await model.find({ stockState: true });
 
   var b = [];
 

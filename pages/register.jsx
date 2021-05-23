@@ -1,15 +1,23 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { REGISTER_MUTATION } from '../GraphQL/Apollo-Client/Mutations/userMutations';
 // import { initializeApollo } from 'src/apollo';
 // import { buildUrl } from 'cloudinary-build-url';
-import { useLazyQuery, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { useRouter } from 'next/router';
 import RegisterComponent from '../Components/auth/RegisterComponent';
 import Head from 'next/head';
 // import { CLOUDINARY_PROFILE_IMAGE } from '../GraphQL/Apollo-Client/Queries/userQuerys';
+import { useToast } from '@chakra-ui/toast';
+import { useColorModeValue } from '@chakra-ui/color-mode';
 
 function Register() {
   const router = useRouter();
+
+  const toast = useToast();
+
+  const fileInput = useRef(null);
+
+  const formBgMode = useColorModeValue('gray.100', 'gray.700');
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -25,7 +33,7 @@ function Register() {
   return (
     <React.Fragment>
       <Head>
-        <title>Register</title>
+        <title>Large &bull; Register</title>
       </Head>
 
       <RegisterComponent
@@ -40,6 +48,9 @@ function Register() {
         setImageDrop={setImageDrop}
         register={register}
         data={data}
+        toast={toast}
+        fileInput={fileInput}
+        formBgMode={formBgMode}
         // cloudinaryProfileImage={cloudinaryProfileImage}
         // cloudinaryProfileImageData={cloudinaryProfileImageData}
       />

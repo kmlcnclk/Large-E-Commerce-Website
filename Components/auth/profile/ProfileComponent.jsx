@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import styles from 'styles/Profile.module.css';
-import styles1 from 'styles/ProductCard.module.css';
 import Link from 'next/link';
-import { RiShoppingCartLine } from 'react-icons/ri';
 import ProfileImage from './ProfileImage';
 import Image from 'next/image';
 import { getAccessTokenFromLocal } from 'LocalStorage/accessTokenStorage';
-import { notifyError, notifySuccess } from 'Components/toolbox/React-Toastify';
-import { addUserToLocal, deleteUserFromLocal } from 'LocalStorage/userStorage';
+import { Badge, Box, Flex, Heading, SimpleGrid, Text } from '@chakra-ui/layout';
+import { Button } from '@chakra-ui/button';
+import { Collapse } from '@chakra-ui/transition';
 
 class ProfileComponent extends Component {
   state = {
@@ -47,16 +46,24 @@ class ProfileComponent extends Component {
         },
       });
     } catch (err) {
-      notifyError(err.message);
+      this.props.toast({
+        title: err.message,
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
     }
 
     if (this.props.productDeleteData) {
-      await deleteUserFromLocal();
-      notifySuccess(this.props.productDeleteData.productDelete.message);
-      await addUserToLocal(this.props.productDeleteData.productDelete.user);
+      this.props.toast({
+        title: this.props.productDeleteData.productDelete.message,
+        status: 'success',
+        duration: 2000,
+        isClosable: true,
+      });
 
       setTimeout(() => {
-        window.location.reload();
+        this.props.router.reload();
       }, 2200);
     }
   };
@@ -68,234 +75,391 @@ class ProfileComponent extends Component {
       userCartState2,
       userProductState1,
       userProductState2,
+      isOpenCart,
+      isOpenProduct,
+      onToggleCart,
+      onToggleProduct,
+      priceColor,
     } = this.props;
+
+    const cart = [...user.cart];
+    const products = [...user.products];
+
     return (
-      <div>
-        <div>
-          <div className={`border mt-2 ${styles.profileMainDiv}`}>
-            <div className={`${styles.profileChildDiv1}`}>
-              <ProfileImage profileImageStatic={user.profile_image} />
-              <div className={`${styles.profileChildDiv2}`}>
-                <div className={`${styles.profileNameAndBtn}`}>
-                  <div className={`${styles.profileNameDiv}`}>
-                    <h4 className={`${styles.profileNameH}`}>
-                      <strong>{user.name}</strong>
-                    </h4>
-                  </div>
-
-                  <Link href="/profileEdit">
-                    <a
-                      className={`btn btn-danger btn-sm ${styles.profileEditProfileBtn}`}
-                    >
-                      Edit profile
-                    </a>
-                  </Link>
-                </div>
-                <div className={`${styles.profileCartCount}`}>
-                  <div className={`${styles.profileCartMainDiv}`}>
-                    <div className="d-inline-block">
-                      <Link href="/cart">
-                        <a style={{ color: 'black' }}>
-                          <RiShoppingCartLine
-                            style={{
-                              padding: '1px',
-                              cursor: 'pointer',
-                              marginBottom: '0.5rem',
-                            }}
-                            size={23}
-                          />
-                        </a>
-                      </Link>
-                    </div>
-                    <div
-                      className="d-inline-block"
-                      style={{ marginLeft: '0.5rem' }}
-                    >
-                      <strong> {user.cartCount}</strong>
-                    </div>
-
-                    <div
-                      className={`d-inline-block ml-5 ${styles.profileCartMainDiv}`}
-                    >
-                      <div className="d-inline-block">
-                        <strong>Your products:</strong>
-                      </div>
-                      <div
-                        className="d-inline-block"
-                        style={{ marginLeft: '0.5rem' }}
-                      >
-                        <strong> {user.productCount}</strong>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            onClick={this.profileCartVisible}
-            id="profileCartVisible"
-            className={`border mt-2 d-block justify-content-center ${
-              userCartState1
-                ? styles.profileMainCartDiv2
-                : styles.profileMainCartDiv1
-            }`}
+      <Flex className={styles.parent} mt={5} mb={5}>
+        <Box className={styles.child1}>
+          <Box
+            className={styles.childBox2}
+            borderWidth="1px"
+            w="100%"
+            borderRadius="3xl"
           >
-            <strong>Your Cart</strong>
-          </div>
-          {userCartState1 ? (
-            <div>
-              {userCartState2 ? (
-                <div
-                  id="profileCartVisible"
-                  className={`border mt-2 d-block justify-content-center ${styles.profileMainCartDiv2}`}
-                >
-                  <strong>Empty Your Cart</strong>
-                </div>
-              ) : (
-                <div
-                  className={`border mt-2 d-flex justify-content-center ${styles.profileMainCartDiv3}`}
-                >
-                  <div className={styles.cartDiv}>
-                    {user.cart.map((cartItem) => (
-                      <div
-                        key={cartItem.product._id}
-                        className={`card ${styles1.card}`}
-                        style={{
-                          display: 'inline-block',
-                          borderRadius: '1rem',
-                          backgroundColor: '#f2f2f2',
-                        }}
-                      >
-                        <div
-                          className={styles1.imgMarginTop}
-                          style={{ padding: '0.5rem' }}
-                        >
-                          <Image
-                            src={cartItem.product.imageUrl[0]}
-                            className={`img ${styles1.img}`}
-                            width={800}
-                            height={800}
-                            alt="..."
-                          />
-                        </div>
+            <Flex direction="column" w="100%" justify="center" align="center">
+              <Flex justify="center" w="100%" direction="column" align="center">
+                <ProfileImage profileImageStatic={user.profile_image} />
 
-                        <div className={`card-body ${styles1.cardBody}`}>
-                          <h5 className={`card-title ${styles1.cardTitle}`}>
-                            <div className={`${styles1.titleName}`}>
-                              {cartItem.product.name}
-                            </div>
-                            <br />
-                            <div className={`${styles1.price}`}>
-                              $ {parseFloat(cartItem.product.price).toFixed(2)}
-                            </div>
-                          </h5>
-                          <p className={`card-text ${styles1.cardText}`}>
-                            {cartItem.product.content}
-                          </p>
-                          <Link href={`/product/${cartItem.product.slug}`}>
-                            <a
-                              className="btn btn-block btn-primary"
-                              style={{ fontSize: '0.9rem' }}
-                            >
-                              <strong>Go to Product</strong>
-                            </a>
-                          </Link>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          ) : null}
-          <div
-            onClick={this.profileProductVisible}
-            className={`border mt-2 d-block justify-content-center ${
-              userProductState1
-                ? styles.profileMainProductDiv2
-                : styles.profileMainProductDiv1
-            }`}
+                <Heading
+                  m={3}
+                  textAlign="center"
+                  color="teal.500"
+                  fontWeight="semibold"
+                  size="md"
+                >
+                  {user.name}
+                </Heading>
+
+                <Link href="/profileEdit">
+                  <Button m={3} colorScheme="red" w="60%">
+                    Edit profile
+                  </Button>
+                </Link>
+
+                <Box textAlign="center" mb={3}>
+                  <Box mt={3}>
+                    <Heading size="sm" d="block">
+                      &bull; Cart &bull;
+                    </Heading>
+                    <Box d="block" mt={2}>
+                      <Badge rounded="full" colorScheme="red">
+                        <Heading fontWeight="bold" m={2} size="md">
+                          {user.cartCount}
+                        </Heading>
+                      </Badge>
+                    </Box>
+                  </Box>
+
+                  <Box d="block" mt={3}>
+                    <Heading size="sm" d="block">
+                      &bull; Products &bull;
+                    </Heading>
+
+                    <Badge mt={2} colorScheme="red" rounded="full">
+                      <Heading fontWeight="bold" m={2} size="md">
+                        {user.productCount}
+                      </Heading>
+                    </Badge>
+                  </Box>
+                </Box>
+              </Flex>
+            </Flex>
+          </Box>
+        </Box>
+        <Box className={styles.child2}>
+          <Box
+            className={styles.childBox2}
+            borderWidth="1px"
+            w="100%"
+            borderRadius="3xl"
           >
-            <strong>Your Products</strong>
-          </div>
-          {userProductState1 ? (
-            <div>
-              {userProductState2 ? (
-                <div
-                  onClick={this.profileProductVisible}
-                  className={`border mt-2 d-block justify-content-center ${styles.profileMainProductDiv2}`}
-                >
-                  <strong>You Have No Products</strong>
-                </div>
-              ) : (
-                <div
-                  className={`border mt-2 d-flex justify-content-center ${styles.profileMainProductDiv3}`}
-                >
-                  <div className={styles.productDiv}>
-                    {user.products.map((product) => (
-                      <div
-                        key={product._id}
-                        className={`card ${styles1.card}`}
-                        style={{
-                          display: 'inline-block',
-                          borderRadius: '1rem',
-                          backgroundColor: '#f2f2f2',
-                        }}
-                      >
-                        <div
-                          className={styles1.imgMarginTop}
-                          style={{ padding: '0.5rem' }}
-                        >
-                          <Image
-                            src={product.imageUrl[0]}
-                            className={`img ${styles1.img}`}
-                            width={800}
-                            height={800}
-                            alt="..."
-                          />
-                        </div>
-                        <div className={`card-body ${styles1.cardBody}`}>
-                          <h5 className={`card-title ${styles1.cardTitle}`}>
-                            <div className={`${styles1.titleName}`}>
-                              {product.name}
-                            </div>
-                            <br />
-                            <div className={`${styles1.price}`}>
-                              $ {parseFloat(product.price).toFixed(2)}
-                            </div>
-                          </h5>
-                          <p className={`card-text ${styles1.cardText}`}>
-                            {product.content}
-                          </p>
-                          <Link href={`/productUpdate/${product.slug}`}>
-                            <a
-                              className="btn btn-block btn-primary"
-                              style={{ fontSize: '0.9rem' }}
-                            >
-                              <strong>Go to Product Update</strong>
-                            </a>
-                          </Link>
-                          <button
-                            className="btn btn-block btn-danger"
-                            style={{
-                              fontSize: '0.9rem',
-                              marginTop: '0.7rem',
-                            }}
-                            onClick={() => this.deleteProductBtn(product._id)}
+            <Flex justify="center" w="100%" align="center">
+              <SimpleGrid w="100%" columns={{ sm: 1, md: 2, lg: 2 }}>
+                <Box m={2}>
+                  <Heading
+                    textAlign="center"
+                    onClick={() => {
+                      onToggleCart();
+                      this.profileCartVisible();
+                    }}
+                    size="md"
+                    mt={3}
+                    cursor="pointer"
+                    mb={3}
+                    color="red.500"
+                    _hover={{
+                      bg: 'red.500',
+                      color: 'white',
+                      rounded: '3xl',
+                      p: 2,
+                      mt: 1,
+                      mb: 0,
+                    }}
+                  >
+                    &bull; Your Cart &bull;
+                  </Heading>
+                  <Collapse in={isOpenCart} animateOpacity>
+                    {userCartState1 ? (
+                      <Box>
+                        {userCartState2 ? (
+                          <Flex
+                            p="40px"
+                            color="white"
+                            mt="4"
+                            bg="teal.500"
+                            rounded="md"
+                            shadow="md"
+                            justify="center"
+                            align="center"
                           >
-                            <strong>Delete Product</strong>
-                          </button>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          ) : null}
-        </div>
-      </div>
+                            <Heading size="sm">Empty Your Cart</Heading>
+                          </Flex>
+                        ) : (
+                          <SimpleGrid
+                            columns={{ md: 1, lg: 1 }}
+                            pt={1}
+                            w="100%"
+                            pb={1}
+                            mt="4"
+                          >
+                            {cart.reverse().map((cartItem) => (
+                              <Box
+                                key={cartItem.product._id}
+                                mt={3}
+                                mb={3}
+                                borderWidth="1px"
+                                shadow="md"
+                                borderRadius="xl"
+                                overflow="hidden"
+                              >
+                                <Box
+                                  textAlign="center"
+                                  width="auto"
+                                  m={2}
+                                  mt={5}
+                                >
+                                  <Image
+                                    objectFit="contain"
+                                    width={'auto'}
+                                    height={'auto'}
+                                    src={cartItem.product.imageUrl[0]}
+                                  />
+                                </Box>
+                                <Box p={4}>
+                                  <Box
+                                    d="flex"
+                                    justifyContent="space-between"
+                                    alignItems="center"
+                                  >
+                                    {Date.now() -
+                                      new Date(
+                                        cartItem.product.createAt
+                                      ).getTime() <
+                                    604800000 ? (
+                                      <Badge
+                                        borderRadius="full"
+                                        m={2}
+                                        px={2}
+                                        colorScheme="teal"
+                                      >
+                                        New
+                                      </Badge>
+                                    ) : null}
+
+                                    <Box
+                                      fontWeight="bold"
+                                      color={priceColor}
+                                      m={1}
+                                      mr={2}
+                                    >
+                                      ${' '}
+                                      {parseFloat(
+                                        cartItem.product.price
+                                      ).toFixed(2)}
+                                    </Box>
+                                  </Box>
+
+                                  <Heading
+                                    m={2}
+                                    fontWeight="semibold"
+                                    size="md"
+                                    lineHeight="taller"
+                                    isTruncated
+                                  >
+                                    {cartItem.product.name}
+                                  </Heading>
+                                  <Text
+                                    m={2}
+                                    mb={4}
+                                    lineHeight="taller"
+                                    isTruncated
+                                  >
+                                    {cartItem.product.content}
+                                  </Text>
+
+                                  <Flex
+                                    m={2}
+                                    mb={1}
+                                    justify="center"
+                                    align="center"
+                                  >
+                                    <Link
+                                      href={`/product/${cartItem.product.slug}`}
+                                    >
+                                      <Button w="100%" colorScheme="teal">
+                                        Go to Product
+                                      </Button>
+                                    </Link>
+                                  </Flex>
+                                </Box>
+                              </Box>
+                            ))}
+                          </SimpleGrid>
+                        )}
+                      </Box>
+                    ) : null}
+                  </Collapse>
+                </Box>
+                <Box m={2}>
+                  <Heading
+                    size="md"
+                    textAlign="center"
+                    mt={3}
+                    mb={3}
+                    cursor="pointer"
+                    onClick={() => {
+                      this.profileProductVisible();
+                      onToggleProduct();
+                    }}
+                    color="red.500"
+                    _hover={{
+                      bg: 'red.500',
+                      color: 'white',
+                      rounded: '3xl',
+                      p: 2,
+                      mt: 1,
+                      mb: 0,
+                    }}
+                  >
+                    &bull; Your Products &bull;
+                  </Heading>
+
+                  <Collapse in={isOpenProduct} animateOpacity>
+                    {userProductState1 ? (
+                      <Box w="100%">
+                        {userProductState2 ? (
+                          <Flex
+                            p="40px"
+                            color="white"
+                            mt="4"
+                            bg="teal.500"
+                            rounded="md"
+                            shadow="md"
+                            justify="center"
+                            align="center"
+                          >
+                            <Heading size="sm">You Have No Products</Heading>
+                          </Flex>
+                        ) : (
+                          <SimpleGrid
+                            columns={{ md: 1, lg: 1 }}
+                            pt={1}
+                            w="100%"
+                            pb={1}
+                            mt="4"
+                          >
+                            {products.reverse().map((product) => (
+                              <Box
+                                key={product._id}
+                                mt={3}
+                                mb={3}
+                                borderWidth="1px"
+                                shadow="md"
+                                borderRadius="xl"
+                                overflow="hidden"
+                              >
+                                <Box
+                                  textAlign="center"
+                                  width="auto"
+                                  m={2}
+                                  mt={5}
+                                >
+                                  <Image
+                                    objectFit="contain"
+                                    width={'auto'}
+                                    height={'auto'}
+                                    src={product.imageUrl[0]}
+                                  />
+                                </Box>
+                                <Box p={4}>
+                                  <Box
+                                    d="flex"
+                                    justifyContent="space-between"
+                                    alignItems="center"
+                                  >
+                                    {Date.now() -
+                                      new Date(product.createAt).getTime() <
+                                    604800000 ? (
+                                      <Badge
+                                        borderRadius="full"
+                                        m={2}
+                                        px={2}
+                                        colorScheme="teal"
+                                      >
+                                        New
+                                      </Badge>
+                                    ) : null}
+
+                                    <Box
+                                      fontWeight="bold"
+                                      color={priceColor}
+                                      m={1}
+                                      mr={2}
+                                    >
+                                      $ {parseFloat(product.price).toFixed(2)}
+                                    </Box>
+                                  </Box>
+
+                                  <Heading
+                                    m={2}
+                                    fontWeight="semibold"
+                                    size="md"
+                                    lineHeight="taller"
+                                    isTruncated
+                                  >
+                                    {product.name}
+                                  </Heading>
+                                  <Text
+                                    m={2}
+                                    mb={4}
+                                    lineHeight="taller"
+                                    isTruncated
+                                  >
+                                    {product.content}
+                                  </Text>
+
+                                  <Flex
+                                    m={2}
+                                    mb={1}
+                                    justify="center"
+                                    align="center"
+                                  >
+                                    <Link
+                                      href={`/productUpdate/${product.slug}`}
+                                    >
+                                      <Button w="100%" colorScheme="teal">
+                                        Go to Product Update
+                                      </Button>
+                                    </Link>
+                                  </Flex>
+                                  <Flex
+                                    m={2}
+                                    mb={1}
+                                    justify="center"
+                                    align="center"
+                                  >
+                                    <Button
+                                      colorScheme="red"
+                                      w="100%"
+                                      onClick={() =>
+                                        this.deleteProductBtn(product._id)
+                                      }
+                                    >
+                                      Delete Product
+                                    </Button>
+                                  </Flex>
+                                </Box>
+                              </Box>
+                            ))}
+                          </SimpleGrid>
+                        )}
+                      </Box>
+                    ) : null}
+                  </Collapse>
+                </Box>
+              </SimpleGrid>
+            </Flex>
+          </Box>
+        </Box>
+      </Flex>
     );
   }
 }

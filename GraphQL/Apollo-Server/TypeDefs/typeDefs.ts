@@ -20,6 +20,7 @@ export const typeDefs = gql`
     productsSold(access_token: String!): ProductsSold!
     getMyOrders(access_token: String!): GetMyOrders!
     getMyLikesProduct(access_token: String!): GetMyLikesProduct!
+    getSingleUser(access_token: String!): GetSingleUser!
   }
 
   type Mutation {

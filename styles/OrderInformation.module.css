@@ -1,17 +1,18 @@
-.mainDiv {
-  text-align: center;
-  border-radius: 1rem;
+.mainFlex {
+  flex-direction: row;
   padding: 2rem;
 }
 
-@media screen and (max-width: 991px) {
-  .mainDiv {
-    padding: 1rem;
-  }
+.flexDiv {
+  height: 100vh;
 }
 
-@media screen and (max-width: 500px) {
-  .mainDiv {
-    padding: 0.5rem;
+@media screen and (max-width: 991px) {
+  .mainFlex {
+    flex-direction: column;
+    padding: 0.3rem;
+  }
+  .flexDiv {
+    height: 130vh;
   }
 }

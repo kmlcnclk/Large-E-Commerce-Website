@@ -13,6 +13,7 @@ export const ProductTypes = gql`
     likeCount: Int
     user: User
     createAt: Date
+    stockState: Boolean
   }
 
   type SearchProductPagination {

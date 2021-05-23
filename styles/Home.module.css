@@ -4,18 +4,6 @@
   opacity: 0.6;
 }
 
-.card {
-  display: inline-block;
-  margin: 4px;
-  border-radius: 1.5rem;
-  text-align: center;
-  background-color: #f2f2f2;
-}
-
-.homePageLinkName {
-  margin-bottom: 1rem;
-}
-
 .carouselIcon:hover {
   opacity: 0.4;
 }
@@ -37,43 +25,7 @@
   object-fit: contain;
 }
 
-.homePageCategoryCardMainImage {
-  margin: 24px;
-  margin-bottom: 0.5rem;
-  width: 300px;
-  height: auto;
-}
-
-.homePageSecondDiv {
-  text-align: center;
-  width: 100%;
-  justify-content: center;
-  display: block;
-  padding-left: 1px;
-}
-
-.homePageA {
-  font-size: 1.3rem;
-  color: black;
-}
-.homePageA:hover {
-  color: black;
-}
-
 @media only screen and (max-width: 1199px) {
-  .card {
-    width: auto;
-    text-align: center;
-  }
-
-  .homePageCategoryCardMainImage {
-    margin: 0rem;
-    margin-top: 3.2rem;
-    margin-bottom: 0.6rem;
-    text-align: center;
-    width: 100%;
-    height: 100%;
-  }
   .homePageFirstDiv {
     margin: 0rem;
   }
@@ -89,19 +41,6 @@
   }
 }
 @media only screen and (max-width: 991px) {
-  .card {
-    width: 70%;
-    text-align: center;
-  }
-
-  .homePageCategoryCardMainImage {
-    margin: 0rem;
-    margin-top: 3.2rem;
-    margin-bottom: 0.6rem;
-    text-align: center;
-    width: 100%;
-    height: 100%;
-  }
   .homePageFirstDiv {
     margin: 0rem;
   }
@@ -121,19 +60,6 @@
   }
 }
 @media only screen and (width: 768px) {
-  .card {
-    width: 72%;
-    text-align: center;
-  }
-
-  .homePageCategoryCardMainImage {
-    margin: 0rem;
-    margin-top: 3.3rem;
-    margin-bottom: 0.6rem;
-    text-align: center;
-    width: 100%;
-    height: 100%;
-  }
   .homePageFirstDiv {
     margin: 0rem;
   }
@@ -149,19 +75,6 @@
   }
 }
 @media only screen and (max-width: 767px) {
-  .card {
-    width: 98%;
-    text-align: center;
-  }
-
-  .homePageCategoryCardMainImage {
-    margin: 0rem;
-    margin-top: 3.2rem;
-    margin-bottom: 0.6rem;
-    text-align: center;
-    width: 100%;
-    height: 100%;
-  }
   .homePageFirstDiv {
     margin: 0rem;
   }
@@ -177,19 +90,6 @@
   }
 }
 @media only screen and (max-width: 575px) {
-  .card {
-    width: 98%;
-    text-align: center;
-  }
-
-  .homePageCategoryCardMainImage {
-    margin: 0rem;
-    margin-top: 4rem;
-    margin-bottom: 0.6rem;
-    text-align: center;
-    width: 100%;
-    height: 100%;
-  }
   .homePageFirstDiv {
     margin: 0rem;
   }
@@ -202,25 +102,9 @@
     margin-left: 4px;
     margin-right: 4px;
     margin-top: 1.1rem;
-  }
-  .homePageA {
-    font-size: 1.2rem;
   }
 }
 @media only screen and (max-width: 540px) {
-  .card {
-    width: 98%;
-    text-align: center;
-  }
-
-  .homePageCategoryCardMainImage {
-    margin: 0rem;
-    margin-top: 3rem;
-    margin-bottom: 0.6rem;
-    text-align: center;
-    width: 100%;
-    height: 100%;
-  }
   .homePageFirstDiv {
     margin: 0rem;
   }
@@ -233,25 +117,9 @@
     margin-left: 4px;
     margin-right: 4px;
     margin-top: 1.1rem;
-  }
-  .homePageA {
-    font-size: 1.1rem;
   }
 }
 @media only screen and (max-width: 490px) {
-  .card {
-    width: 98%;
-    text-align: center;
-  }
-
-  .homePageCategoryCardMainImage {
-    margin: 0rem;
-    margin-top: 2.5rem;
-    margin-bottom: 0.4rem;
-    text-align: center;
-    width: 100%;
-    height: 100%;
-  }
   .homePageFirstDiv {
     margin: 0rem;
   }
@@ -264,32 +132,9 @@
     margin-left: 4px;
     margin-right: 4px;
     margin-top: 1.1rem;
-  }
-  .homePageA {
-    font-size: 1rem;
-  }
-
-  .homePageLinkName {
-    margin-bottom: 0.6rem;
   }
 }
 @media only screen and (max-width: 450px) {
-  .card {
-    width: 98%;
-    text-align: center;
-  }
-  .homePageA {
-    font-size: 1rem;
-  }
-
-  .homePageCategoryCardMainImage {
-    margin: 0rem;
-    margin-top: 2rem;
-    margin-bottom: 0.3rem;
-    text-align: center;
-    width: 100%;
-    height: 100%;
-  }
   .homePageFirstDiv {
     margin: 0rem;
   }
@@ -302,25 +147,9 @@
     margin-left: 4px;
     margin-right: 4px;
     margin-top: 1.1rem;
-  }
-  .homePageLinkName {
-    margin-bottom: 0.5rem;
   }
 }
 @media only screen and (max-width: 390px) {
-  .card {
-    width: 97%;
-    text-align: center;
-  }
-
-  .homePageCategoryCardMainImage {
-    margin: 0rem;
-    margin-top: 1.7rem;
-    margin-bottom: 0.2rem;
-    text-align: center;
-    width: 100%;
-    height: 100%;
-  }
   .homePageFirstDiv {
     margin: 0rem;
   }
@@ -333,11 +162,5 @@
     margin-left: 4px;
     margin-right: 4px;
     margin-top: 1.1rem;
-  }
-  .homePageLinkName {
-    margin-bottom: 0.5rem;
-  }
-  .homePageA {
-    font-size: 1rem;
   }
 }

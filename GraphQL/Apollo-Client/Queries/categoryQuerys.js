@@ -33,6 +33,9 @@ export const CURRENT_CATEGORY = gql`
         imageUrl
         slug
         name
+        createAt
+        likes
+        likeCount
       }
     }
   }

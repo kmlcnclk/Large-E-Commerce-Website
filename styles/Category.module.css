@@ -1,8 +1,20 @@
-.category {
-  padding-top: 0.3rem;
-  margin-top: 0.2rem;
+.categoryItem {
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
 }
 
+@media only screen and (max-width: 1159px) {
+  .categoryItem {
+    margin-left: 1.1rem;
+    margin-right: 1.1rem;
+  }
+}
+@media only screen and (max-width: 1050px) {
+  .categoryItem {
+    margin-left: 0.8rem;
+    margin-right: 0.8rem;
+  }
+}
 @media only screen and (max-width: 991px) {
   .category {
     display: none;

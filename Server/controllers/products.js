@@ -180,24 +180,75 @@ const deleteProduct = asyncHandler(async (id, res) => {
   user.productCount = user.products.length;
   await user.save();
 
-  const user3 = await User.findById(product.user);
+  const users = await User.find();
 
-  if (user3.cart[0]) {
-    var newPrice = 0;
-
-    for (const product2 of user3.cart) {
-      if (product2.product == id) {
-        await user3.cart.splice(user3.products.indexOf(product2.product), 1);
-        user3.cartCount = await (user3.cartCount - product2.quantity);
-      } else {
-        newPrice += product.price * product2.quantity;
+  for (let i = 0; i < users.length; i++) {
+    users[i].cart.forEach(async (cartItem, index) => {
+      if (cartItem.product == id) {
+        await users[i].cart.splice(index, 1);
+        // await cartItem.remove();
+        users[i].cartCount = await (users[i].cartCount - cartItem.quantity);
+        users[i].cartTotalPrice = await (users[i].cartTotalPrice -
+          cartItem.quantity * product.price);
       }
-    }
-
-    user3.cartTotalPrice = newPrice;
-
-    await user3.save();
+    });
+    await users[i].save();
   }
+
+  // if (user3.cart[0]) {
+  //   var newPrice = 0;
+
+  //   for (const product2 of user3.cart) {
+  //     if (product2.product == id) {
+  //       await user3.cart.splice(user3.products.indexOf(product2.product), 1);
+  //       user3.cartCount = await (user3.cartCount - product2.quantity);
+  //     } else {
+  //       newPrice += product.price * product2.quantity;
+  //     }
+  //   }
+
+  //   user3.cartTotalPrice = newPrice;
+
+  //   await user3.save();
+  // }
+
+  const users1 = await User.find();
+
+  for (let i = 0; i < users1.length; i++) {
+    await users1[i].likes.forEach(async (like, index) => {
+      if (like == id) {
+        await users1[i].likes.splice(index, 1);
+      }
+    });
+    await users1[i].save();
+  }
+
+  const users2 = await User.find();
+
+  for (let i = 0; i < users2.length; i++) {
+    await users2[i].myOrders.forEach(async (myOrder, index) => {
+      if (myOrder.product == id) {
+        await users2[i].myOrders.splice(index, 1);
+      }
+    });
+    await users2[i].save();
+  }
+
+  const users3 = await User.find();
+
+  for (let i = 0; i < users3.length; i++) {
+    await users3[i].orders.forEach(async (order, index) => {
+      if (order.product == id) {
+        await users3[i].orders.splice(index, 1);
+      }
+    });
+    await users3[i].save();
+  }
+
+  // const product1 = await Product.findById(id);
+
+  // product1.deleteState = await true;
+  // await product1.save();
 
   await Product.findByIdAndRemove(id);
 

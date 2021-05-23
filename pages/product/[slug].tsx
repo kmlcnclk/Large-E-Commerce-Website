@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from '@apollo/client';
+import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import Layout from 'Components/Layout';
 import {
   GET_ALL_PRODUCT,
@@ -6,7 +6,7 @@ import {
 } from 'GraphQL/Apollo-Client/Queries/productQuerys';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { initializeApollo } from 'src/apollo';
 import ProductDetailComponent from 'Components/products/ProductDetailComponent';
 import { ADD_TO_CART } from 'GraphQL/Apollo-Client/Mutations/userMutations';
@@ -14,34 +14,57 @@ import {
   LIKE_PRODUCT,
   UNDO_LIKE_PRODUCT,
 } from 'GraphQL/Apollo-Client/Mutations/productMutations';
+import { useToast } from '@chakra-ui/toast';
+import { useColorModeValue } from '@chakra-ui/color-mode';
+import { GET_SINGLE_USER } from 'GraphQL/Apollo-Client/Queries/userQuerys';
+import { getAccessTokenFromLocal } from 'LocalStorage/accessTokenStorage';
 
 function ProductDetail({ product }) {
   const router = useRouter();
 
   const [productDetail, setProductDetail] = useState({});
 
-  const { data, error } = useQuery(PRODUCT_DETAIL, {
+  const toast = useToast();
+  const priceColor = useColorModeValue('gray.600', 'gray.300');
+
+  const { data } = useQuery(PRODUCT_DETAIL, {
     variables: { slug: product },
   });
+  const [getSingleUser, { data: getSingleUserData }] =
+    useLazyQuery(GET_SINGLE_USER);
 
-  const [
-    addToCart,
-    { data: addToCartData, error: addToCartError },
-  ] = useMutation(ADD_TO_CART);
-  const [
-    likeProduct,
-    { data: likeProductData, error: likeProductError },
-  ] = useMutation(LIKE_PRODUCT);
-  const [
-    undoLikeProduct,
-    { data: undoLikeProductData, error: undoLikeProductError },
-  ] = useMutation(UNDO_LIKE_PRODUCT);
+  const [addToCart, { data: addToCartData }] = useMutation(ADD_TO_CART);
+  const [likeProduct, { data: likeProductData }] = useMutation(LIKE_PRODUCT);
+  const [undoLikeProduct, { data: undoLikeProductData }] =
+    useMutation(UNDO_LIKE_PRODUCT);
+
+  useEffect(() => {
+    const user = async () => {
+      if (getAccessTokenFromLocal()[0]) {
+        const token = await getAccessTokenFromLocal()[0];
+
+        try {
+          await getSingleUser({
+            variables: { access_token: token ? token : '' },
+          });
+        } catch (err) {
+          toast({
+            title: err.message,
+            status: 'error',
+            duration: 3000,
+            isClosable: true,
+          });
+        }
+      }
+    };
+    user();
+  }, []);
 
   return (
     <Layout>
       <Head>
         <title>
-          {data ? data.getSingleProduct.data.name : 'Category-Product'}
+          Large &bull; {data ? data.getSingleProduct.data.name : ''}
         </title>
       </Head>
       {data ? (
@@ -49,17 +72,16 @@ function ProductDetail({ product }) {
           data={data.getSingleProduct.data}
           productDetail={productDetail}
           setProductDetail={setProductDetail}
-          error={error}
           router={router}
           addToCart={addToCart}
           addToCartData={addToCartData}
-          addToCartError={addToCartError}
           likeProduct={likeProduct}
           likeProductData={likeProductData}
-          likeProductError={likeProductError}
           undoLikeProduct={undoLikeProduct}
           undoLikeProductData={undoLikeProductData}
-          undoLikeProductError={undoLikeProductError}
+          toast={toast}
+          priceColor={priceColor}
+          getSingleUserData={getSingleUserData}
         />
       ) : null}
     </Layout>

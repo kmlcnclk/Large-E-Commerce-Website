@@ -20,7 +20,7 @@ const productQueryMiddleware = asyncHandler(async function (
   if (slug) {
     const category = await Category.findOne({ slug });
 
-    query = model.find({ category: category._id });
+    query = model.find({ category: category._id, stockState: true });
   } else {
     query = model.find();
   }
@@ -32,7 +32,18 @@ const productQueryMiddleware = asyncHandler(async function (
 
   query = productSortHelper(query, sortBy);
 
-  const total = await model.countDocuments();
+  var b = [];
+
+  const a = await Category.findOne({ slug });
+
+  for (let i = 0; i < a.products.length; i++) {
+    const c = await model.findById(a.products[i]);
+    if (c.stockState) {
+      b.push(a.products[i]);
+    }
+  }
+
+  const total = b.length;
   const paginationResult = await paginationHelper(pageIndex, total, query);
 
   query = paginationResult.query;
