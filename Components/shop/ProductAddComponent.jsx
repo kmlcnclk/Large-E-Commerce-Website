@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { getAccessTokenFromLocal } from 'LocalStorage/accessTokenStorage';
 import { onDrop } from '../toolbox/ProductOnDrop';
-import { Center, Flex, Heading } from '@chakra-ui/layout';
+import { Center, Flex, Heading, Text } from '@chakra-ui/layout';
 import { Input } from '@chakra-ui/input';
 import { Textarea } from '@chakra-ui/textarea';
 import {
@@ -121,99 +121,107 @@ class ProductAddComponent extends Component {
             </Heading>
             <Flex className={styles.secondDiv}>
               <Flex m={3} direction="column">
-                <Heading size="sm" color="teal.500" textAlign="center" mb={3}>
-                  &bull; Name &bull;
-                </Heading>
-                <Input
-                  type="text"
-                  variant="filled"
-                  placeholder="Iphone 10"
-                  mb={3}
-                  isRequired
-                  value={this.state.name}
-                  onChange={this.changeInput}
-                  name="name"
-                />
-                <Heading size="sm" color="teal.500" textAlign="center" mb={3}>
-                  &bull; Description &bull;
-                </Heading>
-                <Textarea
-                  mb={3}
-                  placeholder="Product description"
-                  resize="both"
-                  variant="filled"
-                  size="md"
-                  isRequired
-                  value={this.state.content}
-                  onChange={this.changeInput}
-                  name="content"
-                />
-                <Heading size="sm" color="teal.500" textAlign="center" mb={3}>
-                  &bull; Price &bull;
-                </Heading>
-                <NumberInput
-                  defaultValue={0}
-                  min={0}
-                  precision={2}
-                  step={0.1}
-                  mb={3}
-                  isRequired
-                  variant="filled"
-                  rounded={10}
-                  name="price"
-                  onChange={(valueAsString, valueAsNumber) =>
-                    this.changeNumberInput1(valueAsNumber)
-                  }
-                >
-                  <NumberInputField />
-                  <NumberInputStepper>
-                    <NumberIncrementStepper />
-                    <NumberDecrementStepper />
-                  </NumberInputStepper>
-                </NumberInput>
-                <Heading size="sm" color="teal.500" textAlign="center" mb={3}>
-                  &bull; Brand &bull;
-                </Heading>
-                <Input
-                  type="text"
-                  variant="filled"
-                  placeholder="Apple"
-                  mb={3}
-                  isRequired
-                  value={this.state.brand}
-                  onChange={this.changeInput}
-                  name="brand"
-                />
+                <Flex direction="column" mb={3}>
+                  <Text mb={3} fontWeight="hairline" ml={2}>
+                    Name
+                  </Text>
+                  <Input
+                    type="text"
+                    variant="outline"
+                    placeholder="Iphone 10"
+                    mb={3}
+                    isRequired
+                    value={this.state.name}
+                    onChange={this.changeInput}
+                    name="name"
+                  />
+                </Flex>
+                <Flex direction="column" mb={3}>
+                  <Text ml={2} fontWeight="hairline" mb={3}>
+                    Description
+                  </Text>
+                  <Textarea
+                    mb={3}
+                    placeholder="Product description"
+                    resize="both"
+                    variant="outline"
+                    size="md"
+                    isRequired
+                    value={this.state.content}
+                    onChange={this.changeInput}
+                    name="content"
+                  />{' '}
+                </Flex>
+                <Flex direction="column" mb={3}>
+                  <Text ml={2} fontWeight="hairline" mb={3}>
+                    Price
+                  </Text>
+                  <NumberInput
+                    defaultValue={0}
+                    min={0}
+                    precision={2}
+                    step={0.1}
+                    mb={3}
+                    isRequired
+                    variant="outline"
+                    rounded={10}
+                    name="price"
+                    onChange={(valueAsString, valueAsNumber) =>
+                      this.changeNumberInput1(valueAsNumber)
+                    }
+                  >
+                    <NumberInputField />
+                    <NumberInputStepper>
+                      <NumberIncrementStepper />
+                      <NumberDecrementStepper />
+                    </NumberInputStepper>
+                  </NumberInput>
+                </Flex>
               </Flex>
               <Flex m={3} justify="center" direction="column">
-                <Heading size="sm" color="teal.500" textAlign="center" mb={3}>
-                  &bull; Stock &bull;
-                </Heading>
-                <NumberInput
-                  defaultValue={0}
-                  min={0}
-                  precision={0}
-                  step={1}
-                  mb={3}
-                  isRequired
-                  variant="filled"
-                  rounded={10}
-                  name="stock"
-                  onChange={(valueAsString, valueAsNumber) =>
-                    this.changeNumberInput2(valueAsNumber)
-                  }
-                >
-                  <NumberInputField />
-                  <NumberInputStepper>
-                    <NumberIncrementStepper />
-                    <NumberDecrementStepper />
-                  </NumberInputStepper>
-                </NumberInput>
-                <Heading size="sm" color="teal.500" textAlign="center" mb={3}>
-                  &bull; Category &bull;
-                </Heading>
+                <Flex direction="column" mb={3}>
+                  <Text ml={2} mb={3} fontWeight="hairline">
+                    Brand
+                  </Text>
+                  <Input
+                    type="text"
+                    variant="outline"
+                    placeholder="Apple"
+                    mb={3}
+                    isRequired
+                    value={this.state.brand}
+                    onChange={this.changeInput}
+                    name="brand"
+                  />
+                </Flex>
+                <Flex direction="column" mb={3}>
+                  <Text ml={2} fontWeight="hairline" mb={3}>
+                    Stock
+                  </Text>
+                  <NumberInput
+                    defaultValue={0}
+                    min={0}
+                    precision={0}
+                    step={1}
+                    mb={3}
+                    isRequired
+                    variant="outline"
+                    rounded={10}
+                    name="stock"
+                    onChange={(valueAsString, valueAsNumber) =>
+                      this.changeNumberInput2(valueAsNumber)
+                    }
+                  >
+                    <NumberInputField />
+                    <NumberInputStepper>
+                      <NumberIncrementStepper />
+                      <NumberDecrementStepper />
+                    </NumberInputStepper>
+                  </NumberInput>
+                </Flex>
+
                 <Select
-                  variant="filled"
+                  variant="outline"
                   mb={6}
                   placeholder="Select Category"
                   isRequired
