@@ -41,6 +41,7 @@ export default class OrderInformationComponent extends Component {
       await this.props.creditCard({
         variables: {
           access_token: await getAccessTokenFromLocal()[0],
+          cardName: this.props.cardName,
           cardNumber: this.props.cardNumber,
           cardExpiry: this.props.cardExpiry,
           cardCVC: this.props.cardCVC,
@@ -87,6 +88,10 @@ export default class OrderInformationComponent extends Component {
         duration: 2000,
         isClosable: true,
       });
+
+      setTimeout(() => {
+        this.props.router.push('/');
+      }, 2000);
     }
   };
 
@@ -94,7 +99,7 @@ export default class OrderInformationComponent extends Component {
     this.setState({ focus: e.target.name });
   };
   render() {
-    const { formBgMode, cardExpiry, cardNumber, cardCVC, nameOnTheCard } =
+    const { formBgMode, cardExpiry, cardNumber, cardCVC, cardName } =
       this.props;
     return (
       <Flex className={styles.flexDiv} align="center" justify="center">
@@ -140,7 +145,7 @@ export default class OrderInformationComponent extends Component {
                 mb={3}
                 isRequired
                 onChange={(e) => {
-                  this.props.setNameOnTheCard(e.target.value);
+                  this.props.setCardName(e.target.value);
                 }}
                 onFocus={this.handleInputFocus}
                 name="name"
@@ -197,7 +202,7 @@ export default class OrderInformationComponent extends Component {
               cvc={cardCVC}
               expiry={cardExpiry}
               focused={this.state.focus}
-              name={nameOnTheCard}
+              name={cardName}
               number={cardNumber}
             />
 

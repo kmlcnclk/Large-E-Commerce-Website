@@ -36,6 +36,7 @@ export const PROFILE = gql`
           imageUrl
           name
           slug
+          stockState
         }
         productCount
         name

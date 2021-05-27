@@ -221,7 +221,7 @@ class NavbarComponent extends React.Component {
                           icon={<BsPerson size={23} />}
                         />
 
-                        <MenuList>
+                        <MenuList zIndex="2">
                           <Link href="/profile">
                             <MenuItem>Profile</MenuItem>
                           </Link>
@@ -457,7 +457,7 @@ class NavbarComponent extends React.Component {
                       icon={<BsPerson size={20} />}
                     />
 
-                    <MenuList>
+                    <MenuList zIndex="2">
                       <Link href="/profile">
                         <MenuItem>Profile</MenuItem>
                       </Link>

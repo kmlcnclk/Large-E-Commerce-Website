@@ -42,6 +42,8 @@ export const PRODUCT_DETAIL = gql`
         slug
         likes
         likeCount
+        stock
+        brand
         user {
           _id
         }

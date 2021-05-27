@@ -57,6 +57,14 @@ const ProductSchema = new Schema({
     type: Boolean,
     default: true,
   },
+  stock: {
+    type: Number,
+    default: 0,
+  },
+  brand: {
+    type: String,
+    default: '',
+  },
 });
 
 // Name Slug .For example kamilcan-celik

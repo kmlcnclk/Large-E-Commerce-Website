@@ -160,12 +160,12 @@ export const UserResolvers = {
     },
     async postCard(
       _,
-      { access_token, cardNumber, cardExpiry, cardCVC },
+      { access_token, cardName, cardNumber, cardExpiry, cardCVC },
       { res }
     ) {
       await getAccessToRoute(access_token, res);
 
-      await getCreditCard(cardNumber, cardExpiry, cardCVC, res);
+      await getCreditCard(cardName, cardNumber, cardExpiry, cardCVC, res);
 
       return res.status(200).results;
     },

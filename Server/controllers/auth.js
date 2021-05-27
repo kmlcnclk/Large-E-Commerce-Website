@@ -340,7 +340,7 @@ const profile = asyncHandler(async (res) => {
   const user = await User.findById(id)
     .populate({
       path: 'products',
-      select: 'name content price imageUrl slug',
+      select: 'name content price imageUrl slug stockState',
     })
     .populate({
       path: 'cart.product',
@@ -496,11 +496,12 @@ const getAddress = asyncHandler(async (address, res) => {
 });
 
 const getCreditCard = asyncHandler(
-  async (cardNumber, cardExpiry, cardCVC, res) => {
+  async (cardName, cardNumber, cardExpiry, cardCVC, res) => {
     const { id } = res.user;
 
     const user = await User.findById(id);
-
+    
+    user.creditCard.cardName = await cardName;
     user.creditCard.cardNumber = await cardNumber;
     user.creditCard.cardExpiry = await cardExpiry;
     user.creditCard.cardCVC = await cardCVC;

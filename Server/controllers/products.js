@@ -7,7 +7,7 @@ const { ApolloError } = require('apollo-server-errors');
 
 // Add to product
 const addToProduct = asyncHandler(
-  async (name, content, price, category, imageUrl, res) => {
+  async (name, content, price, category, imageUrl, stock, brand, res) => {
     const user_id = res.user.id;
 
     const product = await Product.create({
@@ -17,6 +17,8 @@ const addToProduct = asyncHandler(
       category,
       user: user_id,
       imageUrl,
+      stock,
+      brand,
     });
 
     const user = await User.findById(user_id)
@@ -109,7 +111,7 @@ const undoLikeProduct = asyncHandler(async (_id, res) => {
 
 // Edit product
 const editProduct = asyncHandler(
-  async (id, name, content, price, category, imageUrl, res) => {
+  async (id, name, content, price, category, imageUrl, stock, brand, res) => {
     const userId = res.user.id;
 
     const categorys = await Category.findById(category);
@@ -141,6 +143,13 @@ const editProduct = asyncHandler(
 
     product.category = category;
     product.imageUrl = imageUrl;
+    product.stock = stock;
+    product.brand = brand;
+    if (stock == 0) {
+      product.stockState = false;
+    } else {
+      product.stockState = true;
+    }
 
     await product.save();
 
@@ -269,6 +278,41 @@ const deleteProduct = asyncHandler(async (id, res) => {
   };
 });
 
+// Stock Product
+const productStock = asyncHandler(async (id, res) => {
+  const product = await Product.findById(id);
+
+  if (!product) {
+    throw new ApolloError('There is not a product with this product id', 400);
+  }
+
+  const users = await User.find();
+
+  for (let i = 0; i < users.length; i++) {
+    users[i].cart.forEach(async (cartItem, index) => {
+      if (cartItem.product == id) {
+        await users[i].cart.splice(index, 1);
+        // await cartItem.remove();
+        users[i].cartCount = await (users[i].cartCount - cartItem.quantity);
+        users[i].cartTotalPrice = await (users[i].cartTotalPrice -
+          cartItem.quantity * product.price);
+      }
+    });
+    await users[i].save();
+  }
+
+  const product1 = await Product.findById(id);
+
+  product1.stockState = await false;
+  product1.stock = await 0;
+  await product1.save();
+
+  res.results = {
+    success: true,
+    message: 'Transaction is successful',
+  };
+});
+
 // Get Single Product
 
 module.exports = {
@@ -277,4 +321,5 @@ module.exports = {
   undoLikeProduct,
   editProduct,
   deleteProduct,
+  productStock,
 };

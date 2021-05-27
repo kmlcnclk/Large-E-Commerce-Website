@@ -78,6 +78,7 @@ const UserSchema = new Schema({
     default: '',
   },
   creditCard: {
+    cardName: { type: String, default: '' },
     cardNumber: { type: String, default: '' },
     cardExpiry: { type: String, default: '' },
     cardCVC: { type: String, default: '' },

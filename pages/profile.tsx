@@ -7,7 +7,10 @@ import { initializeApollo } from 'src/apollo';
 import ProfileComponent from 'Components/auth/profile/ProfileComponent';
 import { getAccessTokenFromLocal } from 'LocalStorage/accessTokenStorage';
 import { useRouter } from 'next/router';
-import { PRODUCT_DELETE } from 'GraphQL/Apollo-Client/Mutations/productMutations';
+import {
+  PRODUCT_DELETE,
+  PRODUCT_STOCK,
+} from 'GraphQL/Apollo-Client/Mutations/productMutations';
 import { useToast } from '@chakra-ui/toast';
 import { useDisclosure } from '@chakra-ui/hooks';
 import { useColorModeValue } from '@chakra-ui/color-mode';
@@ -29,6 +32,7 @@ function Profile() {
   const [profile, { data, error }] = useLazyQuery(PROFILE);
   const [productDelete, { data: productDeleteData }] =
     useMutation(PRODUCT_DELETE);
+  const [productStock, { data: productStockData }] = useMutation(PRODUCT_STOCK);
 
   useEffect(() => {
     router.prefetch('/');
@@ -82,6 +86,8 @@ function Profile() {
           onToggleCart={onToggleCart}
           onToggleProduct={onToggleProduct}
           priceColor={priceColor}
+          productStock={productStock}
+          productStockData={productStockData}
         />
       ) : null}
     </Layout>

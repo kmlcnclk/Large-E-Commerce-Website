@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import styles from 'styles/ProductDetail.module.css';
 import Image from 'next/image';
 import { getAccessTokenFromLocal } from 'LocalStorage/accessTokenStorage';
-import { Box, Flex, Heading, SimpleGrid, Text } from '@chakra-ui/layout';
+import { Badge, Box, Flex, Heading, SimpleGrid, Text } from '@chakra-ui/layout';
 import { BsHeart, BsHeartFill } from 'react-icons/bs';
 import { Button } from '@chakra-ui/button';
 // import ImageZoom from 'react-medium-image-zoom';
@@ -167,6 +167,7 @@ class ProductDetailComponent extends Component {
   mainPage() {
     const product = this.props.productDetail;
     const { priceColor } = this.props;
+
     if (product.name) {
       return (
         <Flex
@@ -226,11 +227,36 @@ class ProductDetailComponent extends Component {
             <Text fontWeight="bold" fontSize="sm" color={priceColor} m={5}>
               {product.content}
             </Text>
+
+            <Flex fontWeight="bold" color={priceColor} align="center" m={5}>
+              <Heading size="sm" d="inline-block" fontWeight="semibold">
+                Stock:
+              </Heading>{' '}
+              <Badge colorScheme="red" ml={2} rounded="full">
+                <Heading m={1} size="sm">
+                  {product.stock}
+                </Heading>
+              </Badge>
+            </Flex>
+
+            <Flex fontWeight="bold" color={priceColor} align="center" m={5}>
+              <Heading size="sm" d="inline-block" fontWeight="semibold">
+                Brand: {product.brand}
+              </Heading>
+            </Flex>
+
             <Box m={5}>
               <Box>
-                <Text fontWeight="bold" color={priceColor}>
-                  Likes: {product.likeCount}
-                </Text>
+                <Flex fontWeight="bold" color={priceColor} align="center">
+                  <Heading size="sm" d="inline-block" fontWeight="semibold">
+                    Likes:
+                  </Heading>
+                  <Badge colorScheme="red" ml={2} rounded="full">
+                    <Heading m={1} size="sm">
+                      {product.likeCount}
+                    </Heading>
+                  </Badge>
+                </Flex>
                 <Box mt={3}>
                   {this.state.like ? (
                     <BsHeartFill

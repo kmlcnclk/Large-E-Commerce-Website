@@ -4,7 +4,8 @@ module.exports = (phase, { defaultConfig }) => {
   return {
     env: {
       MONGO_URI:
-        'mongodb+srv://canslar:1234567890@coffee.i4len.mongodb.net/category-product?retryWrites=true&w=majority',
+        // 'mongodb+srv://nevergiveup:nevergiveup@coffee.i4len.mongodb.net/category-product?retryWrites=true&w=majority',
+        "mongodb+srv://c:c123456c@a.psdrs.mongodb.net/sample_training?retryWrites=true&w=majority",
       JSON_SECRET_KEY: 'coffeescript',
       JWT_EXPIRE: '30m',
       JWT_COOKIE: '30',

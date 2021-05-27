@@ -14,6 +14,8 @@ export const ProductTypes = gql`
     user: User
     createAt: Date
     stockState: Boolean
+    stock: Int
+    brand: String
   }
 
   type SearchProductPagination {
@@ -56,6 +58,11 @@ export const ProductTypes = gql`
     success: Boolean!
     message: String!
     user: User!
+  }
+
+  type ProductStock {
+    success: Boolean!
+    message: String!
   }
 
   type ProductUpdate {

@@ -13,6 +13,7 @@ import {
 } from '@chakra-ui/number-input';
 import { Select } from '@chakra-ui/select';
 import { Button } from '@chakra-ui/button';
+import styles from 'styles/ProductUpdate.module.css';
 
 class ProductUpdateComponent extends Component {
   state = {
@@ -23,19 +24,25 @@ class ProductUpdateComponent extends Component {
     category: '',
     productImageState: false,
     priceState: false,
+    stock: 0,
+    stockState: false,
+    brand: '',
   };
 
   async componentDidMount() {
     const { data } = this.props.productDetailData.getSingleProduct;
-
+    console.log(data);
     if (this.props.getSingleUserData) {
       const user = await this.props.getSingleUserData.getSingleUser.data;
       if (data.user._id == user._id) {
         this.setState({ name: data.name });
         this.setState({ content: data.content });
         this.setState({ price: data.price });
+        this.setState({ stock: data.stock });
         this.setState({ product_image: data.imageUrl });
         this.setState({ priceState: true });
+        this.setState({ stockState: true });
+        this.setState({ brand: data.brand });
       } else {
         this.props.router.push('/');
       }
@@ -48,9 +55,15 @@ class ProductUpdateComponent extends Component {
     });
   };
 
-  changeNumberInput = async (valueAsString, valueAsNumber) => {
+  changeNumberInput1 = async (valueAsNumber) => {
     await this.setState({
       price: valueAsNumber,
+    });
+  };
+
+  changeNumberInput2 = async (valueAsNumber) => {
+    await this.setState({
+      stock: valueAsNumber,
     });
   };
 
@@ -83,6 +96,8 @@ class ProductUpdateComponent extends Component {
             ? await onDrop(this.state.product_image)
             : data.imageUrl,
           id: data._id,
+          stock: this.state.stock,
+          brand: this.state.brand,
         },
       });
     } catch (err) {
@@ -110,98 +125,154 @@ class ProductUpdateComponent extends Component {
     const { categoryData, fileImages, formBgMode } = this.props;
 
     return (
-      <Flex h="100vh" justify="center" align="center">
+      <Flex className={styles.flexDiv} justify="center" align="center">
         <Flex
           bg={formBgMode}
           as="form"
           onSubmit={this.updateProductFormSubmit}
-          p="12"
           rounded={6}
-          direction="column"
+          className={styles.mainFlex}
         >
-          <Heading textAlign="center" mb={6}>
-            Product Update
-          </Heading>
-          <Input
-            type="text"
-            variant="filled"
-            placeholder="Iphone 10"
-            mb={3}
-            isRequired
-            value={this.state.name}
-            onChange={this.changeInput}
-            name="name"
-          />
-          <Textarea
-            mb={3}
-            placeholder="Product description"
-            resize="both"
-            variant="filled"
-            size="md"
-            isRequired
-            value={this.state.content}
-            onChange={this.changeInput}
-            name="content"
-          />
-          {this.state.priceState ? (
-            <NumberInput
-              defaultValue={this.state.price}
-              min={0}
-              precision={2}
-              step={0.1}
-              mb={3}
-              isRequired
-              variant="filled"
-              rounded={10}
-              name="price"
-              onChange={(valueAsString, valueAsNumber) =>
-                this.changeNumberInput(valueAsString, valueAsNumber)
-              }
-            >
-              <NumberInputField />
-              <NumberInputStepper>
-                <NumberIncrementStepper />
-                <NumberDecrementStepper />
-              </NumberInputStepper>
-            </NumberInput>
-          ) : null}
-          <Select
-            variant="filled"
-            mb={6}
-            placeholder="Select Category"
-            isRequired
-            name="category"
-            onChange={this.changeInput}
-          >
-            {categoryData.getCategories.map((category) => (
-              <option name={category.name} key={category._id}>
-                {category.name}
-              </option>
-            ))}
-          </Select>
-
-          <Center mb={6}>
-            <Input
-              type="file"
-              accept="image/*"
-              multiple
-              d="none"
-              ref={fileImages}
-              onChange={this.fileChangeInput}
-              name="productImage"
-            />
-            <Button
-              colorScheme="red"
-              onClick={() => fileImages.current.click()}
-              w="min"
-              textAlign="center"
-            >
-              Choose Product Images
+          <Flex justify="center" direction="column">
+            <Heading textAlign="center" mb={6}>
+              Product Update
+            </Heading>
+            <Flex className={styles.secondDiv}>
+              <Flex m={3} direction="column">
+                <Heading size="sm" color="teal.500" textAlign="center" mb={3}>
+                  &bull; Name &bull;
+                </Heading>
+                <Input
+                  type="text"
+                  variant="filled"
+                  placeholder="Iphone 10"
+                  mb={3}
+                  isRequired
+                  value={this.state.name}
+                  onChange={this.changeInput}
+                  name="name"
+                />
+                <Heading size="sm" color="teal.500" textAlign="center" mb={3}>
+                  &bull; Description &bull;
+                </Heading>
+                <Textarea
+                  mb={3}
+                  placeholder="Product description"
+                  resize="both"
+                  variant="filled"
+                  size="md"
+                  isRequired
+                  value={this.state.content}
+                  onChange={this.changeInput}
+                  name="content"
+                />
+                <Heading size="sm" color="teal.500" textAlign="center" mb={3}>
+                  &bull; Price &bull;
+                </Heading>
+                {this.state.priceState ? (
+                  <NumberInput
+                    defaultValue={this.state.price}
+                    min={0}
+                    precision={2}
+                    step={0.1}
+                    mb={3}
+                    isRequired
+                    variant="filled"
+                    rounded={10}
+                    name="price"
+                    onChange={(valueAsString, valueAsNumber) =>
+                      this.changeNumberInput1(valueAsNumber)
+                    }
+                  >
+                    <NumberInputField />
+                    <NumberInputStepper>
+                      <NumberIncrementStepper />
+                      <NumberDecrementStepper />
+                    </NumberInputStepper>
+                  </NumberInput>
+                ) : null}
+                <Heading size="sm" color="teal.500" textAlign="center" mb={3}>
+                  &bull; Brand &bull;
+                </Heading>
+                <Input
+                  type="text"
+                  variant="filled"
+                  placeholder="Apple"
+                  mb={3}
+                  isRequired
+                  value={this.state.brand}
+                  onChange={this.changeInput}
+                  name="brand"
+                />
+              </Flex>
+              <Flex m={3} direction="column" justify="center">
+                <Heading size="sm" color="teal.500" textAlign="center" mb={3}>
+                  &bull; Stock &bull;
+                </Heading>{' '}
+                {this.state.stockState ? (
+                  <NumberInput
+                    defaultValue={this.state.stock}
+                    min={0}
+                    precision={0}
+                    step={1}
+                    mb={3}
+                    isRequired
+                    variant="filled"
+                    rounded={10}
+                    name="stock"
+                    onChange={(valueAsString, valueAsNumber) =>
+                      this.changeNumberInput2(valueAsNumber)
+                    }
+                  >
+                    <NumberInputField />
+                    <NumberInputStepper>
+                      <NumberIncrementStepper />
+                      <NumberDecrementStepper />
+                    </NumberInputStepper>
+                  </NumberInput>
+                ) : null}
+                <Heading size="sm" color="teal.500" textAlign="center" mb={3}>
+                  &bull; Category &bull;
+                </Heading>
+                <Select
+                  variant="filled"
+                  mb={6}
+                  placeholder="Select Category"
+                  isRequired
+                  name="category"
+                  onChange={this.changeInput}
+                >
+                  {categoryData.getCategories.map((category) => (
+                    <option name={category.name} key={category._id}>
+                      {category.name}
+                    </option>
+                  ))}
+                </Select>{' '}
+                <Center mb={6}>
+                  <Input
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    d="none"
+                    ref={fileImages}
+                    onChange={this.fileChangeInput}
+                    name="productImage"
+                  />
+                  <Button
+                    colorScheme="red"
+                    onClick={() => fileImages.current.click()}
+                    w="min"
+                    textAlign="center"
+                  >
+                    Choose Product Images
+                  </Button>
+                </Center>
+              </Flex>{' '}
+            </Flex>
+            <Button colorScheme="teal" type="submit">
+              Product Update
             </Button>
-          </Center>
-          <Button colorScheme="teal" type="submit">
-            Product Update
-          </Button>
+          </Flex>
         </Flex>
       </Flex>
     );

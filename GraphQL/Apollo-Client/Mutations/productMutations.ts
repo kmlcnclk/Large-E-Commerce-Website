@@ -13,6 +13,7 @@ export const LIKE_PRODUCT = gql`
         slug
         likes
         likeCount
+        stock
         user {
           _id
         }
@@ -34,6 +35,7 @@ export const UNDO_LIKE_PRODUCT = gql`
         slug
         likes
         likeCount
+        stock
         user {
           _id
         }
@@ -50,6 +52,8 @@ export const PRODUCT_ADD = gql`
     $imageUrl: [String!]
     $content: String!
     $category: ID!
+    $stock: Int!
+    $brand: String!
   ) {
     productAdd(
       name: $name
@@ -58,6 +62,8 @@ export const PRODUCT_ADD = gql`
       content: $content
       price: $price
       imageUrl: $imageUrl
+      stock: $stock
+      brand: $brand
     ) {
       success
       data {
@@ -112,6 +118,15 @@ export const PRODUCT_DELETE = gql`
   }
 `;
 
+export const PRODUCT_STOCK = gql`
+  mutation productStock($id: ID!, $access_token: String!) {
+    productStock(id: $id, access_token: $access_token) {
+      message
+      success
+    }
+  }
+`;
+
 export const PRODUCT_UPDATE = gql`
   mutation productUpdate(
     $access_token: String!
@@ -121,6 +136,8 @@ export const PRODUCT_UPDATE = gql`
     $content: String!
     $id: ID!
     $category: ID!
+    $stock: Int!
+    $brand: String!
   ) {
     productUpdate(
       name: $name
@@ -130,6 +147,8 @@ export const PRODUCT_UPDATE = gql`
       price: $price
       imageUrl: $imageUrl
       id: $id
+      stock: $stock
+      brand: $brand
     ) {
       success
       data {

@@ -46,8 +46,11 @@ export const typeDefs = gql`
       price: Float!
       category: ID!
       imageUrl: [String!]
+      stock: Int!
+      brand: String!
     ): ProductAdd!
     productDelete(id: ID!, access_token: String!): ProductDelete!
+    productStock(id: ID!, access_token: String!): ProductStock!
     productUpdate(
       access_token: String!
       name: String!
@@ -56,6 +59,8 @@ export const typeDefs = gql`
       category: ID!
       imageUrl: [String!]
       id: ID!
+      stock: Int!
+      brand: String!
     ): ProductUpdate!
     profileEdit(
       access_token: String!
@@ -72,6 +77,7 @@ export const typeDefs = gql`
     postAddress(access_token: String!, address: String!): AddressData!
     postCard(
       access_token: String!
+      cardName: String!
       cardNumber: String!
       cardExpiry: String!
       cardCVC: String!

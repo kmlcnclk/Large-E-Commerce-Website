@@ -31,7 +31,7 @@ function OrderInformation() {
   const [cardNumber, setCardNumber] = useState('');
   const [cardExpiry, setCardExpiry] = useState('');
   const [cardCVC, setCardCVC] = useState('');
-  const [nameOnTheCard, setNameOnTheCard] = useState('');
+  const [cardName, setCardName] = useState('');
   const [infoState, setInfoState] = useState(false);
 
   useEffect(() => {
@@ -86,8 +86,9 @@ function OrderInformation() {
           getSingleUserData={getSingleUserData}
           toast={toast}
           formBgMode={formBgMode}
-          nameOnTheCard={nameOnTheCard}
-          setNameOnTheCard={setNameOnTheCard}
+          cardName={cardName}
+          setCardName={setCardName}
+          router={router}
         />
       ) : null}
     </React.Fragment>

@@ -64,7 +64,38 @@ class ProfileComponent extends Component {
 
       setTimeout(() => {
         this.props.router.reload();
-      }, 2200);
+      }, 2000);
+    }
+  };
+
+  outOfStockBtn = async (id) => {
+    try {
+      await this.props.productStock({
+        variables: {
+          access_token: getAccessTokenFromLocal()[0],
+          id: id,
+        },
+      });
+    } catch (err) {
+      this.props.toast({
+        title: err.message,
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+
+    if (this.props.productStockData) {
+      this.props.toast({
+        title: this.props.productStockData.productStock.message,
+        status: 'success',
+        duration: 2000,
+        isClosable: true,
+      });
+
+      setTimeout(() => {
+        this.props.router.reload();
+      }, 2000);
     }
   };
 
@@ -430,6 +461,39 @@ class ProfileComponent extends Component {
                                       </Button>
                                     </Link>
                                   </Flex>
+                                  {product.stockState ? (
+                                    <Flex
+                                      m={2}
+                                      mb={1}
+                                      justify="center"
+                                      align="center"
+                                    >
+                                      <Button
+                                        colorScheme="pink"
+                                        w="100%"
+                                        onClick={() =>
+                                          this.outOfStockBtn(product._id)
+                                        }
+                                      >
+                                        Out of stock
+                                      </Button>
+                                    </Flex>
+                                  ) : (
+                                    <Flex
+                                      m={2}
+                                      mb={1}
+                                      justify="center"
+                                      align="center"
+                                    >
+                                      <Link
+                                        href={`/productUpdate/${product.slug}`}
+                                      >
+                                        <Button w="100%" colorScheme="pink">
+                                          In stock
+                                        </Button>
+                                      </Link>
+                                    </Flex>
+                                  )}
                                   <Flex
                                     m={2}
                                     mb={1}

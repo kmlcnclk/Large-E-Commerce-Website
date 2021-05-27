@@ -264,12 +264,14 @@ export const ADDRESS = gql`
 export const CREDITCARD = gql`
   mutation postCard(
     $access_token: String!
+    $cardName: String!
     $cardNumber: String!
     $cardCVC: String!
     $cardExpiry: String!
   ) {
     postCard(
       access_token: $access_token
+      cardName: $cardName
       cardNumber: $cardNumber
       cardCVC: $cardCVC
       cardExpiry: $cardExpiry

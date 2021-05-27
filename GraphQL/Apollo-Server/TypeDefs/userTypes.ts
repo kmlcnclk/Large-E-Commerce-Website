@@ -114,6 +114,7 @@ export const UserTypes = gql`
   }
 
   type CreditCard {
+    cardName: String
     cardExpiry: String
     cardNumber: String
     cardCVC: String

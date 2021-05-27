@@ -7,6 +7,7 @@ import {
   addToProduct,
   deleteProduct,
   editProduct,
+  productStock,
 } from 'Server/controllers/products';
 import {
   getAccessToRoute,
@@ -71,7 +72,7 @@ export const ProductResolvers = {
     },
     async productAdd(
       _,
-      { name, access_token, content, price, category, imageUrl },
+      { name, access_token, content, price, category, imageUrl, stock, brand },
       { res }
     ) {
       await checkCategoryExistToProduct(category);
@@ -80,7 +81,16 @@ export const ProductResolvers = {
 
       await getAccessToRoute(access_token, res);
 
-      await addToProduct(name, content, price, category, imageUrl, res);
+      await addToProduct(
+        name,
+        content,
+        price,
+        category,
+        imageUrl,
+        stock,
+        brand,
+        res
+      );
 
       return res.status(200).results;
     },
@@ -93,9 +103,28 @@ export const ProductResolvers = {
 
       return res.status(200).results;
     },
+    async productStock(_, { access_token, id }, { res }) {
+      await getAccessToRoute(access_token, res);
+
+      await getProductOwnerAccess(id, res);
+
+      await productStock(id, res);
+
+      return res.status(200).results;
+    },
     async productUpdate(
       _,
-      { name, access_token, content, price, category, imageUrl, id },
+      {
+        name,
+        access_token,
+        content,
+        price,
+        category,
+        imageUrl,
+        id,
+        stock,
+        brand,
+      },
       { res }
     ) {
       await getAccessToRoute(access_token, res);
@@ -104,7 +133,17 @@ export const ProductResolvers = {
 
       await getProductOwnerAccess(id, res);
 
-      await editProduct(id, name, content, price, category, imageUrl, res);
+      await editProduct(
+        id,
+        name,
+        content,
+        price,
+        category,
+        imageUrl,
+        stock,
+        brand,
+        res
+      );
 
       return res.status(200).results;
     },
