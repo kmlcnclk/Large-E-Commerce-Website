@@ -16,6 +16,8 @@ export const ProductTypes = gql`
     stockState: Boolean
     stock: Int
     brand: String
+    star: Float
+    starCounter: Int
   }
 
   type SearchProductPagination {
@@ -69,5 +71,10 @@ export const ProductTypes = gql`
     success: Boolean!
     data: Product!
     user: User!
+  }
+
+  type ProductStar {
+    success: Boolean!
+    data: Product!
   }
 `;

@@ -3,9 +3,25 @@ import styles from 'styles/ProductDetail.module.css';
 import Image from 'next/image';
 import { getAccessTokenFromLocal } from 'LocalStorage/accessTokenStorage';
 import { Badge, Box, Flex, Heading, SimpleGrid, Text } from '@chakra-ui/layout';
-import { BsHeart, BsHeartFill } from 'react-icons/bs';
+import {
+  BsHeart,
+  BsHeartFill,
+  BsStar,
+  BsStarFill,
+  BsStarHalf,
+} from 'react-icons/bs';
 import { Button } from '@chakra-ui/button';
+import {
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+} from '@chakra-ui/modal';
 // import ImageZoom from 'react-medium-image-zoom';
+import ProductStar from 'Components/toolbox/ProductStar';
 
 class ProductDetailComponent extends Component {
   state = {
@@ -164,9 +180,52 @@ class ProductDetailComponent extends Component {
     }
   };
 
+  productStarAdd = async (product) => {
+    if (getAccessTokenFromLocal()[0]) {
+      const token = getAccessTokenFromLocal()[0];
+
+      try {
+        await this.props.productStar({
+          variables: {
+            access_token: token ? token : '',
+            star: this.props.star,
+            productId: product._id,
+          },
+        });
+      } catch (err) {
+        this.props.toast({
+          title: err.message,
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+        });
+      }
+
+      if (this.props.productStarData) {
+        await this.props.setProductDetail(
+          this.props.productStarData.postStar.data
+        );
+
+        this.props.toast({
+          title: 'You did give points to this product',
+          status: 'success',
+          duration: 2000,
+          isClosable: true,
+        });
+      }
+    } else {
+      this.props.toast({
+        title: 'You are not logged in',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  };
+
   mainPage() {
     const product = this.props.productDetail;
-    const { priceColor } = this.props;
+    const { priceColor, isOpen, onOpen, onClose, setStar } = this.props;
 
     if (product.name) {
       return (
@@ -244,7 +303,72 @@ class ProductDetailComponent extends Component {
                 Brand: {product.brand}
               </Heading>
             </Flex>
+            <Flex
+              fontWeight="bold"
+              color={priceColor}
+              justify="space-between"
+              align="center"
+              m={5}
+            >
+              <Box
+                d="flex"
+                alignItems="center"
+                justifyContent="space-between"
+                w="100%"
+              >
+                <Flex justify="center" align="center">
+                  {Array(5)
+                    .fill('')
+                    .map((a, i) => {
+                      const y = product.star.toString().split('.')[0];
+                      let z = product.star.toString().split('.')[1];
 
+                      if (i + 1 <= y) {
+                        return <BsStarFill key={i} color="#319795" />;
+                      } else if (parseInt(z) >= 5 && i <= parseInt(y)) {
+                        return <BsStarHalf color="#319795" key={i} />;
+                      } else {
+                        return <BsStar color="#319795" key={i} />;
+                      }
+                    })}{' '}
+                  <Box d="inline-block" ml={2} as="div">
+                    {product.star == 0
+                      ? product.star.toFixed(0)
+                      : product.star.toFixed(1)}
+                  </Box>{' '}
+                </Flex>
+                <Flex justify="center" align="center" mr={3} textAlign="center">
+                  <Button onClick={onOpen} textAlign="center" colorScheme="red">
+                    Give points
+                  </Button>
+                  <Modal isOpen={isOpen} onClose={onClose}>
+                    <ModalOverlay />
+                    <ModalContent>
+                      <ModalHeader>Product Star</ModalHeader>
+                      <ModalCloseButton />
+                      <ModalBody>
+                        <Flex justify="center" align="center">
+                          <ProductStar setStar={setStar} />
+                        </Flex>
+                      </ModalBody>
+
+                      <ModalFooter>
+                        <Button
+                          colorScheme="blue"
+                          mr={3}
+                          onClick={() => {
+                            this.productStarAdd(product);
+                            onClose();
+                          }}
+                        >
+                          Send
+                        </Button>
+                      </ModalFooter>
+                    </ModalContent>
+                  </Modal>
+                </Flex>
+              </Box>
+            </Flex>
             <Box m={5}>
               <Box>
                 <Flex fontWeight="bold" color={priceColor} align="center">

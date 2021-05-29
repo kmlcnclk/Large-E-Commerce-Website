@@ -65,6 +65,20 @@ const ProductSchema = new Schema({
     type: String,
     default: '',
   },
+  star: {
+    type: Number,
+    default: 0,
+  },
+  starsToUser: [
+    {
+      userId: { type: mongoose.Schema.ObjectId, ref: 'user' },
+      starPointToUser: { type: Number, default: 0 },
+    },
+  ],
+  starCounter: {
+    type: Number,
+    default: 0,
+  },
 });
 
 // Name Slug .For example kamilcan-celik

@@ -8,6 +8,7 @@ import {
   deleteProduct,
   editProduct,
   productStock,
+  postStar,
 } from 'Server/controllers/products';
 import {
   getAccessToRoute,
@@ -144,6 +145,13 @@ export const ProductResolvers = {
         brand,
         res
       );
+
+      return res.status(200).results;
+    },
+    async postStar(_, { access_token, star, productId }, { res }) {
+      await getAccessToRoute(access_token, res);
+
+      await postStar(star, productId, res);
 
       return res.status(200).results;
     },

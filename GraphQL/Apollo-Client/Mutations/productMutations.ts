@@ -9,8 +9,10 @@ export const LIKE_PRODUCT = gql`
         _id
         imageUrl
         content
+        star
         price
         slug
+        brand
         likes
         likeCount
         stock
@@ -32,6 +34,8 @@ export const UNDO_LIKE_PRODUCT = gql`
         imageUrl
         content
         price
+        star
+        brand
         slug
         likes
         likeCount
@@ -170,6 +174,30 @@ export const PRODUCT_UPDATE = gql`
             content
             price
           }
+        }
+      }
+    }
+  }
+`;
+
+export const PRODUCT_STAR = gql`
+  mutation postStar($access_token: String!, $star: Float!, $productId: ID!) {
+    postStar(access_token: $access_token, star: $star, productId: $productId) {
+      success
+      data {
+        name
+        _id
+        imageUrl
+        content
+        price
+        slug
+        brand
+        likes
+        star
+        likeCount
+        stock
+        user {
+          _id
         }
       }
     }

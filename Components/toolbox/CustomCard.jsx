@@ -7,6 +7,7 @@ import { Text } from '@chakra-ui/layout';
 import { Flex } from '@chakra-ui/layout';
 import Link from 'next/link';
 import { Button } from '@chakra-ui/button';
+import { BsStar, BsStarFill, BsStarHalf } from 'react-icons/bs';
 
 function CustomCard({ product, priceColor }) {
   return (
@@ -49,6 +50,30 @@ function CustomCard({ product, priceColor }) {
         >
           {product.name}
         </Heading>
+
+        <Box d="flex" m={2} alignItems="center">
+          {Array(5)
+            .fill('')
+            .map((a, i) => {
+              const y = product.star.toString().split('.')[0];
+              let z = product.star.toString().split('.')[1];
+
+              if (i + 1 <= y) {
+                return <BsStarFill key={i} color="#319795" />;
+              } else if (parseInt(z) >= 5 && i <= parseInt(y)) {
+                return <BsStarHalf color="#319795" key={i} />;
+              } else {
+                return <BsStar color="#319795" key={i} />;
+              }
+            })}
+          <Box ml={2} as="div" d="inline-block">
+            {' '}
+            {product.star == 0
+              ? product.star.toFixed(0)
+              : product.star.toFixed(1)}
+          </Box>
+        </Box>
+
         <Text m={2} mb={4} lineHeight="taller" isTruncated>
           {product.content}
         </Text>
@@ -60,27 +85,6 @@ function CustomCard({ product, priceColor }) {
             </Button>
           </Link>
         </Flex>
-
-        {/* <Box d="flex" mt="2" alignItems="center">
-          {Array(5)
-            .fill('')
-            .map((a, i) => {
-              const y = property.rating.toString().split('.')[0];
-              let z = property.rating.toString().split('.')[1];
-
-              if (i + 1 <= y) {
-                return <BsStarFill key={i} color="#319795" />;
-              } else if (parseInt(z) >= 5 && i <= parseInt(y)) {
-                return <BsStarHalf color="#319795" key={i} />;
-              } else {
-                return <BsStar color="#319795" key={i} />;
-              }
-            })}
-          <div>{property.rating}</div>
-          <Box as="span" ml="2" color="gray.600" fontSize="sm">
-            {property.reviewCount} reviews
-          </Box>
-        </Box> */}
       </Box>
     </Box>
   );

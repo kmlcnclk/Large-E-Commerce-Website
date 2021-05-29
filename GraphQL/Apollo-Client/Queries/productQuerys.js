@@ -25,6 +25,7 @@ export const SEARCH_PRODUCT = gql`
         likes
         likeCount
         createAt
+        star
       }
     }
   }
@@ -44,6 +45,7 @@ export const PRODUCT_DETAIL = gql`
         likeCount
         stock
         brand
+        star
         user {
           _id
         }

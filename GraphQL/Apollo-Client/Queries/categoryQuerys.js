@@ -36,7 +36,7 @@ export const CURRENT_CATEGORY = gql`
         createAt
         likes
         likeCount
-        stock
+        star
       }
     }
   }

@@ -313,7 +313,50 @@ const productStock = asyncHandler(async (id, res) => {
   };
 });
 
-// Get Single Product
+// Post the star to product
+const postStar = asyncHandler(async (star, productId, res) => {
+  const { id } = res.user;
+
+  const product = await Product.findById(productId);
+
+  var starState = true;
+
+  //you look at this
+  for (let i = 0; i < product.starsToUser.length; i++) {
+    if (product.starsToUser[i].userId == id) {
+      const a =
+        (await (product.star * product.starCounter)) -
+        product.starsToUser[i].starPointToUser;
+
+      product.star = (await (a + star)) / product.starCounter;
+
+      product.starsToUser[i].starPointToUser = await star;
+      starState = false;
+    }
+  }
+
+  if (starState) {
+    const customStar = {
+      userId: id,
+      starPointToUser: star,
+    };
+
+    const a = await (product.star * product.starCounter);
+
+    product.star = (await (a + star)) / (product.starCounter + 1);
+
+    product.starCounter = (await product.starCounter) + 1;
+
+    await product.starsToUser.push(customStar);
+  }
+
+  await product.save();
+
+  res.results = {
+    success: true,
+    data: product,
+  };
+});
 
 module.exports = {
   addToProduct,
@@ -322,4 +365,5 @@ module.exports = {
   editProduct,
   deleteProduct,
   productStock,
+  postStar,
 };

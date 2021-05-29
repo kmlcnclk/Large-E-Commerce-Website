@@ -13,17 +13,20 @@ import { ADD_TO_CART } from 'GraphQL/Apollo-Client/Mutations/userMutations';
 import {
   LIKE_PRODUCT,
   UNDO_LIKE_PRODUCT,
+  PRODUCT_STAR,
 } from 'GraphQL/Apollo-Client/Mutations/productMutations';
 import { useToast } from '@chakra-ui/toast';
 import { useColorModeValue } from '@chakra-ui/color-mode';
 import { GET_SINGLE_USER } from 'GraphQL/Apollo-Client/Queries/userQuerys';
 import { getAccessTokenFromLocal } from 'LocalStorage/accessTokenStorage';
+import { useDisclosure } from '@chakra-ui/hooks';
 
 function ProductDetail({ product }) {
   const router = useRouter();
 
   const [productDetail, setProductDetail] = useState({});
 
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
   const priceColor = useColorModeValue('gray.600', 'gray.300');
 
@@ -37,6 +40,8 @@ function ProductDetail({ product }) {
   const [likeProduct, { data: likeProductData }] = useMutation(LIKE_PRODUCT);
   const [undoLikeProduct, { data: undoLikeProductData }] =
     useMutation(UNDO_LIKE_PRODUCT);
+  const [productStar, { data: productStarData }] = useMutation(PRODUCT_STAR);
+  const [star, setStar] = useState(0);
 
   useEffect(() => {
     const user = async () => {
@@ -82,6 +87,13 @@ function ProductDetail({ product }) {
           toast={toast}
           priceColor={priceColor}
           getSingleUserData={getSingleUserData}
+          productStar={productStar}
+          productStarData={productStarData}
+          isOpen={isOpen}
+          onOpen={onOpen}
+          onClose={onClose}
+          setStar={setStar}
+          star={star}
         />
       ) : null}
     </Layout>
