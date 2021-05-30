@@ -15,7 +15,7 @@ import CustomPagination from '../../Components/toolbox/CustomPagination';
 
 function ProductCard({ category }) {
   const filterValue = [
-    { add: 'Reset', sort: '' },
+    // { add: 'Reset', sort: '' },
     {
       add: 'Increased Liking',
       sort: 'increased-liking',
@@ -31,6 +31,14 @@ function ProductCard({ category }) {
     {
       add: 'Descending Price',
       sort: 'descending-price',
+    },
+    {
+      add: 'Increasing Star',
+      sort: 'increasing-star',
+    },
+    {
+      add: 'Descending Star',
+      sort: 'descending-star',
     },
   ];
 
@@ -83,19 +91,42 @@ function ProductCard({ category }) {
           </Button>
           <Collapse in={isOpen} animateOpacity>
             <Box
-              p="40px"
+              p={10}
               color="white"
-              bg="teal.500"
+              bg="red.500"
               rounded="md"
               shadow="md"
               mt={4}
             >
-              <Box mb={4}>
+              <Box textAlign="center">
+                <Text
+                  p={3}
+                  m={2}
+                  d="inline-block"
+                  bg="white"
+                  color="red.500"
+                  rounded="9"
+                  fontWeight="semibold"
+                  cursor="pointer"
+                  onClick={() => {
+                    addSelectedFilter('Reset');
+                    setSortBy('');
+                  }}
+                >
+                  Reset
+                </Text>
                 {filterValue.map((filter, i) => (
                   <Text
                     key={i}
                     p={3}
-                    _hover={{ bg: 'red.500', rounded: '9' }}
+                    d="inline-block"
+                    _hover={{
+                      bg: 'white',
+                      rounded: '9',
+                      color: 'red.500',
+                    }}
+                    m={2}
+                    fontWeight="semibold"
                     cursor="pointer"
                     onClick={() => {
                       addSelectedFilter(filter.add);
@@ -114,8 +145,11 @@ function ProductCard({ category }) {
                       <Text
                         key={index}
                         cursor="no-drop"
+                        textAlign="center"
                         p={3}
-                        bg="pink.500"
+                        fontWeight="semibold"
+                        color="red"
+                        bg="white"
                         rounded="9"
                       >
                         {selectFilter}

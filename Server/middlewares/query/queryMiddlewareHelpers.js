@@ -24,6 +24,10 @@ const productSortHelper = (query, sortBy) => {
     return query.sort('price -createAt');
   } else if (sortBy === 'descending-price') {
     return query.sort('-price -createAt');
+  } else if (sortBy === 'increasing-star') {
+    return query.sort('star -createAt');
+  } else if (sortBy === 'descending-star') {
+    return query.sort('-star -createAt');
   } else {
     return query.sort('-createAt');
   }
