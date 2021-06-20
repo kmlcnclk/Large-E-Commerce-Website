@@ -105,16 +105,7 @@ const login = asyncHandler(async (email, password, res) => {
     throw new ApolloError('Please check your Inputs', 400);
   }
 
-  const user = await User.findOne({ email })
-    .select('+password')
-    .populate({
-      path: 'products',
-      select: 'name content price imageUrl slug',
-    })
-    .populate({
-      path: 'cart.product',
-      select: 'name content price imageUrl slug',
-    });
+  const user = await User.findOne({ email }).select('+password');
 
   if (!user) {
     throw new ApolloError('Please check your input', 400);
@@ -141,7 +132,6 @@ const logout = asyncHandler(async (res) => {
   );
 
   res.result = {
-    code: 200,
     success: true,
     message: 'Logout Successful',
   };
@@ -203,7 +193,6 @@ const addToCart = asyncHandler(async (_id, res) => {
   res.results = {
     success: true,
     data: user2,
-    code: 200,
     message: 'Added to product cart!',
   };
 });
@@ -500,7 +489,7 @@ const getCreditCard = asyncHandler(
     const { id } = res.user;
 
     const user = await User.findById(id);
-    
+
     user.creditCard.cardName = await cardName;
     user.creditCard.cardNumber = await cardNumber;
     user.creditCard.cardExpiry = await cardExpiry;
@@ -678,6 +667,23 @@ const getSingleUser = asyncHandler(async (res) => {
   };
 });
 
+const userDelete = asyncHandler(async (res) => {
+  const { id } = res.user;
+
+  const user = await User.findById(id);
+
+  if (!user) {
+    throw new ApolloError('There is no such user', 401);
+  } else {
+    await user.remove();
+  }
+
+  res.results = {
+    success: true,
+    message: 'Your account has been successfully deleted',
+  };
+});
+
 module.exports = {
   register,
   login,
@@ -699,4 +705,5 @@ module.exports = {
   getMyOrders,
   getMyLikesProduct,
   getSingleUser,
+  userDelete,
 };

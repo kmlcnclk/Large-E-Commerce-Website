@@ -14,6 +14,7 @@ import {
 import { useToast } from '@chakra-ui/toast';
 import { useDisclosure } from '@chakra-ui/hooks';
 import { useColorModeValue } from '@chakra-ui/color-mode';
+import { USER_DELETE } from 'GraphQL/Apollo-Client/Mutations/userMutations';
 
 function Profile() {
   const router = useRouter();
@@ -33,6 +34,8 @@ function Profile() {
   const [productDelete, { data: productDeleteData }] =
     useMutation(PRODUCT_DELETE);
   const [productStock, { data: productStockData }] = useMutation(PRODUCT_STOCK);
+  const [userDelete, { data: userDeleteData }] = useMutation(USER_DELETE);
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   useEffect(() => {
     router.prefetch('/');
@@ -88,6 +91,11 @@ function Profile() {
           priceColor={priceColor}
           productStock={productStock}
           productStockData={productStockData}
+          userDelete={userDelete}
+          userDeleteData={userDeleteData}
+          isOpen={isOpen}
+          onOpen={onOpen}
+          onClose={onClose}
         />
       ) : null}
     </Layout>

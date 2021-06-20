@@ -33,9 +33,6 @@ const sendJwtToClient = (user, res) => {
   res.result = {
     success: true,
     access_token: token,
-    data: user,
-    code: 200,
-    message: 'Your login is successful',
   };
 };
 

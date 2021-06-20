@@ -32,27 +32,19 @@ export const UserTypes = gql`
 
   type Register {
     access_token: String
-    data: User
     success: Boolean
-    code: Int
-    message: String
   }
 
   type Login {
     access_token: String
-    data: User
     success: Boolean
-    code: Int
-    message: String
   }
   type Logout {
     success: Boolean
-    code: Int
     message: String
   }
   type AddToCart {
     success: Boolean
-    code: Int
     data: User
     message: String
   }
@@ -183,5 +175,10 @@ export const UserTypes = gql`
   type GetSingleUser {
     success: Boolean
     data: User
+  }
+
+  type UserDelete {
+    success: Boolean
+    message: String
   }
 `;

@@ -3,10 +3,22 @@ import styles from 'styles/Profile.module.css';
 import Link from 'next/link';
 import ProfileImage from './ProfileImage';
 import Image from 'next/image';
-import { getAccessTokenFromLocal } from 'LocalStorage/accessTokenStorage';
+import {
+  deleteAccessTokenFromLocal,
+  getAccessTokenFromLocal,
+} from 'LocalStorage/accessTokenStorage';
 import { Badge, Box, Flex, Heading, SimpleGrid, Text } from '@chakra-ui/layout';
 import { Button } from '@chakra-ui/button';
 import { Collapse } from '@chakra-ui/transition';
+import {
+  Modal,
+  ModalHeader,
+  ModalOverlay,
+  ModalCloseButton,
+  ModalFooter,
+  ModalContent,
+  ModalBody,
+} from '@chakra-ui/react';
 
 class ProfileComponent extends Component {
   state = {
@@ -99,6 +111,38 @@ class ProfileComponent extends Component {
     }
   };
 
+  deleteUser = async () => {
+    try {
+      await this.props.userDelete({
+        variables: {
+          access_token: getAccessTokenFromLocal()[0],
+        },
+      });
+    } catch (err) {
+      this.props.toast({
+        title: err.message,
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+
+    if (this.props.userDeleteData) {
+      await deleteAccessTokenFromLocal();
+
+      this.props.toast({
+        title: this.props.userDeleteData.userDelete.message,
+        status: 'success',
+        duration: 2000,
+        isClosable: true,
+      });
+
+      setTimeout(() => {
+        this.props.router.push('/');
+      }, 2000);
+    }
+  };
+
   render() {
     const {
       user,
@@ -111,6 +155,9 @@ class ProfileComponent extends Component {
       onToggleCart,
       onToggleProduct,
       priceColor,
+      onOpen,
+      isOpen,
+      onClose,
     } = this.props;
 
     const cart = [...user.cart];
@@ -128,7 +175,6 @@ class ProfileComponent extends Component {
             <Flex direction="column" w="100%" justify="center" align="center">
               <Flex justify="center" w="100%" direction="column" align="center">
                 <ProfileImage profileImageStatic={user.profile_image} />
-
                 <Heading
                   m={3}
                   textAlign="center"
@@ -138,13 +184,11 @@ class ProfileComponent extends Component {
                 >
                   {user.name}
                 </Heading>
-
                 <Link href="/profileEdit">
-                  <Button m={3} colorScheme="red" w="60%">
+                  <Button m={3} colorScheme="yellow" w="60%">
                     Edit profile
                   </Button>
                 </Link>
-
                 <Box textAlign="center" mb={3}>
                   <Box mt={3}>
                     <Heading size="sm" d="block">
@@ -171,6 +215,40 @@ class ProfileComponent extends Component {
                     </Badge>
                   </Box>
                 </Box>
+                <Button
+                  m={3}
+                  colorScheme="red"
+                  w="60%"
+                  onClick={() => onOpen()}
+                >
+                  Delete your account
+                </Button>
+                <Modal isOpen={isOpen} onClose={onClose}>
+                  <ModalOverlay />
+                  <ModalContent>
+                    <ModalHeader>Delete your account</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody>
+                      Are you sure you want to delete your account?
+                    </ModalBody>
+
+                    <ModalFooter>
+                      <Button colorScheme="red" mr={3} onClick={onClose}>
+                        No
+                      </Button>
+                      <Button
+                        colorScheme="teal"
+                        mr={3}
+                        onClick={() => {
+                          onClose();
+                          this.deleteUser();
+                        }}
+                      >
+                        Yes
+                      </Button>
+                    </ModalFooter>
+                  </ModalContent>
+                </Modal>
               </Flex>
             </Flex>
           </Box>

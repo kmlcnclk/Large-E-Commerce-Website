@@ -85,6 +85,7 @@ export const typeDefs = gql`
     postOrder(access_token: String!, product: ID!, quantity: Int!): OrderData!
     postProductsSold(access_token: String!, index: Int!): Message!
     postStar(access_token: String!, star: Float!, productId: ID!): ProductStar!
+    userDelete(access_token: String!): UserDelete!
   }
 
   scalar Date

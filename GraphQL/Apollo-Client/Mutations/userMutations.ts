@@ -13,22 +13,22 @@ export const REGISTER_MUTATION = gql`
       name: $name
       profile_image: $profile_image
     ) {
-      success
-      code
-      message
+      # success
+      # code
+      # message
       access_token
-      data {
-        _id
-        name
-        email
-        profile_image
-        cart {
-          quantity
-          product {
-            name
-          }
-        }
-      }
+      # data {
+      #   _id
+      #   name
+      #   email
+      #   profile_image
+      #   cart {
+      #     quantity
+      #     product {
+      #       name
+      #     }
+      #   }
+      # }
     }
   }
 `;
@@ -36,26 +36,26 @@ export const REGISTER_MUTATION = gql`
 export const LOGIN_MUTATION = gql`
   mutation login($email: String!, $password: String!) {
     login(email: $email, password: $password) {
-      success
-      code
-      message
+      # success
+      # code
+      # message
       access_token
-      data {
-        name
-        email
-        profile_image
-        _id
-        cart {
-          quantity
-          product {
-            name
-            imageUrl
-            _id
-            content
-            price
-          }
-        }
-      }
+      # data {
+      #   name
+      #   email
+      #   profile_image
+      #   _id
+      #   cart {
+      #     quantity
+      #     product {
+      #       name
+      #       imageUrl
+      #       _id
+      #       content
+      #       price
+      #     }
+      #   }
+      # }
     }
   }
 `;
@@ -63,8 +63,7 @@ export const LOGIN_MUTATION = gql`
 export const LOGOUT_MUTATION = gql`
   mutation logout($access_token: String!) {
     logout(access_token: $access_token) {
-      success
-      code
+      # success
       message
     }
   }
@@ -331,6 +330,15 @@ export const ORDERS = gql`
 export const POST_PRODUCTS_SOLD = gql`
   mutation postProductsSold($access_token: String!, $index: Int!) {
     postProductsSold(access_token: $access_token, index: $index) {
+      message
+    }
+  }
+`;
+
+export const USER_DELETE = gql`
+  mutation userDelete($access_token: String!) {
+    userDelete(access_token: $access_token) {
+      success
       message
     }
   }

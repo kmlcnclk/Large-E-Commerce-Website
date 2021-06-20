@@ -22,6 +22,7 @@ import {
   getMyOrders,
   getMyLikesProduct,
   getSingleUser,
+  userDelete,
 } from 'Server/controllers/auth';
 
 export const UserResolvers = {
@@ -88,26 +89,26 @@ export const UserResolvers = {
 
       await register(res, name, password, email, profile_image);
 
-      return res.result;
+      return res.status(200).result;
     },
     async login(_, { email, password }, { res }) {
       await login(email, password, res);
 
-      return res.result;
+      return res.status(200).result;
     },
     async logout(_, { access_token }, { res }) {
       await getAccessToRoute(access_token, res);
 
       await logout(res);
 
-      return res.result;
+      return res.status(200).result;
     },
     async addToCart(_, { _id, access_token }, { res }) {
       await getAccessToRoute(access_token, res);
 
       await addToCart(_id, res);
 
-      return res.results;
+      return res.status(200).results;
     },
     async removeFromCart(_, { _id, access_token }, { res }) {
       await getAccessToRoute(access_token, res);
@@ -180,6 +181,13 @@ export const UserResolvers = {
       await getAccessToRoute(access_token, res);
 
       await postProductsSold(index, res);
+
+      return res.status(200).results;
+    },
+    async userDelete(_, { access_token }, { res }) {
+      await getAccessToRoute(access_token, res);
+
+      await userDelete(res);
 
       return res.status(200).results;
     },
