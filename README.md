@@ -11,6 +11,8 @@ This project is my first big project
 * Next JS
 * JavaScript
 * TypeScript
+* HTML
+* CSS
 * Bootstrap
 * Mongo DB
 * GraphQL
