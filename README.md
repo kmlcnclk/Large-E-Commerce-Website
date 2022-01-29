@@ -16,6 +16,7 @@
 * Apollo Client
 * Redux
 * Express JS.
+* Cloudinary
 
 
 ### The making of this project
