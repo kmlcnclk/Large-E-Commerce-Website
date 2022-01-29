@@ -1,6 +1,6 @@
-# Large E-Commerce Web Site
+# Large E-Commerce Website
 
-#### [You can click here for the link to the site.](https://large.vercel.app/)
+#### [You can click here for the link to the website.](https://large.vercel.app/)
 
 This project is my first big project
 
