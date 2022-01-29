@@ -2,7 +2,7 @@
 
 #### [You can click here for the link to the site.](https://large.vercel.app/)
 
-### I learned these technologies while doing this project
+### I used or learned these technologies while doing this project
 
 * React JS
 * Chakra UI
