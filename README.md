@@ -19,6 +19,7 @@ This project is my first big project
 * Redux
 * Express JS.
 * Cloudinary
+* Responsive Design
 
 
 ### The making of this project
