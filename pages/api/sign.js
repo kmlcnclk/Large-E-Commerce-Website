@@ -1,4 +1,4 @@
-const cloudinary = require("cloudinary").v2;
+const cloudinary = require('cloudinary').v2;
 
 export default async (req, res) => {
   const timestamp = Math.round(new Date().getTime() / 1000);
@@ -7,7 +7,7 @@ export default async (req, res) => {
     {
       timestamp,
     },
-    process.env.CLOUDINARY_SECRET
+    process.env.NEXT_PUBLIC_CLOUDINARY_SECRET
   );
 
   res.statusCode = 200;

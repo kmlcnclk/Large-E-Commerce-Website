@@ -47,7 +47,7 @@ export const UserResolvers = {
         {
           timestamp,
         },
-        process.env.CLOUDINARY_SECRET
+        process.env.NEXT_PUBLIC_CLOUDINARY_SECRET
       );
 
       res.results = { signature, timestamp };

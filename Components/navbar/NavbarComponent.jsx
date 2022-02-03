@@ -62,15 +62,19 @@ class NavbarComponent extends React.Component {
         'access_token'
       )[0].split(' ')[1];
 
-      jwt.verify(access_token, process.env.JSON_SECRET_KEY, (err, decoded) => {
-        if (err) {
-          deleteAccessTokenFromLocal();
+      jwt.verify(
+        access_token,
+        process.env.NEXT_PUBLIC_JSON_SECRET_KEY,
+        (err, decoded) => {
+          if (err) {
+            deleteAccessTokenFromLocal();
 
-          this.props.setLogState(true);
+            this.props.setLogState(true);
 
-          this.props.router.push('/');
+            this.props.router.push('/');
+          }
         }
-      });
+      );
     }
   }
 
