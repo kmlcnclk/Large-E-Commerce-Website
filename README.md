@@ -19,7 +19,6 @@ This project is my first big project
 * Apollo Server
 * Apollo Client
 * Redux
-* Express JS.
 * Cloudinary
 * Responsive Design
 
